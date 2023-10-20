@@ -1,17 +1,6 @@
 
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View
-} from 'react-native';
-import { Button } from 'react-native-paper';
-
-import ProductsScreen from './src/components/product/list'
+import CategoriesScreen from './src/components/categories/list'
 
 
 class App extends React.Component {
@@ -26,7 +15,7 @@ class App extends React.Component {
 
   render () {
       return (<>
-          <ProductsScreen/>
+          <CategoriesScreen/>
       </>
       )
   }
