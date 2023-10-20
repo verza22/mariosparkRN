@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-paper';
 
+import ProductsScreen from './src/components/product/list'
+
 
 class App extends React.Component {
 
@@ -18,16 +20,13 @@ class App extends React.Component {
     super();
 
     this.state = {
-      name: 'John Zurita 2'
+      name: 'John Zurita 3'
     }
   }
 
   render () {
       return (<>
-          <Text>Hola {this.state.name}</Text>
-          <Button icon="camera" mode="contained" onPress={() => console.log('Pressed')}>
-    Press me
-  </Button>
+          <ProductsScreen/>
       </>
       )
   }
