@@ -1,10 +1,10 @@
 
 import React, { Component  } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { List } from 'react-native-paper';
-import { FAB } from 'react-native-paper';
-import { withTheme } from 'react-native-paper';
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { List, FAB, withTheme, Portal, Modal, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
+
+import { RemoveProduct } from '../../redux/actions'
 
 class ProductListScreen extends Component {
     constructor(props) {
@@ -13,6 +13,8 @@ class ProductListScreen extends Component {
       this.onPressFab = this.onPressFab.bind(this);
       this.state = {
         selectedCategory: null,
+        modalVisible: false,
+        productID: null
       };
     }
   
@@ -24,10 +26,21 @@ class ProductListScreen extends Component {
     handlePress = (item) => {
       this.props.navigation.navigate('EditProducto', { item });
     };
+
+    onLongPress(item){
+      this.setState({ modalVisible: true, productID: item.id });
+    };
+
+    handleDelete = () => {
+      this.props.RemoveProduct(this.state.productID);
+      this.setState({ modalVisible: false, productID: null });
+      Alert.alert('Producto eliminado');
+    };
   
     renderFoodItem = ({ item }) => (
       <List.Item
         onPress={() => this.handlePress(item)}
+        onLongPress={() => this.onLongPress(item)}
         title={item.name}
         description={`Price: $${item.price}`}
         left={() => (
@@ -51,6 +64,20 @@ class ProductListScreen extends Component {
     render() {
       return (
         <View style={styles.container}>
+          <Portal>
+            <Modal 
+              visible={this.state.modalVisible} 
+              onDismiss={() => this.setState({ modalVisible: false })}
+              contentContainerStyle={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}
+            >
+              <View style={{ margin: 20 }}>
+                <Text>¿Estás seguro de que deseas eliminar esta categoría?</Text>
+                <Button mode="contained" onPress={this.handleDelete} style={{ marginTop: 10 }}>
+                  Confirmar Eliminación
+                </Button>
+              </View>
+            </Modal>
+          </Portal>
           <FlatList
             horizontal
             style={{ maxHeight: this.state.selectedCategory === null ? 100 : 75 }}
@@ -130,4 +157,9 @@ const mapStateToProps = state => ({
   products: state.products
 });
 
-export default connect(mapStateToProps, null)(withTheme(ProductListScreen));
+const mapDispatchToProps = {
+  RemoveProduct
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ProductListScreen));

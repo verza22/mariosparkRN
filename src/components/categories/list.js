@@ -1,9 +1,9 @@
 import React, { Component  } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { List } from 'react-native-paper';
-import { FAB } from 'react-native-paper';
-import { withTheme } from 'react-native-paper';
+import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
+import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
+
+import { RemoveCategory } from '../../redux/actions'
 
 class CategoriesListScreen extends Component {
     constructor(props) {
@@ -11,7 +11,8 @@ class CategoriesListScreen extends Component {
       this.onPressFab = this.onPressFab.bind(this);
       this.colors = props.theme.colors;
       this.state = {
-        selectedCategory: null,
+        modalVisible: false,
+        categoryID: null
       };
     }
   
@@ -20,14 +21,24 @@ class CategoriesListScreen extends Component {
       return i >= 0 ? this.props.categories[i].name : "";
     };
 
-    handlePress = (item) => {
-      // Lógica que se ejecutará cuando se presione el List.Item
+    handlePress(item){
       this.props.navigation.navigate('EditCategoria', { item });
+    };
+
+    onLongPress(item){
+      this.setState({ modalVisible: true, categoryID: item.id });
+    };
+
+    handleDelete = () => {
+      this.props.RemoveCategory(this.state.categoryID);
+      this.setState({ modalVisible: false, categoryID: null });
+      Alert.alert('Categoría eliminada');
     };
   
     renderCategories = ({ item }) => (
       <List.Item
         onPress={() => this.handlePress(item)}
+        onLongPress={() => this.onLongPress(item)}
         title={item.name}
         // description={`Price: $${item.price}`}
         left={() => (
@@ -50,6 +61,20 @@ class CategoriesListScreen extends Component {
     render() {
       return (
         <View style={styles.container}>
+          <Portal>
+            <Modal 
+              visible={this.state.modalVisible} 
+              onDismiss={() => this.setState({ modalVisible: false })}
+              contentContainerStyle={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}
+            >
+              <View style={{ margin: 20 }}>
+                <Text>¿Estás seguro de que deseas eliminar esta categoría?</Text>
+                <Button mode="contained" onPress={this.handleDelete} style={{ marginTop: 10 }}>
+                  Confirmar Eliminación
+                </Button>
+              </View>
+            </Modal>
+          </Portal>
           <FlatList
             data={this.props.categories}
             renderItem={this.renderCategories}
@@ -115,4 +140,8 @@ const mapStateToProps = state => ({
   categories: state.categories,
 });
 
-export default connect(mapStateToProps, null)(withTheme(CategoriesListScreen));
+const mapDispatchToProps = {
+  RemoveCategory
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CategoriesListScreen));

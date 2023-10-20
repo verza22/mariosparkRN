@@ -3,6 +3,8 @@ export const ADD_CATEGORY = 'ADD_CATEGORY';
 export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
+export const REMOVE_CATEGORY = 'REMOVE_CATEGORY';
+export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 
 export function AddCategory(name, image) {
   return {
@@ -39,5 +41,19 @@ export function UpdateProduct(id, name, price, categoryId, image) {
     price,
     categoryId,
     image
+  };
+}
+
+export function RemoveCategory(id) {
+  return {
+    type: REMOVE_CATEGORY,
+    id
+  };
+}
+
+export function RemoveProduct(id) {
+  return {
+    type: REMOVE_PRODUCT,
+    id
   };
 }

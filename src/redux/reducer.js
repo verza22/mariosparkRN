@@ -1,5 +1,5 @@
 // reducer.js
-import { ADD_CATEGORY, ADD_PRODUCT, UPDATE_CATEGORY, UPDATE_PRODUCT } from './actions';
+import { ADD_CATEGORY, ADD_PRODUCT, UPDATE_CATEGORY, UPDATE_PRODUCT, REMOVE_CATEGORY, REMOVE_PRODUCT } from './actions';
 
 import { categories, products } from './../data';
 
@@ -57,6 +57,16 @@ function reducer(state = initialState, action) {
         return {
           ...state,
           products: products
+        };
+      case REMOVE_CATEGORY:
+        return {
+          ...state,
+          categories: state.categories.filter(x=> x.id !== action.id)
+        };
+      case REMOVE_PRODUCT:
+        return {
+          ...state,
+          products: state.products.filter(x=> x.id !== action.id)
         };
     default:
       return state;
