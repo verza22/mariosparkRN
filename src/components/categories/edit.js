@@ -5,29 +5,32 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
-import { AddCategory } from '../../redux/actions'
+import { UpdateCategory } from '../../redux/actions'
 
-class CategoryFormScreen extends Component {
+class CategoryEditFormScreen extends Component {
     constructor(props) {
       super(props);
+
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
-      
+      let item = this.props.route.params.item;
+
       this.state = {
-        categoryName: '',
-        categoryImage: null,
+        categoryID: item.id,
+        categoryName: item.name,
+        categoryImage: item.image,
       };
     }
-  
-    pickImage = () => {
-      const options = {
-        noData: true,
-      };
-      launchImageLibrary(options, (response) => {
-        if (response.assets && response.assets.length > 0) {
-          this.setState({ categoryImage: response.assets[0].uri });
+
+    componentDidUpdate(prevProps) {
+        if (this.props.route.params.item !== prevProps.route.params.item) {
+            let item = this.props.route.params.item;
+            this.setState({
+                categoryID: item.id,
+                categoryName: item.name,
+                categoryImage: item.image,
+            })
         }
-      });
-    };
+    }
 
     handleBackPressHandler(){
         this.props.navigation.navigate('Categorias');
@@ -42,9 +45,20 @@ class CategoryFormScreen extends Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPressHandler);
     }
   
+    pickImage = () => {
+      const options = {
+        noData: true,
+      };
+      launchImageLibrary(options, (response) => {
+        if (response.assets && response.assets.length > 0) {
+          this.setState({ categoryImage: response.assets[0].uri });
+        }
+      });
+    };
+  
     saveCategory = () => {
-      const { categoryName, categoryImage } = this.state;
-      this.props.AddCategory(categoryName, categoryImage);
+      const { categoryID, categoryName, categoryImage } = this.state;
+      this.props.UpdateCategory(categoryID, categoryName, categoryImage);
       this.props.navigation.navigate('Categorias');
     };
   
@@ -65,7 +79,7 @@ class CategoryFormScreen extends Component {
             </Button>
             {categoryImage && <Image source={{ uri: categoryImage }} style={styles.previewImage} />}
             <Button mode="contained" onPress={this.saveCategory} style={styles.saveButton}>
-              Guardar Categoría
+              Actualizar Categoría
             </Button>
           </ScrollView>
         </View>
@@ -99,7 +113,7 @@ const styles = StyleSheet.create({
 
 
 const mapDispatchToProps = {
-  AddCategory
+  UpdateCategory
 };
 
-export default connect(null, mapDispatchToProps)(CategoryFormScreen);
+export default connect(null, mapDispatchToProps)(CategoryEditFormScreen);

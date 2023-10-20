@@ -20,9 +20,14 @@ class ProductListScreen extends Component {
       let i = this.props.categories.findIndex(x => x.id === categoryId);
       return i >= 0 ? this.props.categories[i].name : "";
     };
+
+    handlePress = (item) => {
+      this.props.navigation.navigate('EditProducto', { item });
+    };
   
     renderFoodItem = ({ item }) => (
       <List.Item
+        onPress={() => this.handlePress(item)}
         title={item.name}
         description={`Price: $${item.price}`}
         left={() => (
@@ -36,7 +41,11 @@ class ProductListScreen extends Component {
     );
 
     onPressFab()  {
-      this.props.navigation.navigate('AddProducto');
+      // this.props.navigation.navigate('AddProducto');
+      this.props.navigation.reset({
+        index: 0,
+        routes: [{ name: 'AddProducto' }]
+  })
     };
   
     render() {

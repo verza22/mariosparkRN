@@ -6,19 +6,34 @@ import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
 import CustomPicker from '../lib/customPicker'
-import { AddProduct } from '../../redux/actions'
+import { UpdateProduct } from '../../redux/actions'
 
-class ProductFormScreen extends Component {
+class ProductEditFormScreen extends Component {
     constructor(props) {
       super(props);
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
+      let item = this.props.route.params.item;
 
       this.state = {
-        productName: '',
-        productPrice: 0,
-        productCategory: null,
-        productImage: null,
+        productID: item.id,
+        productName: item.name,
+        productPrice: ""+item.price,
+        productCategory: item.categoryId,
+        productImage: item.image,
       };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.route.params.item !== prevProps.route.params.item) {
+            let item = this.props.route.params.item;
+            this.setState({
+                productID: item.id,
+                productName: item.name,
+                productPrice: ""+item.price,
+                productCategory: item.categoryId,
+                productImage: item.image,
+              })
+        }
     }
   
     pickImage = () => {
@@ -33,13 +48,9 @@ class ProductFormScreen extends Component {
     };
   
     saveProduct = () => {
-      const { productName, productPrice, productCategory, productImage } = this.state;
-      // Aquí puedes implementar la lógica para guardar la categoría en tu base de datos
-      // o realizar alguna acción con los datos ingresados.
-      this.props.AddProduct(productName, productPrice, productCategory, productImage);
+      const { productID, productName, productPrice, productCategory, productImage } = this.state;
+      this.props.UpdateProduct(productID, productName, productPrice, productCategory, productImage);
       this.props.navigation.navigate('Productos');
-      // console.log('Category Name:', productName);
-      // console.log('Category Image:', productImage);
     };
 
     handleBackPressHandler(){
@@ -87,7 +98,7 @@ class ProductFormScreen extends Component {
             </Button>
             {productImage && <Image source={{ uri: productImage }} style={styles.previewImage} />}
             <Button mode="contained" onPress={this.saveProduct} style={styles.saveButton}>
-              Guardar Producto
+            Actualizar Producto
             </Button>
           </ScrollView>
         </View>
@@ -130,7 +141,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  AddProduct
+    UpdateProduct
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductFormScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductEditFormScreen);

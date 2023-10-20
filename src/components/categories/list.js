@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 class CategoriesListScreen extends Component {
     constructor(props) {
       super(props);
+      this.onPressFab = this.onPressFab.bind(this);
       this.colors = props.theme.colors;
       this.state = {
         selectedCategory: null,
@@ -18,9 +19,15 @@ class CategoriesListScreen extends Component {
       let i = this.props.categories.findIndex(x => x.id === categoryId);
       return i >= 0 ? this.props.categories[i].name : "";
     };
+
+    handlePress = (item) => {
+      // Lógica que se ejecutará cuando se presione el List.Item
+      this.props.navigation.navigate('EditCategoria', { item });
+    };
   
     renderCategories = ({ item }) => (
       <List.Item
+        onPress={() => this.handlePress(item)}
         title={item.name}
         // description={`Price: $${item.price}`}
         left={() => (
@@ -32,9 +39,13 @@ class CategoriesListScreen extends Component {
       />
     );
 
-    onPressFab = () => {
-      this.props.navigation.navigate('AddCategoria');
-    };
+    onPressFab() {
+      // this.props.navigation.navigate('AddCategoria');
+      this.props.navigation.reset({
+          index: 0,
+          routes: [{ name: 'AddCategoria' }]
+    })
+    }
   
     render() {
       return (
@@ -45,7 +56,7 @@ class CategoriesListScreen extends Component {
             keyExtractor={item => item.id.toString()}
           />
            <FAB
-             style={{ ...styles.fab, backgroundColor: this.colors.primary }}
+            style={{ ...styles.fab, backgroundColor: this.colors.primary }}
             icon="plus"
             color="white"
             onPress={this.onPressFab}

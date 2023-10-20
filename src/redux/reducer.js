@@ -1,5 +1,5 @@
 // reducer.js
-import { ADD_CATEGORY, ADD_PRODUCT } from './actions';
+import { ADD_CATEGORY, ADD_PRODUCT, UPDATE_CATEGORY, UPDATE_PRODUCT } from './actions';
 
 import { categories, products } from './../data';
 
@@ -25,6 +25,38 @@ function reducer(state = initialState, action) {
           products: [...state.products,
             { id: maxPId+1, name: action.name, price: action.price, categoryId: action.categoryId, image: action.image }
           ]
+        };
+      case UPDATE_CATEGORY:
+        let categories = state.categories.map(category => {
+          if (category.id === action.id) {
+            return {
+              ...category,
+              name: action.name,
+              image: action.image,
+            };
+          }
+          return category;
+        });
+        return {
+          ...state,
+          categories: categories
+        };
+      case UPDATE_PRODUCT:
+        let products = state.products.map(product => {
+          if (product.id === action.id) {
+            return {
+              ...product,
+              name: action.name,
+              price: action.price,
+              categoryId: action.categoryId,
+              image: action.image
+            };
+          }
+          return product;
+        });
+        return {
+          ...state,
+          products: products
         };
     default:
       return state;
