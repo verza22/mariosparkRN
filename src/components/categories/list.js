@@ -1,7 +1,8 @@
 import React, { Component  } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { List, Appbar } from 'react-native-paper';
+import { List } from 'react-native-paper';
 import { categories } from '../../data';
+import AppBar from '../lib/appbar';
 
 class CategoriesListScreen extends Component {
     constructor(props) {
@@ -32,13 +33,7 @@ class CategoriesListScreen extends Component {
     render() {
       return (
         <View style={styles.container}>
-          <Appbar.Header
-            style={{
-              backgroundColor: '#2196F3', // Cambia el color de fondo del Appbar
-            }}
-          >
-            <Appbar.Content title="Categorias" />
-          </Appbar.Header>
+          <AppBar name="Categorias"/>
           <FlatList
             data={categories}
             renderItem={this.renderCategories}

@@ -1,7 +1,7 @@
 
 import React from 'react';
-import CategoriesScreen from './src/components/categories/list'
 
+import ProductFormScreen from './src/components/products/add'
 
 class App extends React.Component {
 
@@ -9,13 +9,12 @@ class App extends React.Component {
     super();
 
     this.state = {
-      name: 'John Zurita 3'
     }
   }
 
   render () {
       return (<>
-          <CategoriesScreen/>
+          <ProductFormScreen/>
       </>
       )
   }

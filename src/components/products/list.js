@@ -1,8 +1,9 @@
 
 import React, { Component  } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { List, Appbar } from 'react-native-paper';
+import { List } from 'react-native-paper';
 import { categories, products } from '../../data';
+import AppBar from '../lib/appbar';
 
 class ProductListScreen extends Component {
     constructor(props) {
@@ -34,13 +35,7 @@ class ProductListScreen extends Component {
     render() {
       return (
         <View style={styles.container}>
-          <Appbar.Header
-            style={{
-              backgroundColor: '#2196F3', // Cambia el color de fondo del Appbar
-            }}
-          >
-            <Appbar.Content title="Productos" />
-          </Appbar.Header>
+          <AppBar name="Productos"/>
           <FlatList
             horizontal
             style={{ maxHeight: this.state.selectedCategory === null ? 100 : 75 }}
