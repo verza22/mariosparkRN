@@ -3,11 +3,14 @@ import React, { Component  } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { List } from 'react-native-paper';
 import { categories, products } from '../../data';
-import AppBar from '../lib/appbar';
+import { FAB } from 'react-native-paper';
+import { withTheme } from 'react-native-paper';
 
 class ProductListScreen extends Component {
     constructor(props) {
       super(props);
+      this.colors = props.theme.colors;
+      this.onPressFab = this.onPressFab.bind(this);
       this.state = {
         selectedCategory: null,
       };
@@ -31,11 +34,14 @@ class ProductListScreen extends Component {
         style={styles.item}
       />
     );
+
+    onPressFab()  {
+      this.props.navigation.navigate('AddProducto');
+    };
   
     render() {
       return (
         <View style={styles.container}>
-          <AppBar name="Productos"/>
           <FlatList
             horizontal
             style={{ maxHeight: this.state.selectedCategory === null ? 100 : 75 }}
@@ -55,6 +61,12 @@ class ProductListScreen extends Component {
             renderItem={this.renderFoodItem}
             keyExtractor={item => item.id.toString()}
           />
+           <FAB
+             style={{ ...styles.fab, backgroundColor: this.colors.primary }}
+            icon="plus"
+            color="white"
+            onPress={this.onPressFab}
+        />
         </View>
       );
     }
@@ -64,6 +76,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    borderRadius: 30,
   },
   item: {
     borderBottomColor: '#cccccc',
@@ -97,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductListScreen;
+export default withTheme(ProductListScreen);

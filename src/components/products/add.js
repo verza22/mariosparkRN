@@ -6,8 +6,6 @@ import { categories } from '../../data';
 
 import CustomPicker from '../lib/customPicker'
 
-import AppBar from '../lib/appbar';
-
 class ProductFormScreen extends Component {
     constructor(props) {
       super(props);
@@ -43,7 +41,6 @@ class ProductFormScreen extends Component {
   
       return (
         <View style={styles.container}>
-          <AppBar name="Crear Producto"/>
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <TextInput
               label="Nombre del producto"

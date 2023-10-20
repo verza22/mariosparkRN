@@ -3,8 +3,6 @@ import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker';
 
-import AppBar from '../lib/appbar';
-
 class CategoryFormScreen extends Component {
     constructor(props) {
       super(props);
@@ -38,7 +36,6 @@ class CategoryFormScreen extends Component {
   
       return (
         <View style={styles.container}>
-          <AppBar name="Crear Categoría"/>
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <TextInput
               label="Nombre de la Categoría"

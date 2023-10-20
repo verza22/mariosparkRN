@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import ProductFormScreen from './src/components/products/add'
+import Navigation from './src/components/navigation'
 
 class App extends React.Component {
 
@@ -14,7 +14,7 @@ class App extends React.Component {
 
   render () {
       return (<>
-          <ProductFormScreen/>
+          <Navigation/>
       </>
       )
   }

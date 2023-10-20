@@ -2,11 +2,13 @@ import React, { Component  } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { List } from 'react-native-paper';
 import { categories } from '../../data';
-import AppBar from '../lib/appbar';
+import { FAB } from 'react-native-paper';
+import { withTheme } from 'react-native-paper';
 
 class CategoriesListScreen extends Component {
     constructor(props) {
       super(props);
+      this.colors = props.theme.colors;
       this.state = {
         selectedCategory: null,
       };
@@ -29,16 +31,25 @@ class CategoriesListScreen extends Component {
         style={styles.item}
       />
     );
+
+    onPressFab = () => {
+      this.props.navigation.navigate('AddCategoria');
+    };
   
     render() {
       return (
         <View style={styles.container}>
-          <AppBar name="Categorias"/>
           <FlatList
             data={categories}
             renderItem={this.renderCategories}
             keyExtractor={item => item.id.toString()}
           />
+           <FAB
+             style={{ ...styles.fab, backgroundColor: this.colors.primary }}
+            icon="plus"
+            color="white"
+            onPress={this.onPressFab}
+        />
         </View>
       );
     }
@@ -48,6 +59,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    borderRadius: 30,
   },
   item: {
     borderBottomColor: '#cccccc',
@@ -81,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoriesListScreen;
+export default withTheme(CategoriesListScreen);
