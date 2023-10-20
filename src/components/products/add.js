@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker';
-import { categories } from '../../data';
+// import { categories } from '../../data';
+import { connect } from 'react-redux';
 
 import CustomPicker from '../lib/customPicker'
+import { AddProduct } from '../../redux/actions'
 
 class ProductFormScreen extends Component {
     constructor(props) {
@@ -29,11 +31,13 @@ class ProductFormScreen extends Component {
     };
   
     saveProduct = () => {
-      const { productName, productImage } = this.state;
+      const { productName, productPrice, productCategory, productImage } = this.state;
       // Aquí puedes implementar la lógica para guardar la categoría en tu base de datos
       // o realizar alguna acción con los datos ingresados.
-      console.log('Category Name:', productName);
-      console.log('Category Image:', productImage);
+      this.props.AddProduct(productName, productPrice, productCategory, productImage);
+      this.props.navigation.navigate('Productos');
+      // console.log('Category Name:', productName);
+      // console.log('Category Image:', productImage);
     };
   
     render() {
@@ -59,7 +63,7 @@ class ProductFormScreen extends Component {
                 label="Selecciona una categoria"
                 value={productCategory}
                 onValueChange={(itemValue) => this.setState({ productCategory: itemValue })}
-                items={categories}
+                items={this.props.categories}
                 cLabel='name'
                 cValue='id'
             />
@@ -75,6 +79,7 @@ class ProductFormScreen extends Component {
       );
     }
   }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -104,4 +109,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductFormScreen;
+
+const mapStateToProps = state => ({
+  categories: state.categories
+});
+
+const mapDispatchToProps = {
+  AddProduct
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductFormScreen);

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker';
+import { connect } from 'react-redux';
+
+import { AddCategory } from '../../redux/actions'
 
 class CategoryFormScreen extends Component {
     constructor(props) {
@@ -27,8 +30,10 @@ class CategoryFormScreen extends Component {
       const { categoryName, categoryImage } = this.state;
       // Aquí puedes implementar la lógica para guardar la categoría en tu base de datos
       // o realizar alguna acción con los datos ingresados.
-      console.log('Category Name:', categoryName);
-      console.log('Category Image:', categoryImage);
+      this.props.AddCategory(categoryName, categoryImage);
+      this.props.navigation.navigate('Categorias');
+      // console.log('Category Name:', categoryName);
+      // console.log('Category Image:', categoryImage);
     };
   
     render() {
@@ -80,4 +85,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoryFormScreen;
+
+const mapDispatchToProps = {
+  AddCategory
+};
+
+export default connect(null, mapDispatchToProps)(CategoryFormScreen);

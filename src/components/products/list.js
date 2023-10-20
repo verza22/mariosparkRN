@@ -2,9 +2,9 @@
 import React, { Component  } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { List } from 'react-native-paper';
-import { categories, products } from '../../data';
 import { FAB } from 'react-native-paper';
 import { withTheme } from 'react-native-paper';
+import { connect } from 'react-redux';
 
 class ProductListScreen extends Component {
     constructor(props) {
@@ -17,8 +17,8 @@ class ProductListScreen extends Component {
     }
   
     getCategoryName(categoryId) {
-      let i = categories.findIndex(x => x.id === categoryId);
-      return i >= 0 ? categories[i].name : "";
+      let i = this.props.categories.findIndex(x => x.id === categoryId);
+      return i >= 0 ? this.props.categories[i].name : "";
     };
   
     renderFoodItem = ({ item }) => (
@@ -45,7 +45,7 @@ class ProductListScreen extends Component {
           <FlatList
             horizontal
             style={{ maxHeight: this.state.selectedCategory === null ? 100 : 75 }}
-            data={categories}
+            data={this.props.categories}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
@@ -57,7 +57,7 @@ class ProductListScreen extends Component {
             )}
           />
           <FlatList
-            data={this.state.selectedCategory ? products.filter(item => item.categoryId === this.state.selectedCategory) : products}
+            data={this.state.selectedCategory ? this.props.products.filter(item => item.categoryId === this.state.selectedCategory) : this.props.products}
             renderItem={this.renderFoodItem}
             keyExtractor={item => item.id.toString()}
           />
@@ -116,4 +116,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(ProductListScreen);
+const mapStateToProps = state => ({
+  categories: state.categories,
+  products: state.products
+});
+
+export default connect(mapStateToProps, null)(withTheme(ProductListScreen));

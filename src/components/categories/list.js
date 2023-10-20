@@ -1,9 +1,9 @@
 import React, { Component  } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { List } from 'react-native-paper';
-import { categories } from '../../data';
 import { FAB } from 'react-native-paper';
 import { withTheme } from 'react-native-paper';
+import { connect } from 'react-redux';
 
 class CategoriesListScreen extends Component {
     constructor(props) {
@@ -15,8 +15,8 @@ class CategoriesListScreen extends Component {
     }
   
     getCategoryName(categoryId) {
-      let i = categories.findIndex(x => x.id === categoryId);
-      return i >= 0 ? categories[i].name : "";
+      let i = this.props.categories.findIndex(x => x.id === categoryId);
+      return i >= 0 ? this.props.categories[i].name : "";
     };
   
     renderCategories = ({ item }) => (
@@ -40,7 +40,7 @@ class CategoriesListScreen extends Component {
       return (
         <View style={styles.container}>
           <FlatList
-            data={categories}
+            data={this.props.categories}
             renderItem={this.renderCategories}
             keyExtractor={item => item.id.toString()}
           />
@@ -99,4 +99,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(CategoriesListScreen);
+
+const mapStateToProps = state => ({
+  categories: state.categories,
+});
+
+export default connect(mapStateToProps, null)(withTheme(CategoriesListScreen));
