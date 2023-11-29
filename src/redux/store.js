@@ -3,15 +3,16 @@ import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from 'redux';
 
-// import reducer from './reducer';
 import customerReducer from './reducers/customer';
 import categoryReducer from './reducers/category';
 import productsReducer from './reducers/products';
+import usersReducer from './reducers/users';
 
 const rootReducer = combineReducers({
   categoryReducer,
   productsReducer,
-  customerReducer
+  customerReducer,
+  usersReducer
 });
 
 

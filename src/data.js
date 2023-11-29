@@ -44,3 +44,18 @@ export const products = [
     { id: 10, name: 'Customer 10', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
     // Agrega más clientes según sea necesario
   ];
+
+export const userType = {
+  ADMIN: 1,
+  CASHIER: 2,
+  WAITER: 3,
+  CHEF: 4
+}
+
+export const users = [
+  { id: 1, name: 'Admin PRO', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.ADMIN },
+  { id: 2, name: 'Jamil Caja', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CASHIER },
+  { id: 3, name: 'Mesero 1', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
+  { id: 4, name: 'Mesero 2', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
+  { id: 5, name: 'Chef Tito', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CHEF }
+]
