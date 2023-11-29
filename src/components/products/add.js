@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
 import CustomPicker from '../lib/customPicker'
-import { AddProduct } from '../../redux/actions'
+import { AddProduct } from '../../redux/actions/products'
 
 class ProductFormScreen extends Component {
     constructor(props) {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => ({
-  categories: state.categories
+  categories: state.categoryReducer.categories
 });
 
 const mapDispatchToProps = {

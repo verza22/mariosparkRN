@@ -1,14 +1,26 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import reducer from './reducer';
+import { combineReducers } from 'redux';
+
+// import reducer from './reducer';
+import customerReducer from './reducers/customer';
+import categoryReducer from './reducers/category';
+import productsReducer from './reducers/products';
+
+const rootReducer = combineReducers({
+  categoryReducer,
+  productsReducer,
+  customerReducer
+});
+
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
 };
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
@@ -19,5 +31,8 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
+
+// Limpia el estado persistido (por ejemplo, al cerrar sesión o al reiniciar la aplicación)
+// persistor.purge();
 
 export { store, persistor };

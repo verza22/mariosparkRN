@@ -4,7 +4,7 @@ import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert } from
 import { List, FAB, withTheme, Portal, Modal, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveProduct } from '../../redux/actions'
+import { RemoveProduct } from '../../redux/actions/products'
 
 class ProductListScreen extends Component {
     constructor(props) {
@@ -153,8 +153,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  categories: state.categories,
-  products: state.products
+  categories: state.categoryReducer.categories,
+  products: state.productsReducer.products
 });
 
 const mapDispatchToProps = {

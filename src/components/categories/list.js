@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveCategory } from '../../redux/actions'
+import { RemoveCategory } from '../../redux/actions/category'
 
 class CategoriesListScreen extends Component {
     constructor(props) {
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => ({
-  categories: state.categories,
+  categories: state.categoryReducer.categories,
 });
 
 const mapDispatchToProps = {

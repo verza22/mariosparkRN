@@ -5,7 +5,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
-import { UpdateCategory } from '../../redux/actions'
+import { UpdateCategory } from '../../redux/actions/category'
 
 class CategoryEditFormScreen extends Component {
     constructor(props) {

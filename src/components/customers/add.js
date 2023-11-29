@@ -5,7 +5,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
-import { AddCustomer } from '../../redux/actions'
+import { AddCustomer } from '../../redux/actions/customer'
 
 class CustomerFormScreen extends Component {
     constructor(props) {

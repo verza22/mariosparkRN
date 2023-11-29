@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveCustomer } from '../../redux/actions'
+import { RemoveCustomer } from '../../redux/actions/customer'
 
 class CustomersListScreen extends Component {
     constructor(props) {
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => ({
-  customers: state.customers,
+  customers: state.customerReducer.customers,
 });
 
 const mapDispatchToProps = {
