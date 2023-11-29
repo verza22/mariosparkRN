@@ -10,12 +10,15 @@ import ProductFormScreen from './products/add'
 import CategoryFormScreen from './categories/add'
 import CategoryEditFormScreen from './categories/edit'
 import ProductEditFormScreen from './products/edit'
+import CustomerListScreen from './customers/list'
+import CustomerEditFormScreen from './customers/edit'
+import CustomerFormScreen from './customers/add'
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home Screen</Text>
-      <Button title="Abrir Menú2" onPress={() => navigation.toggleDrawer()} />
+      <Button title="Abrir Menú" onPress={() => navigation.toggleDrawer()} />
     </View>
   );
 };
@@ -45,10 +48,13 @@ const App = (props) => {
         <Drawer.Screen name="Home" component={HomeScreen} options={getOption("Home")} />
         <Drawer.Screen name="Categorias" component={CategoriesListScreen} options={getOption("Categorías")} />
         <Drawer.Screen name="Productos" component={ProductListScreen} options={getOption("Productos")} />
+        <Drawer.Screen name="Customers" component={CustomerListScreen} options={getOption("Clientes")} />
         <Drawer.Screen name="AddProducto" component={ProductFormScreen} options={getOption("Añadir Producto", false)} />
         <Drawer.Screen name="EditProducto" component={ProductEditFormScreen} options={getOption("Editar Producto", false)} />
         <Drawer.Screen name="AddCategoria" component={CategoryFormScreen} options={getOption("Añadir Categoría", false)} />
         <Drawer.Screen name="EditCategoria" component={CategoryEditFormScreen} options={getOption("Editar Categoría", false)} />
+        <Drawer.Screen name="AddCustomer" component={CustomerFormScreen} options={getOption("Añadir Cliente", false)} />
+        <Drawer.Screen name="EditCustomer" component={CustomerEditFormScreen} options={getOption("Editar Cliente", false)} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

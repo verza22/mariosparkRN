@@ -1,11 +1,12 @@
 // reducer.js
-import { ADD_CATEGORY, ADD_PRODUCT, UPDATE_CATEGORY, UPDATE_PRODUCT, REMOVE_CATEGORY, REMOVE_PRODUCT } from './actions';
+import { ADD_CATEGORY, ADD_PRODUCT, UPDATE_CATEGORY, UPDATE_PRODUCT, REMOVE_CATEGORY, REMOVE_PRODUCT, REMOVE_CUSTOMER, UPDATE_CUSTOMER, ADD_CUSTOMER } from './actions';
 
-import { categories, products } from './../data';
+import { categories, products, customers } from './../data';
 
 const initialState = {
   categories: categories,
-  products: products
+  products: products,
+  customers: customers
 };
 
 function reducer(state = initialState, action) {
@@ -67,6 +68,44 @@ function reducer(state = initialState, action) {
         return {
           ...state,
           products: state.products.filter(x=> x.id !== action.id)
+        };
+      case REMOVE_CUSTOMER:
+        return {
+          ...state,
+          customers: state.customers.filter(x=> x.id !== action.id)
+        };
+      case UPDATE_CUSTOMER:
+        let customers = state.customers.map(customer => {
+          if (customer.id === action.id) {
+            return {
+              ...customer,
+              name: action.name,
+              dni: action.dni,
+              email: action.email,
+              phone: action.phone,
+              address: action.address
+            };
+          }
+          return customer;
+        });
+        return {
+          ...state,
+          customers: customers
+        };
+      case ADD_CUSTOMER:
+        let maxCId = Math.max.apply(Math, state.customers.map(x=> x.id));
+        return {
+          ...state,
+          customers: [...state.customers,
+            { 
+              id: maxCId+1, 
+              name: action.name,
+              dni: action.dni,
+              email: action.email,
+              phone: action.phone,
+              address: action.address 
+            }
+          ]
         };
     default:
       return state;

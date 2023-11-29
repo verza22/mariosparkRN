@@ -5,6 +5,9 @@ export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const REMOVE_CATEGORY = 'REMOVE_CATEGORY';
 export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
+export const REMOVE_CUSTOMER = 'REMOVE_CUSTOMER';
+export const UPDATE_CUSTOMER = 'UPDATE_CUSTOMER';
+export const ADD_CUSTOMER = 'ADD_CUSTOMER';
 
 export function AddCategory(name, image) {
   return {
@@ -55,5 +58,35 @@ export function RemoveProduct(id) {
   return {
     type: REMOVE_PRODUCT,
     id
+  };
+}
+
+export function RemoveCustomer(id) {
+  return {
+    type: REMOVE_CUSTOMER,
+    id
+  };
+}
+
+export function UpdateCustomer(id, name, dni, email, phone, address) {
+  return {
+    type: UPDATE_CUSTOMER,
+    id,
+    name,
+    dni,
+    email,
+    phone,
+    address
+  };
+}
+
+export function AddCustomer(name, dni, email, phone, address) {
+  return {
+    type: ADD_CUSTOMER,
+    name,
+    dni,
+    email,
+    phone,
+    address
   };
 }
