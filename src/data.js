@@ -53,7 +53,7 @@ export const userType = {
 }
 
 export const users = [
-  { id: 1, name: 'Admin PRO', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.ADMIN },
+  { id: 1, name: 'admin', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.ADMIN },
   { id: 2, name: 'Jamil Caja', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CASHIER },
   { id: 3, name: 'Mesero 1', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
   { id: 4, name: 'Mesero 2', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
