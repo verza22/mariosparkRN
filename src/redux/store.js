@@ -7,6 +7,7 @@ import customerReducer from './reducers/customer';
 import categoryReducer from './reducers/category';
 import productsReducer from './reducers/products';
 import usersReducer from './reducers/users';
+import ordersReducer from './reducers/orders';
 import appConfigReducer from './reducers/appConfig';
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   productsReducer,
   customerReducer,
   usersReducer,
+  ordersReducer,
   appConfigReducer
 });
 

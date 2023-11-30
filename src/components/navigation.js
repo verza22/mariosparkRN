@@ -18,6 +18,8 @@ import CustomerFormScreen from './customers/add'
 import UsersListScreen from './users/list'
 import UserEditFormScreen from './users/edit'
 import UserFormScreen from './users/add'
+import OrdersListScreen from './orders/list'
+
 import LoginScreen from './appConfig/login'
 import LogoutScreen from './appConfig/logout'
 
@@ -64,6 +66,7 @@ class App extends Component {
           this.props.isAuthenticated ? 
           <Drawer.Navigator initialRouteName="Home">
             <Drawer.Screen name="Home" component={HomeScreen} options={getOption("Home")} />
+            <Drawer.Screen name="Orders" component={OrdersListScreen} options={getOption("Ordenes")} />
             <Drawer.Screen name="Categorias" component={CategoriesListScreen} options={getOption("Categorías")} />
             <Drawer.Screen name="Productos" component={ProductListScreen} options={getOption("Productos")} />
             <Drawer.Screen name="Customers" component={CustomerListScreen} options={getOption("Clientes")} />

@@ -60,13 +60,13 @@ export const users = [
   { id: 5, name: 'Chef Tito', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CHEF }
 ]
 
-export const oderStatus = {
+export const orderStatus = {
   PENDIENTE: 1,
   ENTREGADO: 2,
   CANCELADO: 3
 }
 
-export const oders = [
+export const orders = [
   {
     id: 1,
     customer: {
