@@ -56,7 +56,7 @@ class CustomersListScreen extends Component {
               contentContainerStyle={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}
             >
               <View style={{ margin: 20 }}>
-                <Text>¿Estás seguro de que deseas eliminar esta cliente?</Text>
+                <Text>¿Estás seguro de que deseas eliminar este cliente?</Text>
                 <Button mode="contained" onPress={this.handleDelete} style={{ marginTop: 10 }}>
                   Confirmar Eliminación
                 </Button>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import {launchImageLibrary} from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
