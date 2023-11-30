@@ -16,7 +16,7 @@ class OrdersListScreen extends Component {
     }
 
     handlePress(item){
-    //   this.props.navigation.navigate('EditUser', { item });
+      this.props.navigation.navigate('ShowOrder', { item });
     };
 
     onLongPress(item){
