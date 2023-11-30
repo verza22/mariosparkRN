@@ -17,6 +17,7 @@ class ProductEditFormScreen extends Component {
       this.state = {
         productID: item.id,
         productName: item.name,
+        productDescription: item.description,
         productPrice: ""+item.price,
         productCategory: item.categoryId,
         productImage: item.image,
@@ -29,6 +30,7 @@ class ProductEditFormScreen extends Component {
             this.setState({
                 productID: item.id,
                 productName: item.name,
+                productDescription: item.description,
                 productPrice: ""+item.price,
                 productCategory: item.categoryId,
                 productImage: item.image,
@@ -48,8 +50,8 @@ class ProductEditFormScreen extends Component {
     };
   
     saveProduct = () => {
-      const { productID, productName, productPrice, productCategory, productImage } = this.state;
-      this.props.UpdateProduct(productID, productName, productPrice, productCategory, productImage);
+      const { productID, productName, productDescription, productPrice, productCategory, productImage } = this.state;
+      this.props.UpdateProduct(productID, productName, productDescription, productPrice, productCategory, productImage);
       this.props.navigation.navigate('Productos');
     };
 
@@ -67,7 +69,7 @@ class ProductEditFormScreen extends Component {
     }
   
     render() {
-      const { productName, productPrice, productCategory, productImage } = this.state;
+      const { productName, productDescription, productPrice, productCategory, productImage } = this.state;
   
       return (
         <View style={styles.container}>
@@ -92,6 +94,14 @@ class ProductEditFormScreen extends Component {
                 items={this.props.categories}
                 cLabel='name'
                 cValue='id'
+            />
+            <TextInput
+              label="Descripcion"
+              value={productDescription}
+              onChangeText={(text) => this.setState({ productDescription: text })}
+              multiline
+              numberOfLines={5} // Ajusta según sea necesario
+              style={styles.input}
             />
             <Button mode="outlined" onPress={this.pickImage} style={styles.imageButton}>
               Seleccionar Imagen del producto

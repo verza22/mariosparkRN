@@ -15,6 +15,7 @@ class ProductFormScreen extends Component {
 
       this.state = {
         productName: '',
+        productDescription: '',
         productPrice: 0,
         productCategory: null,
         productImage: null,
@@ -33,10 +34,10 @@ class ProductFormScreen extends Component {
     };
   
     saveProduct = () => {
-      const { productName, productPrice, productCategory, productImage } = this.state;
+      const { productName, productDescription, productPrice, productCategory, productImage } = this.state;
       // Aquí puedes implementar la lógica para guardar la categoría en tu base de datos
       // o realizar alguna acción con los datos ingresados.
-      this.props.AddProduct(productName, productPrice, productCategory, productImage);
+      this.props.AddProduct(productName, productDescription, productPrice, productCategory, productImage);
       this.props.navigation.navigate('Productos');
       // console.log('Category Name:', productName);
       // console.log('Category Image:', productImage);
@@ -56,7 +57,7 @@ class ProductFormScreen extends Component {
     }
   
     render() {
-      const { productName, productPrice, productCategory, productImage } = this.state;
+      const { productName, productDescription, productPrice, productCategory, productImage } = this.state;
   
       return (
         <View style={styles.container}>
@@ -81,6 +82,14 @@ class ProductFormScreen extends Component {
                 items={this.props.categories}
                 cLabel='name'
                 cValue='id'
+            />
+            <TextInput
+              label="Descripcion"
+              value={productDescription}
+              onChangeText={(text) => this.setState({ productDescription: text })}
+              multiline
+              numberOfLines={5} // Ajusta según sea necesario
+              style={styles.input}
             />
             <Button mode="outlined" onPress={this.pickImage} style={styles.imageButton}>
               Seleccionar Imagen del producto

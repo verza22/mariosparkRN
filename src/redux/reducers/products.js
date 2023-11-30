@@ -14,7 +14,7 @@ function reducer(state = initialState, action) {
         return {
           ...state,
           products: [...state.products,
-            { id: maxPId+1, name: action.name, price: action.price, categoryId: action.categoryId, image: action.image }
+            { id: maxPId+1, name: action.name, description: action.description, price: action.price, categoryId: action.categoryId, image: action.image }
           ]
         };
       case UPDATE_PRODUCT:
@@ -23,6 +23,7 @@ function reducer(state = initialState, action) {
             return {
               ...product,
               name: action.name,
+              description: action.description,
               price: action.price,
               categoryId: action.categoryId,
               image: action.image

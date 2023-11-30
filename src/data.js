@@ -13,21 +13,21 @@ export const categories = [
   ];
 
 export const products = [
-    { id: 1, name: 'Pizza Margherita 2', price: 10, categoryId: 1, image: 'https://picsum.photos/200/300?food=1' },
-    { id: 2, name: 'Sushi Combo', price: 20, categoryId: 2, image: 'https://picsum.photos/200/300?food=2' },
-    { id: 3, name: 'Chicken Tikka Masala', price: 15, categoryId: 3, image: 'https://picsum.photos/200/300?food=3' },
-    { id: 4, name: 'Burger and Fries', price: 12, categoryId: 4, image: 'https://picsum.photos/200/300?food=4' },
-    { id: 5, name: 'Pasta Carbonara', price: 14, categoryId: 5, image: 'https://picsum.photos/200/300?food=5' },
-    { id: 6, name: 'Veggie Stir Fry', price: 8, categoryId: 6, image: 'https://picsum.photos/200/300?food=6' },
-    { id: 7, name: 'Shrimp Scampi', price: 14, categoryId: 7, image: 'https://picsum.photos/200/300?food=7' },
-    { id: 8, name: 'Margarita Cocktail', price: 7, categoryId: 8, image: 'https://picsum.photos/200/300?food=8' },
-    { id: 9, name: 'Chocolate Brownie', price: 5, categoryId: 9, image: 'https://picsum.photos/200/300?food=9' },
-    { id: 10, name: 'Caesar Wrap', price: 9, categoryId: 10, image: 'https://picsum.photos/200/300?food=10' },
-    { id: 11, name: 'Shrimp Scampi', price: 14, categoryId: 7, image: 'https://picsum.photos/200/300?food=7' },
-    { id: 12, name: 'Margarita Cocktail', price: 7, categoryId: 8, image: 'https://picsum.photos/200/300?food=8' },
-    { id: 13, name: 'Chocolate Brownie', price: 5, categoryId: 9, image: 'https://picsum.photos/200/300?food=9' },
-    { id: 14, name: 'Caesar Wrap', price: 9, categoryId: 10, image: 'https://picsum.photos/200/300?food=10' },
-    { id: 30, name: 'Ice Cream Sundae', price: 6, categoryId: 9, image: 'https://picsum.photos/200/300?food=30' },
+    { id: 1, name: 'Pizza Margherita 2', description: "", price: 10, categoryId: 1, image: 'https://picsum.photos/200/300?food=1' },
+    { id: 2, name: 'Sushi Combo', description: "", price: 20, categoryId: 2, image: 'https://picsum.photos/200/300?food=2' },
+    { id: 3, name: 'Chicken Tikka Masala', description: "", price: 15, categoryId: 3, image: 'https://picsum.photos/200/300?food=3' },
+    { id: 4, name: 'Burger and Fries', description: "", price: 12, categoryId: 4, image: 'https://picsum.photos/200/300?food=4' },
+    { id: 5, name: 'Pasta Carbonara', description: "", price: 14, categoryId: 5, image: 'https://picsum.photos/200/300?food=5' },
+    { id: 6, name: 'Veggie Stir Fry', description: "", price: 8, categoryId: 6, image: 'https://picsum.photos/200/300?food=6' },
+    { id: 7, name: 'Shrimp Scampi', description: "", price: 14, categoryId: 7, image: 'https://picsum.photos/200/300?food=7' },
+    { id: 8, name: 'Margarita Cocktail', description: "", price: 7, categoryId: 8, image: 'https://picsum.photos/200/300?food=8' },
+    { id: 9, name: 'Chocolate Brownie', description: "", price: 5, categoryId: 9, image: 'https://picsum.photos/200/300?food=9' },
+    { id: 10, name: 'Caesar Wrap', description: "", price: 9, categoryId: 10, image: 'https://picsum.photos/200/300?food=10' },
+    { id: 11, name: 'Shrimp Scampi', description: "", price: 14, categoryId: 7, image: 'https://picsum.photos/200/300?food=7' },
+    { id: 12, name: 'Margarita Cocktail', description: "", price: 7, categoryId: 8, image: 'https://picsum.photos/200/300?food=8' },
+    { id: 13, name: 'Chocolate Brownie', description: "", price: 5, categoryId: 9, image: 'https://picsum.photos/200/300?food=9' },
+    { id: 14, name: 'Caesar Wrap', description: "", price: 9, categoryId: 10, image: 'https://picsum.photos/200/300?food=10' },
+    { id: 30, name: 'Ice Cream Sundae', description: "", price: 6, categoryId: 9, image: 'https://picsum.photos/200/300?food=30' },
     // ... Agrega más productos con categoryId según sea necesario
   ];
 
@@ -58,4 +58,39 @@ export const users = [
   { id: 3, name: 'Mesero 1', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
   { id: 4, name: 'Mesero 2', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
   { id: 5, name: 'Chef Tito', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CHEF }
+]
+
+export const oderStatus = {
+  PENDIENTE: 1,
+  ENTREGADO: 2,
+  CANCELADO: 3
+}
+
+export const oders = [
+  {
+    id: 1,
+    customer: {
+      id: 1,
+      dni: "0123456789",
+      name: "Customer 1", 
+      email: 'test@example.com', 
+      phone: '0994512345', 
+      address: 'NA'
+    },
+    date: "2023-01-01 00:00:00",
+    total: 20,
+    products: [
+      {
+        product: {
+          id: 1,
+          name: "Pizza Margherita 2",
+          description: "",
+          price: 10
+        },
+        quantity: 2
+      }
+    ],
+    paymentMethod: "Efectivo",
+    orderStatus: orderStatus.PENDIENTE
+  }
 ]
