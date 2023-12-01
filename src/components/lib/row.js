@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 
 class Row extends Component {
     render(){
-        return  <View style={styles.container}>
+        return <View style={styles.container} {...this.props}>
         <Text variant="bodyLarge" style={styles.boldText}>{this.props.name}</Text>
         <Text variant="bodyLarge" style={styles.rightAlignedText}>{this.props.children}</Text>
       </View>

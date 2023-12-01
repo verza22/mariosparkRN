@@ -33,10 +33,10 @@ class OrdersListScreen extends Component {
     );
 
     onPressFab() {
-    //   this.props.navigation.reset({
-    //       index: 0,
-    //       routes: [{ name: 'AddUser' }]
-    // })
+      this.props.navigation.reset({
+          index: 0,
+          routes: [{ name: 'OrderStep1' }]
+    })
     }
   
     render() {
