@@ -34,6 +34,7 @@ class UserFormScreen extends Component {
       ]
 
       this.state = {
+        username: '',
         name: '',
         type: '',
         password: ''
@@ -54,17 +55,23 @@ class UserFormScreen extends Component {
     }
   
     save = () => {
-      const { name, password, type } = this.state;
-      this.props.AddUser(name, password, type);
+      const { username, name, password, type } = this.state;
+      this.props.AddUser(username, name, password, type);
       this.props.navigation.navigate('Users');
     };
   
     render() {
-      const { name, password, type } = this.state;
+      const { username, name, password, type } = this.state;
   
       return (
         <View style={styles.container}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
+          <TextInput
+              label="Usuario"
+              value={username}
+              onChangeText={(text) => this.setState({ username: text })}
+              style={styles.input}
+            />
             <TextInput
               label="Nombre"
               value={name}

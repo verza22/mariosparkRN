@@ -36,6 +36,7 @@ class UserEditFormScreen extends Component {
 
       this.state = {
         id: item.id,
+        username: item.username,
         name: item.name,
         type: item.type,
         password: ''
@@ -47,6 +48,7 @@ class UserEditFormScreen extends Component {
             let item = this.props.route.params.item;
             this.setState({
                 id: item.id,
+                username: item.username,
                 name: item.name,
                 type: item.type,
                 password: ''
@@ -68,17 +70,23 @@ class UserEditFormScreen extends Component {
     }
   
     save = () => {
-      const { id, name, password, type } = this.state;
-      this.props.UpdateUser(id, name, password, type);
+      const { id, username, name, password, type } = this.state;
+      this.props.UpdateUser(id, username, name, password, type);
       this.props.navigation.navigate('Users');
     };
   
     render() {
-      const { name, password, type } = this.state;
+      const { username, name, password, type } = this.state;
   
       return (
         <View style={styles.container}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
+          <TextInput
+              label="Usuario"
+              value={username}
+              onChangeText={(text) => this.setState({ username: text })}
+              style={styles.input}
+            />
             <TextInput
               label="Nombre"
               value={name}

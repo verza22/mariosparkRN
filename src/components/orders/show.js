@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, ScrollView } from 'react-native';
-import { Text, withTheme } from 'react-native-paper';
+import { View, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { List, withTheme, Text } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
@@ -62,6 +62,15 @@ class OrderShowScreen extends Component {
         let i = this.props.users.findIndex(x=> x.id === userID);
         return i>=0 ? this.props.users[i].name : "";
     }
+
+    renderFoodItem = ({ item }) => (
+      <List.Item
+        title={item.name}
+        description={`Price: $${item.price}`}
+        style={styles.item}
+        right={() => <Text>Cantidad: {item.quantity}</Text>}
+      />
+    );
   
     render() {
   
@@ -89,14 +98,19 @@ class OrderShowScreen extends Component {
             <Row name="Cliente">
                 {this.state.customer.name}
             </Row>
+            <Row name="Productos"></Row>
           </ScrollView>
+            <FlatList
+            data={this.state.products}
+            renderItem={this.renderFoodItem}
+            keyExtractor={item => item.id.toString()}
+          />
         </View>
       );
     }
   }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#ffffff',
   },
   contentContainer: {
@@ -116,6 +130,14 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     marginBottom: 20,
+  },
+  item: {
+    borderBottomColor: '#cccccc',
+    borderBottomWidth: 1,
+    padding: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 

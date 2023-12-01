@@ -26,6 +26,7 @@ function reducer(state = initialState, action) {
           if (user.id === action.id) {
             return {
                 ...user,
+                user: action.user,
                 name: action.name,
                 password: password !== "" ? password : user.password,
                 type: action.userType
@@ -48,6 +49,7 @@ function reducer(state = initialState, action) {
           users: [...state.users,
             { 
                 id: maxId+1, 
+                user: action.user,
                 name: action.name,
                 password: password2,
                 type: action.userType

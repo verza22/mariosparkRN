@@ -53,11 +53,11 @@ export const userType = {
 }
 
 export const users = [
-  { id: 1, name: 'admin', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.ADMIN },
-  { id: 2, name: 'Jamil Caja', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CASHIER },
-  { id: 3, name: 'Mesero 1', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
-  { id: 4, name: 'Mesero 2', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
-  { id: 5, name: 'Chef Tito', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CHEF }
+  { id: 1, username: 'admin', name: 'administrador', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.ADMIN },
+  { id: 2, username: 'caja1', name: 'Jamil Caja', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CASHIER },
+  { id: 3, username: 'mesero1', name: 'Mesero 1', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
+  { id: 4, username: 'mesero2', name: 'Mesero 2', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
+  { id: 5, username: 'chef1', name: 'Chef Tito', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CHEF }
 ]
 
 export const orderStatus = {
@@ -86,12 +86,10 @@ export const orders = [
     },
     products: [
       {
-        product: {
-          id: 1,
-          name: "Pizza Margherita 2",
-          description: "",
-          price: 10
-        },
+        id: 1,
+        name: "Pizza Margherita 2",
+        description: "",
+        price: 10,
         quantity: 2
       }
     ]

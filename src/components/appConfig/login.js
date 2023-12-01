@@ -26,12 +26,9 @@ class LoginScreen extends Component {
         password = CryptoJS.SHA1(password).toString();
     }
 
-    let i = this.props.users.findIndex(x=> x.name === this.state.username && x.password === password);
+    let i = this.props.users.findIndex(x=> x.username === this.state.username && x.password === password);
     if(i>=0){
         this.props.Login(this.props.users[i]);
-        // setTimeout(()=>{
-        //     this.props.navigation.navigate('Home');
-        // },100)
     }else{
         Alert.alert('Usuario o contraseña incorrectos.');
     }

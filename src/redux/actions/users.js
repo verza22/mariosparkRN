@@ -10,19 +10,21 @@ export function RemoveUser(id) {
     };
   }
   
-  export function UpdateUser(id, name, password, userType) {
+  export function UpdateUser(id, user, name, password, userType) {
     return {
       type: UPDATE_USER,
       id,
+      user,
       name,
       password,
       userType
     };
   }
   
-  export function AddUser(name, password, userType) {
+  export function AddUser(user, name, password, userType) {
     return {
       type: ADD_USER,
+      user,
       name,
       password,
       userType
