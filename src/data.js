@@ -70,6 +70,7 @@ export const orders = [
   {
     id: 1,
     cashierID: 2,
+    tableNumber: 1,
     waiterID: 3,
     chefID: 5,
     total: 20,

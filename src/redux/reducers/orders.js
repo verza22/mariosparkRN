@@ -20,6 +20,7 @@ function reducer(state = initialState, action) {
               chefID: action.chefID,
               total: action.total,
               date: action.date,
+              tableNumber: action.tableNumber,
               paymentMethod: action.paymentMethod,
               orderStatus: action.orderStatus,
               customer: action.customer,

@@ -23,7 +23,8 @@ class OrderShowScreen extends Component {
         paymentMethod: item.paymentMethod,
         orderStatus: item.orderStatus,
         customer: item.customer,
-        products: item.products
+        products: item.products,
+        tableNumber: item.tableNumber
       };
     }
 
@@ -40,7 +41,8 @@ class OrderShowScreen extends Component {
                 paymentMethod: item.paymentMethod,
                 orderStatus: item.orderStatus,
                 customer: item.customer,
-                products: item.products
+                products: item.products,
+                tableNumber: item.tableNumber
             })
         }
     }
@@ -85,6 +87,9 @@ class OrderShowScreen extends Component {
             </Row>
             <Row name="Pago">
                 {this.state.paymentMethod}
+            </Row>
+            <Row name="Mesa">
+                {this.state.tableNumber}
             </Row>
             <Row name="Cajero">
                 {this.getUserName(this.state.cashierID)}

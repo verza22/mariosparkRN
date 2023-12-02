@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, ScrollView } from 'react-native';
-import { List, withTheme, FAB } from 'react-native-paper';
+import { TextInput, withTheme, FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 import moment from 'moment';
@@ -27,7 +27,8 @@ class OrderStep3Screen extends Component {
       this.state = {
         products: products,
         waiterID: null,
-        customer: null
+        customer: null,
+        tableNumber: null
       };
     }
     
@@ -89,7 +90,8 @@ class OrderStep3Screen extends Component {
           paymentMethod: "Efectivo",
           orderStatus: orderStatus.PENDIENTE,
           customer: this.state.customer,
-          products: this.state.products
+          products: this.state.products,
+          tableNumber: this.state.tableNumber
         };
 
         this.props.AddOrder(order);
@@ -114,6 +116,13 @@ class OrderStep3Screen extends Component {
                     onItemSelect={(user) => this.waiterSelect(user)}
                 />
             </RowVertical>
+            <TextInput
+                label="Numero de mesa"
+                value={this.state.tableNumber}
+                onChangeText={(text) => this.setState({ tableNumber: text })}
+                style={styles.input}
+                keyboardType="numeric"
+              />
             <FAB
                 style={{ ...styles.fab, backgroundColor: this.colors.primary }}
                 icon="check"
@@ -137,6 +146,9 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     borderRadius: 30,
+  },
+  input: {
+    marginBottom: 20,
   },
 });
 
