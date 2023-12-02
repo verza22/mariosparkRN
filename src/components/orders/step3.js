@@ -3,10 +3,13 @@ import { View, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { List, withTheme, FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
+import moment from 'moment';
 
 import RowVertical from './../lib/rowVertical'
 import SearchPicker from './../lib/searchPicker'
-import { userType } from './../../data'
+import { userType, orderStatus } from './../../data'
+
+import { AddOrder } from '../../redux/actions/orders'
 
 class OrderStep3Screen extends Component {
     constructor(props) {
@@ -26,6 +29,14 @@ class OrderStep3Screen extends Component {
         waiterID: null,
         customer: null
       };
+    }
+    
+    getTotal(products){
+      let total = 0;
+      products.forEach(p=>{
+        total +=  p.price * p.quantity;
+      });
+      return total;
     }
 
     componentDidUpdate(prevProps) {
@@ -50,11 +61,6 @@ class OrderStep3Screen extends Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPressHandler);
     }
 
-    getUserName(userID){
-        let i = this.props.users.findIndex(x=> x.id === userID);
-        return i>=0 ? this.props.users[i].name : "";
-    }
-
     waiterSelect(user){
         this.setState({waiterID: user.id})
     }
@@ -71,7 +77,23 @@ class OrderStep3Screen extends Component {
     }
 
     onPressFab(){
-        
+        let date = moment().format();
+        let total = this.getTotal(this.state.products);
+
+        let order = {
+          cashierID: this.props.userAuth.id,
+          waiterID: this.state.waiterID,
+          chefID: null,
+          total: total,
+          date: date,
+          paymentMethod: "Efectivo",
+          orderStatus: orderStatus.PENDIENTE,
+          customer: this.state.customer,
+          products: this.state.products
+        };
+
+        this.props.AddOrder(order);
+        this.props.navigation.navigate('Orders');
     }
   
     render() {
@@ -120,7 +142,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     customers: state.customerReducer.customers,
+    userAuth: state.appConfigReducer.user,
     users: state.usersReducer.users.filter(x=> x.type === userType.WAITER)
 });
 
-export default connect(mapStateToProps, null)(withTheme(OrderStep3Screen));
+const mapDispatchToProps = {
+  AddOrder
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(OrderStep3Screen));

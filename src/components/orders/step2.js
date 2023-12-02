@@ -19,19 +19,36 @@ class OrderStep2Screen extends Component {
       this.onPressFab = this.onPressFab.bind(this);
 
       let products = this.props.route.params.products;
+      products = this.getProducts(products);
+
+      let total = this.getTotal(products);
 
       this.state = {
-        products: this.getProducts(products)
+        products,
+        total
       };
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.route.params.products !== prevProps.route.params.products) {
+        if (this.props.route.params?.products && this.props.route.params?.products !== prevProps.route.params?.products) {
             let products = this.props.route.params.products;
+            products = this.getProducts(products);
+
+            let total = this.getTotal(products);
+
             this.setState({
-                products: this.getProducts(products)
+                products,
+                total
             })
         }
+    }
+
+    getTotal(products){
+      let total = 0;
+      products.forEach(p=>{
+        total +=  p.price * p.quantity;
+      });
+      return parseFloat(total).toFixed(2);
     }
 
     getProducts(products){
@@ -76,7 +93,8 @@ class OrderStep2Screen extends Component {
         let i = products.findIndex(x=> x.id === item.id);
         if(i>=0){
             products[i].quantity += 1; 
-            this.setState({products: products});
+            let total = this.getTotal(products);
+            this.setState({products, total});
         }
     }
 
@@ -88,7 +106,8 @@ class OrderStep2Screen extends Component {
             if(products[i].quantity < 1){
                 products = products.filter(x=> x.id !== item.id);
             }
-            this.setState({products: products});
+            let total = this.getTotal(products);
+            this.setState({products, total});
             if(products.length < 1){
                 this.props.navigation.navigate('OrderStep1', { clearProduct: true });
             }
@@ -98,7 +117,8 @@ class OrderStep2Screen extends Component {
     remove(item){
         let products = [...this.state.products];
         products = products.filter(x=> x.id !== item.id);
-        this.setState({products: products});
+        let total = this.getTotal(products);
+        this.setState({products, total});
         if(products.length < 1){
             this.props.navigation.navigate('OrderStep1', { clearProduct: true });
         }
@@ -114,7 +134,7 @@ class OrderStep2Screen extends Component {
         style={styles.item}
         description={() => 
             <View>
-                <Text>Precio: {item.price}</Text>
+                <Text>Precio: $ {item.price}</Text>
                 <Text>Cantidad: {item.quantity}</Text>
             </View>
         }
@@ -147,6 +167,7 @@ class OrderStep2Screen extends Component {
   
       return (
         <View style={styles.container}>
+          <Row name="Total" style={styles.row}>$ {this.state.total}</Row>
           <Row name="Productos" style={styles.row}></Row>
             <FlatList
             data={this.state.products}
@@ -178,7 +199,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between', 
-    marginLeft: 30, 
+    marginHorizontal: 30, 
     marginTop: 10
   },
   input: {
