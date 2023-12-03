@@ -28,11 +28,13 @@ import OrderStep3Screen from './orders/step3'
 import LoginScreen from './appConfig/login'
 import LogoutScreen from './appConfig/logout'
 
+import { userType } from './../data'
+
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home Screen</Text>
-      <Button title="Abrir Menú 12" onPress={() => navigation.toggleDrawer()} />
+      <Button title="Abrir Menú" onPress={() => navigation.toggleDrawer()} />
     </View>
   );
 };
@@ -64,6 +66,18 @@ class App extends Component {
       }
   }
 
+  checkAccess(category){
+    switch(category){
+      case 'product':
+      case 'category':
+        return this.props.authUser.type === userType.ADMIN;
+      case 'customer':
+        return this.props.authUser.type === userType.ADMIN || this.props.authUser.type === userType.CASHIER;
+      case 'user':
+        return this.props.authUser.type === userType.ADMIN || this.props.authUser.type === userType.CASHIER;
+    }
+  }
+
   render(){
     return (
       <NavigationContainer>
@@ -78,21 +92,41 @@ class App extends Component {
             <Drawer.Screen name="OrderStep2" component={OrderStep2Screen} options={this.getOption("Checkout", false)} />
             <Drawer.Screen name="OrderStep3" component={OrderStep3Screen} options={this.getOption("Cliente", false)} />
 
-            <Drawer.Screen name="Categorias" component={CategoriesListScreen} options={this.getOption("Categorías")} />
-            <Drawer.Screen name="AddCategoria" component={CategoryFormScreen} options={this.getOption("Añadir Categoría", false)} />
-            <Drawer.Screen name="EditCategoria" component={CategoryEditFormScreen} options={this.getOption("Editar Categoría", false)} />
+            {
+              this.checkAccess('category') && 
+              <>
+                <Drawer.Screen name="Categorias" component={CategoriesListScreen} options={this.getOption("Categorías")} />
+                <Drawer.Screen name="AddCategoria" component={CategoryFormScreen} options={this.getOption("Añadir Categoría", false)} />
+                <Drawer.Screen name="EditCategoria" component={CategoryEditFormScreen} options={this.getOption("Editar Categoría", false)} />
+              </>
+            }
 
-            <Drawer.Screen name="Productos" component={ProductListScreen} options={this.getOption("Productos")} />
-            <Drawer.Screen name="AddProducto" component={ProductFormScreen} options={this.getOption("Añadir Producto", false)} />
-            <Drawer.Screen name="EditProducto" component={ProductEditFormScreen} options={this.getOption("Editar Producto", false)} />
+            {
+              this.checkAccess('product') && 
+              <>
+                <Drawer.Screen name="Productos" component={ProductListScreen} options={this.getOption("Productos")} />
+                <Drawer.Screen name="AddProducto" component={ProductFormScreen} options={this.getOption("Añadir Producto", false)} />
+                <Drawer.Screen name="EditProducto" component={ProductEditFormScreen} options={this.getOption("Editar Producto", false)} />
+              </>
+            }
 
-            <Drawer.Screen name="Customers" component={CustomerListScreen} options={this.getOption("Clientes")} />
-            <Drawer.Screen name="AddCustomer" component={CustomerFormScreen} options={this.getOption("Añadir Cliente", false)} />
-            <Drawer.Screen name="EditCustomer" component={CustomerEditFormScreen} options={this.getOption("Editar Cliente", false)} />
+            {
+              this.checkAccess('customer') && 
+              <>
+                <Drawer.Screen name="Customers" component={CustomerListScreen} options={this.getOption("Clientes")} />
+                <Drawer.Screen name="AddCustomer" component={CustomerFormScreen} options={this.getOption("Añadir Cliente", false)} />
+                <Drawer.Screen name="EditCustomer" component={CustomerEditFormScreen} options={this.getOption("Editar Cliente", false)} />
+              </>
+            }
 
-            <Drawer.Screen name="Users" component={UsersListScreen} options={this.getOption("Usuarios")} />
-            <Drawer.Screen name="EditUser" component={UserEditFormScreen} options={this.getOption("Editar Usuario", false)} />
-            <Drawer.Screen name="AddUser" component={UserFormScreen} options={this.getOption("Añadir Usuario", false)} />
+            {
+              this.checkAccess('user') && 
+              <>
+                <Drawer.Screen name="Users" component={UsersListScreen} options={this.getOption("Usuarios")} />
+                <Drawer.Screen name="EditUser" component={UserEditFormScreen} options={this.getOption("Editar Usuario", false)} />
+                <Drawer.Screen name="AddUser" component={UserFormScreen} options={this.getOption("Añadir Usuario", false)} />
+              </>
+            }
 
             <Drawer.Screen name="Logout" component={LogoutScreen} options={this.getOption("Salir")} />
           </Drawer.Navigator> :
@@ -106,7 +140,8 @@ class App extends Component {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.appConfigReducer.isAuthenticated
+  isAuthenticated: state.appConfigReducer.isAuthenticated,
+  authUser: state.appConfigReducer.user
 });
 
 export default connect(mapStateToProps, null)(withTheme(App));

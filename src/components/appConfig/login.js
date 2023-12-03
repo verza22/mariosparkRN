@@ -4,8 +4,8 @@ import { TextInput, Button, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CryptoJS from "rn-crypto-js";
 
-
 import { Login } from '../../redux/actions/appConfig'
+import { userType } from './../../data'
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class LoginScreen extends Component {
         password = CryptoJS.SHA1(password).toString();
     }
 
-    let i = this.props.users.findIndex(x=> x.username === this.state.username && x.password === password);
+    let i = this.props.users.findIndex(x=> x.type !== userType.WAITER && x.username === this.state.username && x.password === password);
     if(i>=0){
         this.props.Login(this.props.users[i]);
     }else{

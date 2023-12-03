@@ -4,6 +4,7 @@ import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper
 import { connect } from 'react-redux';
 
 // import { RemoveUser } from '../../redux/actions/users'
+import { userType } from './../../data'
 
 class OrdersListScreen extends Component {
     constructor(props) {
@@ -47,12 +48,15 @@ class OrdersListScreen extends Component {
             renderItem={this.renderOrder}
             keyExtractor={item => item.id.toString()}
           />
-           <FAB
-            style={{ ...styles.fab, backgroundColor: this.colors.primary }}
-            icon="plus"
-            color="white"
-            onPress={this.onPressFab}
-        />
+          {
+            (this.props.authUser.type === userType.ADMIN || this.props.authUser.type === userType.CASHIER) &&
+            <FAB
+              style={{ ...styles.fab, backgroundColor: this.colors.primary }}
+              icon="plus"
+              color="white"
+              onPress={this.onPressFab}
+          />
+          }
         </View>
       );
     }
@@ -105,7 +109,8 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => ({
-    orders: state.ordersReducer.orders
+    orders: state.ordersReducer.orders,
+    authUser: state.appConfigReducer.user
 });
 
 // const mapDispatchToProps = {

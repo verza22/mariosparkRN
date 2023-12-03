@@ -14,7 +14,7 @@ class UserFormScreen extends Component {
 
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
 
-      this.typeList = [
+      this.typeList = props.authUser.type === userType.ADMIN ? [
         {
             id: userType.ADMIN,
             name: 'Admin'
@@ -31,6 +31,11 @@ class UserFormScreen extends Component {
             id: userType.CHEF,
             name: 'Cocinero'
         },
+      ] : [
+        {
+            id: userType.WAITER,
+            name: 'Mesero'
+        }
       ]
 
       this.state = {
@@ -126,9 +131,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => ({
+  authUser: state.appConfigReducer.user
+});
 
 const mapDispatchToProps = {
     AddUser
 };
 
-export default connect(null, mapDispatchToProps)(UserFormScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(UserFormScreen);
