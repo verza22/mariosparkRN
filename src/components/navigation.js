@@ -28,6 +28,10 @@ import OrderStep3Screen from './orders/step3'
 import LoginScreen from './appConfig/login'
 import LogoutScreen from './appConfig/logout'
 
+import HotelRoomListScreen from './hotelRooms/list'
+import HotelRoomFormScreen from './hotelRooms/add'
+import HotelRoomEditFormScreen from './hotelRooms/edit'
+
 import { userType } from './../data'
 
 const HomeScreen = ({ navigation }) => {
@@ -68,6 +72,7 @@ class App extends Component {
 
   checkAccess(category){
     switch(category){
+      case 'hotelRoom':
       case 'product':
       case 'category':
         return this.props.authUser.type === userType.ADMIN;
@@ -119,6 +124,15 @@ class App extends Component {
               </>
             }
 
+            {
+              this.checkAccess('hotelRoom') && 
+              <>
+                <Drawer.Screen name="HotelRooms" component={HotelRoomListScreen} options={this.getOption("Habitaciones")} />
+                <Drawer.Screen name="AddHotelRoom" component={HotelRoomFormScreen} options={this.getOption("Añadir Habitación", false)} />
+                <Drawer.Screen name="EditHotelRoom" component={HotelRoomEditFormScreen} options={this.getOption("Editar Habitación", false)} />
+              </>
+            }
+            
             {
               this.checkAccess('user') && 
               <>

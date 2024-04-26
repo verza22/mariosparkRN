@@ -9,6 +9,7 @@ import productsReducer from './reducers/products';
 import usersReducer from './reducers/users';
 import ordersReducer from './reducers/orders';
 import appConfigReducer from './reducers/appConfig';
+import hotelRoomReducer from './reducers/hotelRoom';
 
 const rootReducer = combineReducers({
   categoryReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   customerReducer,
   usersReducer,
   ordersReducer,
-  appConfigReducer
+  appConfigReducer,
+  hotelRoomReducer
 });
 
 
