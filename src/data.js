@@ -122,3 +122,28 @@ export const hotelRooms = [
   { id: 2, name: '2', capacity: 5, type: hotelRoomType.PLAYA },
   { id: 3, name: '3', capacity: 6, type: hotelRoomType.CEMENTO2 }
 ];
+
+export const hotelOrders = [
+  {
+    id: 1,
+    cashierID: 2,
+    total: 20,
+    dateIN: "2023-01-01 00:00:00",
+    dateOUT: "2023-01-03 00:00:00",
+    paymentMethod: "Efectivo",
+    people: 6,
+    room: {
+      id: 1,
+      name: '1',
+      type: hotelRoomType.CEMENTO,
+    },
+    customer: {
+      id: 1,
+      dni: "0123456789",
+      name: "Customer 1", 
+      email: 'test@example.com', 
+      phone: '0994512345', 
+      address: 'NA'
+    }
+  }
+];

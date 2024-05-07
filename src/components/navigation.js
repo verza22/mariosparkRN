@@ -32,6 +32,8 @@ import HotelRoomListScreen from './hotelRooms/list'
 import HotelRoomFormScreen from './hotelRooms/add'
 import HotelRoomEditFormScreen from './hotelRooms/edit'
 
+import HotelOrderListScreen from './hotelOrders/list'
+
 import { userType } from './../data'
 
 const HomeScreen = ({ navigation }) => {
@@ -130,6 +132,13 @@ class App extends Component {
                 <Drawer.Screen name="HotelRooms" component={HotelRoomListScreen} options={this.getOption("Habitaciones")} />
                 <Drawer.Screen name="AddHotelRoom" component={HotelRoomFormScreen} options={this.getOption("Añadir Habitación", false)} />
                 <Drawer.Screen name="EditHotelRoom" component={HotelRoomEditFormScreen} options={this.getOption("Editar Habitación", false)} />
+              </>
+            }
+
+            {
+              this.checkAccess('hotelRoom') && 
+              <>
+                <Drawer.Screen name="HotelOrders" component={HotelOrderListScreen} options={this.getOption("Hospedaje")} />
               </>
             }
             

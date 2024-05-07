@@ -3,7 +3,6 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-// import { RemoveUser } from '../../redux/actions/users'
 import { userType } from './../../data'
 
 class OrdersListScreen extends Component {

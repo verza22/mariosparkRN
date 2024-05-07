@@ -10,6 +10,7 @@ import usersReducer from './reducers/users';
 import ordersReducer from './reducers/orders';
 import appConfigReducer from './reducers/appConfig';
 import hotelRoomReducer from './reducers/hotelRoom';
+import hotelOrderReducer from './reducers/hotelOrders';
 
 const rootReducer = combineReducers({
   categoryReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   usersReducer,
   ordersReducer,
   appConfigReducer,
-  hotelRoomReducer
+  hotelRoomReducer,
+  hotelOrderReducer
 });
 
 
@@ -40,6 +42,6 @@ const store = configureStore({
 const persistor = persistStore(store);
 
 // Limpia el estado persistido (por ejemplo, al cerrar sesión o al reiniciar la aplicación)
-// persistor.purge();
+//persistor.purge();
 
 export { store, persistor };
