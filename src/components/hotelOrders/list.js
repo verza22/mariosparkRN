@@ -17,7 +17,7 @@ class HotelOrderListScreen extends Component {
     }
 
     handlePress(item){
-      this.props.navigation.navigate('HotelOrder', { item });
+      this.props.navigation.navigate('EditHotelOrder', { item });
     };
 
     onLongPress(item){

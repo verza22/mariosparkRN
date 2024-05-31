@@ -10,11 +10,11 @@ export function RemoveHotelOrder(id) {
     };
   }
   
-  export function UpdateHotelOrder(id,cashierID,total,dateIN,dateOUT,paymentMethod,people,room,customer) {
+  export function UpdateHotelOrder(id,userID,total,dateIN,dateOUT,paymentMethod,people,room,customer) {
     return {
       type: UPDATE_HOTEL_ORDER,
       id,
-      cashierID,
+      userID,
       total,
       dateIN,
       dateOUT,
@@ -25,10 +25,10 @@ export function RemoveHotelOrder(id) {
     };
   }
   
-  export function AddHotelOrder(cashierID,total,dateIN,dateOUT,paymentMethod,people,room,customer) {
+  export function AddHotelOrder(userID,total,dateIN,dateOUT,paymentMethod,people,room,customer) {
     return {
       type: ADD_HOTEL_ORDER,
-      cashierID,
+      userID,
       total,
       dateIN,
       dateOUT,

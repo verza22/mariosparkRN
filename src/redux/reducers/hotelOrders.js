@@ -19,7 +19,7 @@ function reducer(state = initialState, action) {
           if (order.id === action.id) {
             return {
                 ...order,
-                cashierID: action.cashierID,
+                userID: action.userID,
                 total: action.total,
                 dateIN: action.dateIN,
                 dateOUT: action.dateOUT,
@@ -42,7 +42,7 @@ function reducer(state = initialState, action) {
           hotelOrders: [...state.hotelOrders,
             { 
                 id: maxCId+1, 
-                cashierID: action.cashierID,
+                userID: action.userID,
                 total: action.total,
                 dateIN: action.dateIN,
                 dateOUT: action.dateOUT,

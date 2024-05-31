@@ -13,6 +13,7 @@ class SearchPicker extends React.Component {
   return (
         <View style={styles.container}>
           <SearchableDropdown
+           defaultIndex={this.props.defaultIndex}
             onItemSelect={(item) => {
                 this.props.onItemSelect(item);
                 this.setState({ text: item.name });
@@ -57,7 +58,8 @@ class SearchPicker extends React.Component {
 SearchPicker.defaultProps = {
     text: 'Buscar',
     items: [{id: 1, name: 'Prueba'}],
-    onItemSelect: () => {}
+    onItemSelect: () => {},
+    defaultIndex: null
  };
 
 const styles = StyleSheet.create({

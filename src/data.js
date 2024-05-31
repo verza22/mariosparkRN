@@ -126,7 +126,7 @@ export const hotelRooms = [
 export const hotelOrders = [
   {
     id: 1,
-    cashierID: 2,
+    userID: 2,
     total: 20,
     dateIN: "2023-01-01 00:00:00",
     dateOUT: "2023-01-03 00:00:00",
@@ -136,6 +136,7 @@ export const hotelOrders = [
       id: 1,
       name: '1',
       type: hotelRoomType.CEMENTO,
+      capacity: 4
     },
     customer: {
       id: 1,
