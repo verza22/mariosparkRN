@@ -6,6 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 
+import GlobalLoading from './lib/globalLoading';
+
 import CategoriesListScreen from './categories/list'
 import ProductListScreen from './products/list'
 import ProductFormScreen from './products/add'
@@ -161,6 +163,7 @@ class App extends Component {
             <Stack.Screen name="Login" component={LoginScreen} options={this.getOption("Login")} />
           </Stack.Navigator>
         }
+        <GlobalLoading/>
       </NavigationContainer>
     );
   }

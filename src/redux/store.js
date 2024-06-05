@@ -2,6 +2,7 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from 'redux';
+import promiseMiddleware from 'redux-promise-middleware';
 
 import customerReducer from './reducers/customer';
 import categoryReducer from './reducers/category';
@@ -11,6 +12,7 @@ import ordersReducer from './reducers/orders';
 import appConfigReducer from './reducers/appConfig';
 import hotelRoomReducer from './reducers/hotelRoom';
 import hotelOrderReducer from './reducers/hotelOrders';
+import dataRequestReducer from './reducers/dataRequest';
 
 const rootReducer = combineReducers({
   categoryReducer,
@@ -20,7 +22,8 @@ const rootReducer = combineReducers({
   ordersReducer,
   appConfigReducer,
   hotelRoomReducer,
-  hotelOrderReducer
+  hotelOrderReducer,
+  dataRequestReducer
 });
 
 
@@ -33,9 +36,10 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware({
     serializableCheck: false
-  }),
+  }).concat(promiseMiddleware),
   devTools: process.env.NODE_ENV !== 'production', // Habilita las Redux DevTools en entornos de desarrollo
 });
 
