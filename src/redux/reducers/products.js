@@ -1,5 +1,4 @@
-// reducer.js
-import { ADD_PRODUCT, UPDATE_PRODUCT, REMOVE_PRODUCT } from './../actions/products';
+import { GET_PRODUCTS, ADD_PRODUCT, UPDATE_PRODUCT, REMOVE_PRODUCT } from './../actions/products';
 
 import { products } from './../../data';
 
@@ -9,6 +8,19 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case GET_PRODUCTS:
+        return {
+          ...state,
+          products: action.products.map(x=>({
+            id: x.productId, 
+            name: x.name, 
+            description: x.description, 
+            price: x.price, 
+            categoryId: x.categoryId, 
+            image: x.image,
+            storeId: x.storeId
+          }))
+        };
       case ADD_PRODUCT:
         let maxPId = Math.max.apply(Math, state.products.map(x=> x.id));
         return {

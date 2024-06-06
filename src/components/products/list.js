@@ -4,7 +4,7 @@ import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert } from
 import { List, FAB, withTheme, Portal, Modal, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveProduct } from '../../redux/actions/products'
+import { RemoveProduct, GetProducts } from '../../redux/actions/products'
 
 class ProductListScreen extends Component {
     constructor(props) {
@@ -16,6 +16,11 @@ class ProductListScreen extends Component {
         modalVisible: false,
         productID: null
       };
+    }
+
+    componentDidMount(){
+      const needCategories = this.props.categories.length === 0;
+      this.props.GetProducts(this.props.token, this.props.defaultStoreID, this.state.selectedCategory, needCategories);
     }
   
     getCategoryName(categoryId) {
@@ -154,11 +159,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   categories: state.categoryReducer.categories,
-  products: state.productsReducer.products
+  products: state.productsReducer.products,
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
 const mapDispatchToProps = {
-  RemoveProduct
+  RemoveProduct,
+  GetProducts
 };
 
 
