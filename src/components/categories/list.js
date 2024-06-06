@@ -17,9 +17,7 @@ class CategoriesListScreen extends Component {
     }
 
     componentDidMount(){
-      if(this.props.categories.length === 0){
-        this.props.GetCategories(this.props.token, this.props.defaultStoreID);
-      }
+      this.props.GetCategories(this.props.token, this.props.defaultStoreID);
     }
   
     getCategoryName(categoryId) {
