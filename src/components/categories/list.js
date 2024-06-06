@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveCategory } from '../../redux/actions/category'
+import { RemoveCategory, GetCategories } from '../../redux/actions/category'
 
 class CategoriesListScreen extends Component {
     constructor(props) {
@@ -14,6 +14,12 @@ class CategoriesListScreen extends Component {
         modalVisible: false,
         categoryID: null
       };
+    }
+
+    componentDidMount(){
+      if(this.props.categories.length === 0){
+        this.props.GetCategories(this.props.token, this.props.defaultStoreID);
+      }
     }
   
     getCategoryName(categoryId) {
@@ -138,10 +144,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   categories: state.categoryReducer.categories,
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
 const mapDispatchToProps = {
-  RemoveCategory
+  RemoveCategory,
+  GetCategories
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CategoriesListScreen));

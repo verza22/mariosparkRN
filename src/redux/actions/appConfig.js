@@ -5,7 +5,7 @@ export const LOGOUT = 'LOGOUT';
 
 export function Login(userName, password) {
   return dispatch => {
-    axiosRequest(dispatch, 'auth/Login', { userName, password })
+    axiosRequest({dispatch, url: 'auth/Login', params: { userName, password }})
     .then(res=>{
       if(res.userId > 0){
         dispatch(DataSuccess());

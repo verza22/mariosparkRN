@@ -1,5 +1,4 @@
-// reducer.js
-import { ADD_CATEGORY, UPDATE_CATEGORY, REMOVE_CATEGORY } from './../actions/category';
+import { GET_CATEGORIES, ADD_CATEGORY, UPDATE_CATEGORY, REMOVE_CATEGORY } from './../actions/category';
 
 import { categories } from './../../data';
 
@@ -9,6 +8,16 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case GET_CATEGORIES:
+        return {
+          ...state,
+          categories: action.categories.map(x=>({
+            id: x.categoryId, 
+            name: x.name, 
+            image: x.image,
+            storeId: x.storeId
+          }))
+        };
       case ADD_CATEGORY:
         let maxId = Math.max.apply(Math, state.categories.map(x=> x.id));
         return {

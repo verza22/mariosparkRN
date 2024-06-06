@@ -3,6 +3,7 @@ import { LOGIN, LOGOUT } from './../actions/appConfig';
 const initialState = {
     isAuthenticated: false,
     token: null,
+    defaultStoreID: 0,
     user: null
 };
 
@@ -12,6 +13,7 @@ function reducer(state = initialState, action) {
         return {
             isAuthenticated: true,
             token: action.user.token,
+            defaultStoreID: action.user.defaultStoreID,
             user: {
               id: action.user.userId,
               username: action.user.username,
@@ -24,6 +26,7 @@ function reducer(state = initialState, action) {
         return {
             isAuthenticated: false,
             token: null,
+            defaultStoreID: 0,
             user: null
         };
     default:

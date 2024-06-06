@@ -1,16 +1,4 @@
-export const categories = [
-    { id: 1, name: 'Pizza 1', image: 'https://via.placeholder.com/50' },
-    { id: 2, name: 'Sushi', image: 'https://via.placeholder.com/50' },
-    { id: 3, name: 'Indian', image: 'https://via.placeholder.com/50' },
-    { id: 4, name: 'Burgers', image: 'https://via.placeholder.com/50' },
-    { id: 5, name: 'Pasta', image: 'https://via.placeholder.com/50' },
-    { id: 6, name: 'Asian', image: 'https://via.placeholder.com/50' },
-    { id: 7, name: 'Seafood', image: 'https://via.placeholder.com/50' },
-    { id: 8, name: 'Drinks', image: 'https://via.placeholder.com/50' },
-    { id: 9, name: 'Desserts', image: 'https://via.placeholder.com/50' },
-    { id: 10, name: 'Wraps', image: 'https://via.placeholder.com/50' },
-    // Agrega más categorías según sea necesario
-  ];
+export const categories = [];
 
 export const products = [
     { id: 1, name: 'Pizza Margherita 2', description: "", price: 10, categoryId: 1, image: 'https://picsum.photos/200/300?food=1' },
