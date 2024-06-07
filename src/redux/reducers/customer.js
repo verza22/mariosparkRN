@@ -1,9 +1,7 @@
 import { GET_CUSTOMERS, REMOVE_CUSTOMER, UPDATE_CUSTOMER, ADD_CUSTOMER } from './../actions/customer';
 
-import { customers } from './../../data';
-
 const initialState = {
-  customers: customers
+  customers: []
 };
 
 function reducer(state = initialState, action) {

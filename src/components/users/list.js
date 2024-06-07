@@ -4,7 +4,6 @@ import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper
 import { connect } from 'react-redux';
 
 import { RemoveUser, GetUsers } from '../../redux/actions/users'
-import { userType } from './../../data'
 
 class UsersListScreen extends Component {
     constructor(props) {
@@ -132,11 +131,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   let authUser = state.appConfigReducer.user;
+  const userType = state.appConfigReducer.userType;
   return {
     authUser,
     token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID,
-    users: authUser.type === userType.ADMIN ? state.usersReducer.users : state.usersReducer.users.filter(c=> c.type === userType.WAITER)
+    users: authUser.type === userType["ADMIN"] ? state.usersReducer.users : state.usersReducer.users.filter(c=> c.type === userType["WAITER"])
   }
 };
 

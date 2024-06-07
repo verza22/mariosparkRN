@@ -1,31 +1,31 @@
-export const categories = [];
+// export const categories = [];
 
-export const products = [];
+// export const products = [];
 
-export const customers = [];
+// export const customers = [];
 
-export const userType = {
-  ADMIN: 1,
-  CASHIER: 2,
-  WAITER: 3,
-  CHEF: 4
-}
+// export const userType = {
+//   ADMIN: 1,
+//   CASHIER: 2,
+//   WAITER: 3,
+//   CHEF: 4
+// }
 
-export const users = []
+// export const users = []
 
-export const orderStatus = {
-  PENDIENTE: 1,
-  ENTREGADO: 2,
-  CANCELADO: 3
-}
+// export const orderStatus = {
+//   PENDIENTE: 1,
+//   ENTREGADO: 2,
+//   CANCELADO: 3
+// }
 
-export const orders = []
+// export const orders = []
 
-export const hotelOrderType = {
-  RESERVADO: 1,
-  HOSPEDADO: 2,
-  TERMINADO: 3
-}
+// export const hotelOrderType = {
+//   RESERVADO: 1,
+//   HOSPEDADO: 2,
+//   TERMINADO: 3
+// }
 
 export const hotelRoomType = {
   PLAYA: 'Playa',
@@ -41,6 +41,6 @@ export const hotelRoomTypes = [
   { id: hotelRoomType.CABANA, name: hotelRoomType.CABANA }
 ]
 
-export const hotelRooms = [];
+// export const hotelRooms = [];
 
-export const hotelOrders = [];
+// export const hotelOrders = [];

@@ -1,9 +1,9 @@
 import { GET_HOTEL_ROOMS, REMOVE_HOTEL_ROOM, UPDATE_HOTEL_ROOM, ADD_HOTEL_ROOM } from './../actions/hotelRoom';
 
-import { hotelRooms, hotelRoomTypes } from './../../data';
+import { hotelRoomTypes } from './../../data';
 
 const initialState = {
-    hotelRooms: hotelRooms,
+    hotelRooms: [],
     hotelRoomTypes: hotelRoomTypes
 };
 

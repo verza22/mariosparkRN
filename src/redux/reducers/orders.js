@@ -1,9 +1,7 @@
 import { GET_ORDERS, ADD_ORDER } from './../actions/orders';
 
-import { orders } from './../../data';
-
 const initialState = {
-    orders: orders
+    orders: []
 };
 
 function reducer(state = initialState, action) {

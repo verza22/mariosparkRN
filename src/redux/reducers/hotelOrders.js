@@ -1,9 +1,7 @@
 import { GET_HOTEL_ORDERS, REMOVE_HOTEL_ORDER, UPDATE_HOTEL_ORDER, ADD_HOTEL_ORDER } from './../actions/hotelOrders';
 
-import { hotelOrders } from './../../data';
-
 const initialState = {
-    hotelOrders: hotelOrders
+    hotelOrders: []
 };
 
 function reducer(state = initialState, action) {

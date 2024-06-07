@@ -6,7 +6,6 @@ import { BackHandler } from 'react-native';
 import CustomPicker from '../lib/customPicker'
 
 import { UpdateUser } from '../../redux/actions/users'
-import { userType } from './../../data'
 
 class UserEditFormScreen extends Component {
     constructor(props) {
@@ -15,24 +14,7 @@ class UserEditFormScreen extends Component {
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
       let item = this.props.route.params.item;
 
-      this.typeList = [
-        {
-            id: userType.ADMIN,
-            name: 'Admin'
-        },
-        {
-            id: userType.CASHIER,
-            name: 'Cajero'
-        },
-        {
-            id: userType.WAITER,
-            name: 'Mesero'
-        },
-        {
-            id: userType.CHEF,
-            name: 'Cocinero'
-        },
-      ]
+      this.typeList = this.props.userTypeList;
 
       this.state = {
         id: item.id,
@@ -141,9 +123,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => ({
+  userTypeList: state.appConfigReducer.userTypeList
+});
 
 const mapDispatchToProps = {
     UpdateUser
 };
 
-export default connect(null, mapDispatchToProps)(UserEditFormScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(UserEditFormScreen);

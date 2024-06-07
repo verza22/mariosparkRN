@@ -6,7 +6,6 @@ import { BackHandler } from 'react-native';
 import CustomPicker from '../lib/customPicker'
 
 import { AddUser } from '../../redux/actions/users'
-import { userType } from './../../data'
 
 class UserFormScreen extends Component {
     constructor(props) {
@@ -14,29 +13,7 @@ class UserFormScreen extends Component {
 
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
 
-      this.typeList = props.authUser.type === userType.ADMIN ? [
-        {
-            id: userType.ADMIN,
-            name: 'Admin'
-        },
-        {
-            id: userType.CASHIER,
-            name: 'Cajero'
-        },
-        {
-            id: userType.WAITER,
-            name: 'Mesero'
-        },
-        {
-            id: userType.CHEF,
-            name: 'Cocinero'
-        },
-      ] : [
-        {
-            id: userType.WAITER,
-            name: 'Mesero'
-        }
-      ]
+      this.typeList = props.authUser.type === this.props.userType["ADMIN"] ? this.props.userTypeList : this.props.userTypeList.filter(x=> x.name === "WAITER")
 
       this.state = {
         username: '',
@@ -132,7 +109,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  authUser: state.appConfigReducer.user
+  authUser: state.appConfigReducer.user,
+  userTypeList: state.appConfigReducer.userTypeList,
+  userType: state.appConfigReducer.userType
 });
 
 const mapDispatchToProps = {

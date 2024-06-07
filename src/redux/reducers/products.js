@@ -1,9 +1,7 @@
 import { GET_PRODUCTS, ADD_PRODUCT, UPDATE_PRODUCT, REMOVE_PRODUCT } from './../actions/products';
 
-import { products } from './../../data';
-
 const initialState = {
-  products: products
+  products: []
 };
 
 function reducer(state = initialState, action) {

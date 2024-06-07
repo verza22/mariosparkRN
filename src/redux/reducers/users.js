@@ -1,12 +1,10 @@
 import { GET_USERS, REMOVE_USER, UPDATE_USER, ADD_USER } from './../actions/users';
 
-import { users } from './../../data';
-
 import CryptoJS from "rn-crypto-js";
 
 
 const initialState = {
-    users: users
+    users: []
 };
 
 function reducer(state = initialState, action) {

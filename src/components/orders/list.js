@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 
 import { GetOrders } from '../../redux/actions/orders'
 
-import { userType } from './../../data'
-
 class OrdersListScreen extends Component {
     constructor(props) {
       super(props);
@@ -54,7 +52,7 @@ class OrdersListScreen extends Component {
             keyExtractor={item => item.id.toString()}
           />
           {
-            (this.props.authUser.type === userType.ADMIN || this.props.authUser.type === userType.CASHIER) &&
+            (this.props.authUser.type === this.props.userType["ADMIN"] || this.props.authUser.type === this.props.userType["CASHIER"]) &&
             <FAB
               style={{ ...styles.fab, backgroundColor: this.colors.primary }}
               icon="plus"
@@ -116,6 +114,7 @@ const mapStateToProps = state => ({
     authUser: state.appConfigReducer.user,
     token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID,
+    userType: state.appConfigReducer.userType
 });
 
 const mapDispatchToProps = {

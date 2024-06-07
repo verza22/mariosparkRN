@@ -38,8 +38,6 @@ import HotelOrderListScreen from './hotelOrders/list'
 import HotelOrderFormScreen from './hotelOrders/add'
 import HotelOrderEditFormScreen from './hotelOrders/edit'
 
-import { userType } from './../data'
-
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -81,11 +79,11 @@ class App extends Component {
       case 'hotelRoom':
       case 'product':
       case 'category':
-        return this.props.authUser.type === userType.ADMIN;
+        return this.props.authUser.type === this.props.userType["ADMIN"];
       case 'customer':
-        return this.props.authUser.type === userType.ADMIN || this.props.authUser.type === userType.CASHIER;
+        return this.props.authUser.type === this.props.userType["ADMIN"] || this.props.authUser.type === this.props.userType["CASHIER"];
       case 'user':
-        return this.props.authUser.type === userType.ADMIN || this.props.authUser.type === userType.CASHIER;
+        return this.props.authUser.type === this.props.userType["ADMIN"] || this.props.authUser.type === this.props.userType["CASHIER"];
     }
   }
 
@@ -171,7 +169,8 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.appConfigReducer.isAuthenticated,
-  authUser: state.appConfigReducer.user
+  authUser: state.appConfigReducer.user,
+  userType: state.appConfigReducer.userType
 });
 
 export default connect(mapStateToProps, null)(withTheme(App));

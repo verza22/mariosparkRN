@@ -1,9 +1,7 @@
 import { GET_CATEGORIES, ADD_CATEGORY, UPDATE_CATEGORY, REMOVE_CATEGORY } from './../actions/category';
 
-import { categories } from './../../data';
-
 const initialState = {
-  categories: categories
+  categories: []
 };
 
 function reducer(state = initialState, action) {

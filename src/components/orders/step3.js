@@ -7,7 +7,6 @@ import moment from 'moment';
 
 import RowVertical from './../lib/rowVertical'
 import SearchPicker from './../lib/searchPicker'
-import { userType, orderStatus } from './../../data'
 
 import { AddOrder } from '../../redux/actions/orders'
 
@@ -88,7 +87,7 @@ class OrderStep3Screen extends Component {
           total: total,
           date: date,
           paymentMethod: "Efectivo",
-          orderStatus: orderStatus.PENDIENTE,
+          orderStatus: this.props.orderStatus["PENDIENTE"],
           customer: this.state.customer,
           products: this.state.products,
           tableNumber: this.state.tableNumber
@@ -152,11 +151,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => {
+  const userType = state.appConfigReducer.userType;
+  return {
     customers: state.customerReducer.customers,
     userAuth: state.appConfigReducer.user,
-    users: state.usersReducer.users.filter(x=> x.type === userType.WAITER)
-});
+    orderStatus: state.appConfigReducer.orderStatus,
+    users: state.usersReducer.users.filter(x=> x.type === userType["WAITER"])
+  }
+};
 
 const mapDispatchToProps = {
   AddOrder

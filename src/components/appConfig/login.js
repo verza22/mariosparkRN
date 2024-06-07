@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import CryptoJS from "rn-crypto-js";
 
 import { Login } from '../../redux/actions/appConfig'
-import { userType } from './../../data'
 
 class LoginScreen extends Component {
   constructor(props) {
