@@ -2,19 +2,7 @@ export const categories = [];
 
 export const products = [];
 
-  export const customers = [
-    { id: 1, name: 'Customer 1', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 2, name: 'Customer 2', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 3, name: 'Customer 3', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 4, name: 'Customer 4', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 5, name: 'Customer 5', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 6, name: 'Customer 6', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 7, name: 'Customer 7', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 8, name: 'Customer 8', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 9, name: 'Customer 9', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    { id: 10, name: 'Customer 10', dni: '0123456789', email: 'test@example.com', phone: '0994512345', address: 'NA' },
-    // Agrega más clientes según sea necesario
-  ];
+export const customers = [];
 
 export const userType = {
   ADMIN: 1,

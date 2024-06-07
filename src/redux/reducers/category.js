@@ -11,12 +11,7 @@ function reducer(state = initialState, action) {
     case GET_CATEGORIES:
         return {
           ...state,
-          categories: action.categories.map(x=>({
-            id: x.categoryId, 
-            name: x.name, 
-            image: x.image,
-            storeId: x.storeId
-          }))
+          categories: action.categories
         };
       case ADD_CATEGORY:
         let maxId = Math.max.apply(Math, state.categories.map(x=> x.id));

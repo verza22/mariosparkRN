@@ -1,7 +1,32 @@
+import { DataSuccess, DataFailure, axiosRequest } from './dataRequest';
+
+export const GET_CUSTOMERS = 'GET_CUSTOMERS';
 export const REMOVE_CUSTOMER = 'REMOVE_CUSTOMER';
 export const UPDATE_CUSTOMER = 'UPDATE_CUSTOMER';
 export const ADD_CUSTOMER = 'ADD_CUSTOMER';
 
+export function GetCustomers(token, storeID) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'customer/getCustomers',
+      token,
+      params: {
+        storeID
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res.length > 0){
+        dispatch({
+          type: GET_CUSTOMERS,
+          customers: res
+        });
+      }
+    })
+  }
+}
 
 export function RemoveCustomer(id) {
     return {

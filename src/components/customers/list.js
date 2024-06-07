@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveCustomer } from '../../redux/actions/customer'
+import { RemoveCustomer, GetCustomers } from '../../redux/actions/customer'
 
 class CustomersListScreen extends Component {
     constructor(props) {
@@ -14,6 +14,10 @@ class CustomersListScreen extends Component {
         modalVisible: false,
         customerID: null
       };
+    }
+
+    componentDidMount(){
+      this.props.GetCustomers(this.props.token, this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -126,10 +130,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   customers: state.customerReducer.customers,
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
 const mapDispatchToProps = {
-    RemoveCustomer
+    RemoveCustomer,
+    GetCustomers
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CustomersListScreen));

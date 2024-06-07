@@ -1,5 +1,4 @@
-// reducer.js
-import { REMOVE_CUSTOMER, UPDATE_CUSTOMER, ADD_CUSTOMER } from './../actions/customer';
+import { GET_CUSTOMERS, REMOVE_CUSTOMER, UPDATE_CUSTOMER, ADD_CUSTOMER } from './../actions/customer';
 
 import { customers } from './../../data';
 
@@ -9,6 +8,11 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case GET_CUSTOMERS:
+        return {
+          ...state,
+          customers: action.customers
+        };
       case REMOVE_CUSTOMER:
         return {
           ...state,
