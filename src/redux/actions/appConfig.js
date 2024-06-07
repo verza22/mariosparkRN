@@ -8,6 +8,7 @@ export function Login(userName, password) {
   return dispatch => {
     axiosRequest({dispatch, url: 'auth/Login', params: { userName, password }})
     .then(res=>{
+      console.log(res.user)
       if(res.user.id > 0){
         dispatch(DataSuccess());
 
@@ -19,6 +20,7 @@ export function Login(userName, password) {
           type: LOGIN,
           user: res.user,
           token: res.token,
+          hotelRoomTypes: res.hotelRoomTypeList,
           userTypeList: res.userTypes,
           userType,
           orderStatus,

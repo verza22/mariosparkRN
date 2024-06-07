@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    hotelRoomTypes: state.hotelRoomReducer.hotelRoomTypes,
+    hotelRoomTypes: state.appConfigReducer.hotelRoomTypes
 });
 
 const mapDispatchToProps = {

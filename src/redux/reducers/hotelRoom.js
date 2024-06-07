@@ -1,10 +1,8 @@
 import { GET_HOTEL_ROOMS, REMOVE_HOTEL_ROOM, UPDATE_HOTEL_ROOM, ADD_HOTEL_ROOM } from './../actions/hotelRoom';
 
-import { hotelRoomTypes } from './../../data';
 
 const initialState = {
-    hotelRooms: [],
-    hotelRoomTypes: hotelRoomTypes
+    hotelRooms: []
 };
 
 function reducer(state = initialState, action) {
