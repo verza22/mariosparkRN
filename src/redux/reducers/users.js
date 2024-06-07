@@ -1,5 +1,4 @@
-// reducer.js
-import { REMOVE_USER, UPDATE_USER, ADD_USER } from './../actions/users';
+import { GET_USERS, REMOVE_USER, UPDATE_USER, ADD_USER } from './../actions/users';
 
 import { users } from './../../data';
 
@@ -12,6 +11,11 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case GET_USERS:
+        return {
+          ...state,
+          users: action.users
+        };
       case REMOVE_USER:
         return {
           ...state,

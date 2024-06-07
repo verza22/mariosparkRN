@@ -7,11 +7,12 @@ export function Login(userName, password) {
   return dispatch => {
     axiosRequest({dispatch, url: 'auth/Login', params: { userName, password }})
     .then(res=>{
-      if(res.userId > 0){
+      if(res.user.id > 0){
         dispatch(DataSuccess());
         dispatch({
           type: LOGIN,
-          user: res
+          user: res.user,
+          token: res.token
         });
       }else{
         dispatch(DataFailure("Usuario o contraseña incorrecto"));

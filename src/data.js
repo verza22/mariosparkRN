@@ -11,13 +11,7 @@ export const userType = {
   CHEF: 4
 }
 
-export const users = [
-  { id: 1, username: 'admin', name: 'administrador', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.ADMIN },
-  { id: 2, username: 'caja1', name: 'Jamil Caja', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CASHIER },
-  { id: 3, username: 'mesero1', name: 'Mesero 1', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
-  { id: 4, username: 'mesero2', name: 'Mesero 2', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.WAITER },
-  { id: 5, username: 'chef1', name: 'Chef Tito', password: '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', type: userType.CHEF }
-]
+export const users = []
 
 export const orderStatus = {
   PENDIENTE: 1,

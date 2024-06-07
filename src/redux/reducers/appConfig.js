@@ -12,13 +12,12 @@ function reducer(state = initialState, action) {
       case LOGIN:
         return {
             isAuthenticated: true,
-            token: action.user.token,
+            token: action.token,
             defaultStoreID: action.user.defaultStoreID,
             user: {
-              id: action.user.userId,
+              id: action.user.id,
               username: action.user.username,
               name: action.user.name,
-              ownerId: action.user.ownerId,
               type: action.user.userTypeId
             }
         };

@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveUser } from '../../redux/actions/users'
+import { RemoveUser, GetUsers } from '../../redux/actions/users'
 import { userType } from './../../data'
 
 class UsersListScreen extends Component {
@@ -15,6 +15,10 @@ class UsersListScreen extends Component {
         modalVisible: false,
         userID: null
       };
+    }
+
+    componentDidMount(){
+      this.props.GetUsers(this.props.token, this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -130,12 +134,15 @@ const mapStateToProps = state => {
   let authUser = state.appConfigReducer.user;
   return {
     authUser,
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID,
     users: authUser.type === userType.ADMIN ? state.usersReducer.users : state.usersReducer.users.filter(c=> c.type === userType.WAITER)
   }
 };
 
 const mapDispatchToProps = {
-    RemoveUser
+    RemoveUser,
+    GetUsers
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(UsersListScreen));
