@@ -5,6 +5,8 @@ import { List, FAB, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
+import { GetProducts } from '../../redux/actions/products'
+
 class OrderStep1Screen extends Component {
     constructor(props) {
       super(props);
@@ -28,6 +30,10 @@ class OrderStep1Screen extends Component {
 
     componentDidMount(){
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPressHandler);
+
+        if(this.props.products.length === 0){
+          this.props.GetProducts(this.props.token, this.props.defaultStoreID, 0, true);
+        }
     }
 
     componentWillUnmount(){
@@ -154,7 +160,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   categories: state.categoryReducer.categories,
-  products: state.productsReducer.products
+  products: state.productsReducer.products,
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
-export default connect(mapStateToProps, null)(withTheme(OrderStep1Screen));
+const mapDispatchToProps = {
+  GetProducts
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(OrderStep1Screen));

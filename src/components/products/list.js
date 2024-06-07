@@ -20,7 +20,7 @@ class ProductListScreen extends Component {
 
     componentDidMount(){
       const needCategories = this.props.categories.length === 0;
-      this.props.GetProducts(this.props.token, this.props.defaultStoreID, this.state.selectedCategory, needCategories);
+      this.props.GetProducts(this.props.token, this.props.defaultStoreID, 0, needCategories);
     }
   
     getCategoryName(categoryId) {

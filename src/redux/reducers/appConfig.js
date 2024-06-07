@@ -28,7 +28,7 @@ function reducer(state = initialState, action) {
               id: action.user.id,
               username: action.user.username,
               name: action.user.name,
-              type: action.user.userTypeId
+              type: action.user.type
             }
         };
       case LOGOUT:

@@ -14,7 +14,8 @@ class HotelRoomEditFormScreen extends Component {
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
       let item = this.props.route.params.item;
 
-      console.log(JSON.stringify(item))
+      console.log(item)
+      console.log(this.props.hotelRoomTypes)
 
       this.state = {
         id: item.id,

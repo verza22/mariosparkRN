@@ -4,6 +4,8 @@ import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper
 import { connect } from 'react-redux';
 
 import { RemoveHotelOrder, GetHotelOrders } from '../../redux/actions/hotelOrders'
+import { GetCustomers } from '../../redux/actions/customer'
+import { GetHotelRooms } from '../../redux/actions/hotelRoom'
 
 class HotelOrderListScreen extends Component {
     constructor(props) {
@@ -18,6 +20,12 @@ class HotelOrderListScreen extends Component {
 
     componentDidMount(){
       this.props.GetHotelOrders(this.props.token, this.props.defaultStoreID);
+
+      if(this.props.customers.length === 0)
+        this.props.GetCustomers(this.props.token, this.props.defaultStoreID);
+
+      if(this.props.rooms.length === 0)
+        this.props.GetHotelRooms(this.props.token, this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -33,6 +41,11 @@ class HotelOrderListScreen extends Component {
       this.setState({ modalVisible: false, orderID: null });
       Alert.alert('Orden eliminada');
     };
+
+    getHotelRoomTypeName(id){
+      let i = this.props.hotelRoomTypes.findIndex(x=> x.id === id);
+      return i>=0 ? this.props.hotelRoomTypes[i].name : "";
+    }
   
     renderOrders = ({ item }) => (
       <List.Item
@@ -43,13 +56,13 @@ class HotelOrderListScreen extends Component {
             <>
                 <Text style={styles.category}>Cliente: {item.customer.name}</Text>
                 <Text style={styles.category}>Total: {item.total}</Text>
-                <Text style={styles.category}>IN: {item.dateIN}</Text>
-                <Text style={styles.category}>OUT: {item.dateOUT}</Text>
+                <Text style={styles.category}>IN: {item.dateIn}</Text>
+                <Text style={styles.category}>OUT: {item.dateOut}</Text>
             </>
         }
         right={() => 
             <>
-                <Text style={styles.category2}>Habitacion: {item.room.name} {"\n"} {item.room.type}</Text>
+                <Text style={styles.category2}>Habitacion: {item.room.name} {"\n"} {this.getHotelRoomTypeName(item.room.type)}</Text>
             </>
         }
         style={styles.item}
@@ -147,13 +160,18 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     hotelOrders: state.hotelOrderReducer.hotelOrders,
+    customers: state.customerReducer.customers,
+    rooms: state.hotelRoomReducer.hotelRooms,
+    hotelRoomTypes: state.appConfigReducer.hotelRoomTypes,
     token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
 const mapDispatchToProps = {
     RemoveHotelOrder,
-    GetHotelOrders
+    GetHotelOrders,
+    GetCustomers,
+    GetHotelRooms
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(HotelOrderListScreen));

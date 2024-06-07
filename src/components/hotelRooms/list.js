@@ -33,6 +33,11 @@ class HotelRoomListScreen extends Component {
       this.setState({ modalVisible: false, roomID: null });
       Alert.alert('Habitación eliminada');
     };
+
+    getHotelRoomTypeName(id){
+      let i = this.props.hotelRoomTypes.findIndex(x=> x.id === id);
+      return i>=0 ? this.props.hotelRoomTypes[i].name : "";
+    }
   
     renderRooms = ({ item }) => (
       <List.Item
@@ -40,7 +45,7 @@ class HotelRoomListScreen extends Component {
         onLongPress={() => this.onLongPress(item)}
         title={'Habitación '+item.name}
         description={`Capacidad: ${item.capacity} personas`}
-        right={() => <Text style={styles.category}>{item.type}</Text>}
+        right={() => <Text style={styles.category}>{this.getHotelRoomTypeName(item.type)}</Text>}
         style={styles.item}
       />
     );
@@ -132,6 +137,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     hotelRooms: state.hotelRoomReducer.hotelRooms,
+    hotelRoomTypes: state.appConfigReducer.hotelRoomTypes,
     token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID
 });

@@ -19,6 +19,10 @@ export function GetHotelOrders(token, storeID) {
     .then(res=>{
       dispatch(DataSuccess());
       if(res.length > 0){
+        // res.forEach(x=>{
+        //   x.dateIn = x.dateIn.replace("T"," ");
+        //   x.dateOut = x.dateOut.replace("T"," ");
+        // });
         dispatch({
           type: GET_HOTEL_ORDERS,
           hotelOrders: res

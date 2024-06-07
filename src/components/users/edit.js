@@ -14,8 +14,6 @@ class UserEditFormScreen extends Component {
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
       let item = this.props.route.params.item;
 
-      this.typeList = this.props.userTypeList;
-
       this.state = {
         id: item.id,
         username: item.username,
@@ -86,7 +84,7 @@ class UserEditFormScreen extends Component {
                 label="Tipo"
                 value={type}
                 onValueChange={(itemValue) => this.setState({ type: itemValue })}
-                items={this.typeList}
+                items={this.props.userTypeList}
                 cLabel='name'
                 cValue='id'
             />

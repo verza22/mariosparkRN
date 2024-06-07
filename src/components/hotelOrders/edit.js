@@ -18,8 +18,8 @@ class HotelOrderEditFormScreen extends Component {
 
       let item = this.props.route.params.item;
 
-      const dateInMask = new Date(Moment(item.dateIN, 'YYYY-MM-DD HH:mm:ss'));
-      const dateOutMask = new Date(Moment(item.dateOUT, 'YYYY-MM-DD HH:mm:ss'));
+      const dateInMask = new Date(Moment(item.dateIn));
+      const dateOutMask = new Date(Moment(item.dateOut));
 
       this.state = {
         id: item.id,
@@ -37,8 +37,8 @@ class HotelOrderEditFormScreen extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.route.params.item !== prevProps.route.params.item) {
             let item = this.props.route.params.item;
-            const dateInMask = new Date(Moment(item.dateIN, 'YYYY-MM-DD HH:mm:ss'));
-            const dateOutMask = new Date(Moment(item.dateOUT, 'YYYY-MM-DD HH:mm:ss'));
+            const dateInMask = new Date(Moment(item.dateIn));
+            const dateOutMask = new Date(Moment(item.dateOut));
             this.setState({
                 id: item.id,
                 total: item.total,
