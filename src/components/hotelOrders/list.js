@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveHotelOrder } from '../../redux/actions/hotelOrders'
+import { RemoveHotelOrder, GetHotelOrders } from '../../redux/actions/hotelOrders'
 
 class HotelOrderListScreen extends Component {
     constructor(props) {
@@ -14,6 +14,10 @@ class HotelOrderListScreen extends Component {
         modalVisible: false,
         orderID: null
       };
+    }
+
+    componentDidMount(){
+      this.props.GetHotelOrders(this.props.token, this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -143,10 +147,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     hotelOrders: state.hotelOrderReducer.hotelOrders,
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
 const mapDispatchToProps = {
-    RemoveHotelOrder
+    RemoveHotelOrder,
+    GetHotelOrders
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(HotelOrderListScreen));

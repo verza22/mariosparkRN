@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { RemoveHotelRoom } from '../../redux/actions/hotelRoom'
+import { RemoveHotelRoom, GetHotelRooms } from '../../redux/actions/hotelRoom'
 
 class HotelRoomListScreen extends Component {
     constructor(props) {
@@ -14,6 +14,10 @@ class HotelRoomListScreen extends Component {
         modalVisible: false,
         roomID: null
       };
+    }
+
+    componentDidMount(){
+      this.props.GetHotelRooms(this.props.token, this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -128,10 +132,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     hotelRooms: state.hotelRoomReducer.hotelRooms,
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
 const mapDispatchToProps = {
-    RemoveHotelRoom
+    RemoveHotelRoom,
+    GetHotelRooms
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(HotelRoomListScreen));

@@ -3,6 +3,8 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
+import { GetOrders } from '../../redux/actions/orders'
+
 import { userType } from './../../data'
 
 class OrdersListScreen extends Component {
@@ -13,6 +15,10 @@ class OrdersListScreen extends Component {
       this.state = {
         userID: null
       };
+    }
+
+    componentDidMount(){
+      this.props.GetOrders(this.props.token, this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -105,15 +111,15 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
 const mapStateToProps = state => ({
     orders: state.ordersReducer.orders,
-    authUser: state.appConfigReducer.user
+    authUser: state.appConfigReducer.user,
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID,
 });
 
-// const mapDispatchToProps = {
-//     RemoveUser
-// };
+const mapDispatchToProps = {
+  GetOrders
+};
 
-export default connect(mapStateToProps, null)(withTheme(OrdersListScreen));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(OrdersListScreen));

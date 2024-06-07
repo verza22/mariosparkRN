@@ -1,4 +1,4 @@
-import { ADD_ORDER } from './../actions/orders';
+import { GET_ORDERS, ADD_ORDER } from './../actions/orders';
 
 import { orders } from './../../data';
 
@@ -8,6 +8,11 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case GET_ORDERS:
+        return {
+          ...state,
+          orders: action.orders
+        };
     case ADD_ORDER:
         let maxId = Math.max.apply(Math, state.orders.map(x=> x.id));
         return {

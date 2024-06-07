@@ -1,5 +1,4 @@
-// reducer.js
-import { REMOVE_HOTEL_ROOM, UPDATE_HOTEL_ROOM, ADD_HOTEL_ROOM } from './../actions/hotelRoom';
+import { GET_HOTEL_ROOMS, REMOVE_HOTEL_ROOM, UPDATE_HOTEL_ROOM, ADD_HOTEL_ROOM } from './../actions/hotelRoom';
 
 import { hotelRooms, hotelRoomTypes } from './../../data';
 
@@ -10,6 +9,11 @@ const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case GET_HOTEL_ROOMS:
+        return {
+          ...state,
+          hotelRooms: action.hotelRooms
+        };
       case REMOVE_HOTEL_ROOM:
         return {
           ...state,
