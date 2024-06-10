@@ -24,7 +24,7 @@ class CategoryFormScreen extends Component {
       };
       launchImageLibrary(options, (response) => {
         if (response.assets && response.assets.length > 0) {
-          this.setState({ categoryImage: response.assets[0].uri });
+          this.setState({ categoryImage: response.assets[0] });
         }
       });
     };
@@ -44,8 +44,9 @@ class CategoryFormScreen extends Component {
   
     saveCategory = () => {
       const { categoryName, categoryImage } = this.state;
-      this.props.AddCategory(categoryName, categoryImage);
-      this.props.navigation.navigate('Categorias');
+      this.props.AddCategory(this.props.token, this.props.defaultStoreID, categoryName, categoryImage, ()=> {
+        this.props.navigation.navigate('Categorias');
+      });
     };
   
     render() {
@@ -63,7 +64,7 @@ class CategoryFormScreen extends Component {
             <Button mode="outlined" onPress={this.pickImage} style={styles.imageButton}>
               Seleccionar Imagen de la Categoría
             </Button>
-            {categoryImage && <Image source={{ uri: categoryImage }} style={styles.previewImage} />}
+            {categoryImage && <Image source={{ uri: categoryImage.uri }} style={styles.previewImage} />}
             <Button mode="contained" onPress={this.saveCategory} style={styles.saveButton}>
               Guardar Categoría
             </Button>
@@ -97,9 +98,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => ({
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID
+});
 
 const mapDispatchToProps = {
   AddCategory
 };
 
-export default connect(null, mapDispatchToProps)(CategoryFormScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryFormScreen);

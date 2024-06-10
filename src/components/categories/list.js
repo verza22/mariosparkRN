@@ -34,9 +34,10 @@ class CategoriesListScreen extends Component {
     };
 
     handleDelete = () => {
-      this.props.RemoveCategory(this.state.categoryID);
       this.setState({ modalVisible: false, categoryID: null });
-      Alert.alert('Categoría eliminada');
+      this.props.RemoveCategory(this.props.token, this.state.categoryID, ()=> {
+        Alert.alert('Categoría eliminada');
+      });
     };
   
     renderCategories = ({ item }) => (

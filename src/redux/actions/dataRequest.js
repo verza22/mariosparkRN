@@ -35,13 +35,16 @@ export function axiosRequest({
   url, 
   method = 'post',
   params = null, 
-  token = null
+  token = null,
+  headers = null
 }){
     return new Promise((resolve, reject) => {
         dispatch(DataRequest());
 
+        headers = headers === null ? {Authorization: `Bearer ${token}`} : headers;
+
         axios({
-          headers: {Authorization: `Bearer ${token}`},
+          headers: headers,
           method: method,
           url: API_URL+url,
           data: params,

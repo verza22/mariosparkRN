@@ -1,5 +1,7 @@
 import { GET_CATEGORIES, ADD_CATEGORY, UPDATE_CATEGORY, REMOVE_CATEGORY } from './../actions/category';
 
+import { API_URL } from './../../config';
+
 const initialState = {
   categories: []
 };
@@ -7,6 +9,11 @@ const initialState = {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_CATEGORIES:
+      action.categories.forEach(x => {
+        if(!x.image.includes("http")){
+          x.image = API_URL+x.image;
+        }
+      });
         return {
           ...state,
           categories: action.categories
