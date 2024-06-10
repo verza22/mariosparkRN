@@ -28,19 +28,16 @@ class ProductFormScreen extends Component {
       };
       launchImageLibrary(options, (response) => {
         if (response.assets && response.assets.length > 0) {
-          this.setState({ productImage: response.assets[0].uri });
+          this.setState({ productImage: response.assets[0] });
         }
       });
     };
   
     saveProduct = () => {
       const { productName, productDescription, productPrice, productCategory, productImage } = this.state;
-      // Aquí puedes implementar la lógica para guardar la categoría en tu base de datos
-      // o realizar alguna acción con los datos ingresados.
-      this.props.AddProduct(productName, productDescription, productPrice, productCategory, productImage);
-      this.props.navigation.navigate('Productos');
-      // console.log('Category Name:', productName);
-      // console.log('Category Image:', productImage);
+      this.props.AddProduct(this.props.token, this.props.defaultStoreID, productName, productDescription, productPrice, productCategory, productImage, () => {
+        this.props.navigation.navigate('Productos');
+      });
     };
 
     handleBackPressHandler(){
@@ -94,7 +91,7 @@ class ProductFormScreen extends Component {
             <Button mode="outlined" onPress={this.pickImage} style={styles.imageButton}>
               Seleccionar Imagen del producto
             </Button>
-            {productImage && <Image source={{ uri: productImage }} style={styles.previewImage} />}
+            {productImage && <Image source={{ uri: productImage.uri }} style={styles.previewImage} />}
             <Button mode="contained" onPress={this.saveProduct} style={styles.saveButton}>
               Guardar Producto
             </Button>
@@ -135,7 +132,9 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => ({
-  categories: state.categoryReducer.categories
+  categories: state.categoryReducer.categories,
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
 const mapDispatchToProps = {

@@ -37,9 +37,10 @@ class ProductListScreen extends Component {
     };
 
     handleDelete = () => {
-      this.props.RemoveProduct(this.state.productID);
       this.setState({ modalVisible: false, productID: null });
-      Alert.alert('Producto eliminado');
+      this.props.RemoveProduct(this.props.token, this.state.productID, () => {
+        Alert.alert('Producto eliminado');
+      });
     };
   
     renderFoodItem = ({ item }) => (

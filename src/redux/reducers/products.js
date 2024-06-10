@@ -1,5 +1,7 @@
 import { GET_PRODUCTS, ADD_PRODUCT, UPDATE_PRODUCT, REMOVE_PRODUCT } from './../actions/products';
 
+import { API_URL } from './../../config';
+
 const initialState = {
   products: []
 };
@@ -7,6 +9,11 @@ const initialState = {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_PRODUCTS:
+      action.products.forEach(x => {
+        if(!x.image.includes("http")){
+          x.image = API_URL+x.image;
+        }
+      });
         return {
           ...state,
           products: action.products

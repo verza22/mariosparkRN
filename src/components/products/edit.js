@@ -44,15 +44,16 @@ class ProductEditFormScreen extends Component {
       };
       launchImageLibrary(options, (response) => {
         if (response.assets && response.assets.length > 0) {
-          this.setState({ productImage: response.assets[0].uri });
+          this.setState({ productImage: response.assets[0] });
         }
       });
     };
   
     saveProduct = () => {
       const { productID, productName, productDescription, productPrice, productCategory, productImage } = this.state;
-      this.props.UpdateProduct(productID, productName, productDescription, productPrice, productCategory, productImage);
-      this.props.navigation.navigate('Productos');
+      this.props.UpdateProduct(this.props.token, this.props.defaultStoreID, productID, productName, productDescription, productPrice, productCategory, productImage, () => {
+        this.props.navigation.navigate('Productos');
+      });
     };
 
     handleBackPressHandler(){
@@ -106,7 +107,7 @@ class ProductEditFormScreen extends Component {
             <Button mode="outlined" onPress={this.pickImage} style={styles.imageButton}>
               Seleccionar Imagen del producto
             </Button>
-            {productImage && <Image source={{ uri: productImage }} style={styles.previewImage} />}
+            {productImage && <Image source={{ uri: typeof productImage.uri !== "undefined" ? productImage.uri : productImage }} style={styles.previewImage} />}
             <Button mode="contained" onPress={this.saveProduct} style={styles.saveButton}>
             Actualizar Producto
             </Button>
@@ -147,7 +148,9 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => ({
-  categories: state.categoryReducer.categories
+  categories: state.categoryReducer.categories,
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
 const mapDispatchToProps = {
