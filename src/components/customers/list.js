@@ -29,9 +29,10 @@ class CustomersListScreen extends Component {
     };
 
     handleDelete = () => {
-      this.props.RemoveCustomer(this.state.customerID);
       this.setState({ modalVisible: false, customerID: null });
-      Alert.alert('Cliente eliminado');
+      this.props.RemoveCustomer(this.props.token, this.state.customerID, ()=>{
+        Alert.alert('Cliente eliminado');
+      });
     };
   
     renderCustomers = ({ item }) => (

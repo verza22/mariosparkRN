@@ -37,8 +37,9 @@ class CustomerFormScreen extends Component {
   
     save = () => {
       const { name, dni, email, phone, address } = this.state;
-      this.props.AddCustomer(name, dni, email, phone, address);
-      this.props.navigation.navigate('Customers');
+      this.props.AddCustomer(this.props.token, name, dni, email, phone, address, this.props.defaultStoreID, ()=>{
+        this.props.navigation.navigate('Customers');
+      });
     };
   
     render() {
@@ -110,9 +111,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => ({
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID
+});
 
 const mapDispatchToProps = {
     AddCustomer
 };
 
-export default connect(null, mapDispatchToProps)(CustomerFormScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerFormScreen);

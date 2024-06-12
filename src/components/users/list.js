@@ -29,9 +29,10 @@ class UsersListScreen extends Component {
     };
 
     handleDelete = () => {
-      this.props.RemoveUser(this.state.userID);
       this.setState({ modalVisible: false, userID: null });
-      Alert.alert('Usuario eliminado');
+      this.props.RemoveUser(this.props.token, this.state.userID, ()=>{
+        Alert.alert('Usuario eliminado');
+      });
     };
   
     renderUser = ({ item }) => (

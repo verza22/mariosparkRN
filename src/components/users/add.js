@@ -18,7 +18,7 @@ class UserFormScreen extends Component {
       this.state = {
         username: '',
         name: '',
-        type: '',
+        type: this.props.userType["ADMIN"],
         password: ''
       };
     }
@@ -38,8 +38,9 @@ class UserFormScreen extends Component {
   
     save = () => {
       const { username, name, password, type } = this.state;
-      this.props.AddUser(username, name, password, type);
-      this.props.navigation.navigate('Users');
+      this.props.AddUser(this.props.token, username, name, password, type, this.props.defaultStoreID, ()=>{
+        this.props.navigation.navigate('Users');
+      });
     };
   
     render() {
@@ -109,6 +110,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
+  token: state.appConfigReducer.token,
+  defaultStoreID: state.appConfigReducer.defaultStoreID,
   authUser: state.appConfigReducer.user,
   userTypeList: state.appConfigReducer.userTypeList,
   userType: state.appConfigReducer.userType

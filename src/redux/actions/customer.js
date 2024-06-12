@@ -28,32 +28,95 @@ export function GetCustomers(token, storeID) {
   }
 }
 
-export function RemoveCustomer(id) {
-    return {
-      type: REMOVE_CUSTOMER,
-      id
-    };
+export function RemoveCustomer(token, id, callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'customer/RemoveCustomer',
+      token,
+      params: {
+        customerID: id
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: REMOVE_CUSTOMER,
+          id
+        });
+        callback();
+      }
+    })
   }
+}
   
-  export function UpdateCustomer(id, name, dni, email, phone, address) {
-    return {
-      type: UPDATE_CUSTOMER,
-      id,
-      name,
-      dni,
-      email,
-      phone,
-      address
-    };
+export function UpdateCustomer(token, id, name, dni, email, phone, address, storeID, callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'customer/AddOrUpdateCustomer',
+      token,
+      params: {
+        id,
+        name,
+        dni,
+        email,
+        phone,
+        address,
+        storeID
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: UPDATE_CUSTOMER,
+          id,
+          name,
+          dni,
+          email,
+          phone,
+          address
+        });
+        callback();
+      }
+    })
   }
-  
-  export function AddCustomer(name, dni, email, phone, address) {
-    return {
-      type: ADD_CUSTOMER,
-      name,
-      dni,
-      email,
-      phone,
-      address
-    };
+}
+
+export function AddCustomer(token, name, dni, email, phone, address, storeID, callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'customer/AddOrUpdateCustomer',
+      token,
+      params: {
+        id: 0,
+        name,
+        dni,
+        email,
+        phone,
+        address,
+        storeID
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: ADD_CUSTOMER,
+          name,
+          dni,
+          email,
+          phone,
+          address
+        });
+        callback();
+      }
+    })
   }
+}
