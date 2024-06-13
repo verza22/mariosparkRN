@@ -42,9 +42,10 @@ class HotelOrderFormScreen extends Component {
     }
   
     save = () => {
-      const { total, people, customer, room, dateIN, dateOUT } = this.state;
-      this.props.AddHotelOrder(this.props.userAuth,total,dateIN,dateOUT,'Efectivo',people,room,customer);
-      this.props.navigation.navigate('HotelOrders');
+      const { total, people, customer, room, dateInMask, dateOutMask } = this.state;
+      this.props.AddHotelOrder(this.props.token,this.props.userAuth.id,parseFloat(total),dateInMask,dateOutMask,'Efectivo',Number(people),room,customer,this.props.defaultStoreID,()=>{
+        this.props.navigation.navigate('HotelOrders');
+      });
     };
 
     customerSelect(customer){
@@ -156,6 +157,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID,
     customers: state.customerReducer.customers,
     userAuth: state.appConfigReducer.user,
     rooms: state.hotelRoomReducer.hotelRooms

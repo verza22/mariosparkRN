@@ -26,9 +26,14 @@ export function GetOrders(token, storeID) {
   }
 }
 
-export function AddOrder({cashierID,waiterID,chefID,total,tableNumber,date,paymentMethod,orderStatus,customer,products}) {
-    return {
-        type: ADD_ORDER,
+export function AddOrder({token, storeID, callback, cashierID,waiterID,chefID,total,tableNumber,date,paymentMethod,orderStatus,customer,products}) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'order/InsertOrder',
+      token,
+      params: {
         cashierID,
         waiterID,
         chefID,
@@ -37,7 +42,29 @@ export function AddOrder({cashierID,waiterID,chefID,total,tableNumber,date,payme
         date,
         paymentMethod,
         orderStatus,
-        customer,
-        products
-    };
+        customer: JSON.stringify(customer),
+        products: JSON.stringify(products),
+        storeID
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: ADD_ORDER,
+          cashierID,
+          waiterID,
+          chefID,
+          total,
+          tableNumber,
+          date,
+          paymentMethod,
+          orderStatus,
+          customer,
+          products
+        });
+        callback();
+      }
+    })
   }
+}

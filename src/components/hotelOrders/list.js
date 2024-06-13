@@ -37,9 +37,10 @@ class HotelOrderListScreen extends Component {
     };
 
     handleDelete = () => {
-      this.props.RemoveHotelOrder(this.state.orderID);
       this.setState({ modalVisible: false, orderID: null });
-      Alert.alert('Orden eliminada');
+      this.props.RemoveHotelOrder(this.props.token, this.state.orderID, ()=>{
+        Alert.alert('Orden eliminada');
+      });
     };
 
     getHotelRoomTypeName(id){

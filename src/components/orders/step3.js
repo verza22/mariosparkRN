@@ -83,18 +83,24 @@ class OrderStep3Screen extends Component {
         let order = {
           cashierID: this.props.userAuth.id,
           waiterID: this.state.waiterID,
-          chefID: null,
+          chefID: 0,
           total: total,
           date: date,
           paymentMethod: "Efectivo",
           orderStatus: this.props.orderStatus["PENDIENTE"],
           customer: this.state.customer,
           products: this.state.products,
-          tableNumber: this.state.tableNumber
+          tableNumber: Number(this.state.tableNumber)
         };
 
-        this.props.AddOrder(order);
-        this.props.navigation.navigate('Orders');
+        this.props.AddOrder({
+          ...order,
+          token: this.props.token,
+          storeID: this.props.defaultStoreID,
+          callback: () => {
+            this.props.navigation.navigate('Orders');
+          }
+        });
     }
   
     render() {
@@ -154,6 +160,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   const userType = state.appConfigReducer.userType;
   return {
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID,
     customers: state.customerReducer.customers,
     userAuth: state.appConfigReducer.user,
     orderStatus: state.appConfigReducer.orderStatus,

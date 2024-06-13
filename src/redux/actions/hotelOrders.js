@@ -19,10 +19,6 @@ export function GetHotelOrders(token, storeID) {
     .then(res=>{
       dispatch(DataSuccess());
       if(res.length > 0){
-        // res.forEach(x=>{
-        //   x.dateIn = x.dateIn.replace("T"," ");
-        //   x.dateOut = x.dateOut.replace("T"," ");
-        // });
         dispatch({
           type: GET_HOTEL_ORDERS,
           hotelOrders: res
@@ -32,38 +28,107 @@ export function GetHotelOrders(token, storeID) {
   }
 }
 
-export function RemoveHotelOrder(id) {
-    return {
-      type: REMOVE_HOTEL_ORDER,
-      id
-    };
+export function RemoveHotelOrder(token, id, callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'hotelOrder/RemoveHotelOrder',
+      token,
+      params: {
+        orderID: id
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: REMOVE_HOTEL_ORDER,
+          id
+        });
+        callback();
+      }
+    })
   }
+}
+
+export function UpdateHotelOrder(token,id,userID,total,dateIN,dateOUT,paymentMethod,people,room,customer,storeID,callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'hotelOrder/AddOrUpdateHotelOrder',
+      token,
+      params: {
+        orderID: id,
+        userID,
+        total,
+        dateIN,
+        dateOUT,
+        paymentMethod,
+        people,
+        storeID,
+        customer: JSON.stringify(customer),
+        room: JSON.stringify(room)
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: UPDATE_HOTEL_ORDER,
+          id,
+          userID,
+          total,
+          dateIN,
+          dateOUT,
+          paymentMethod,
+          people,
+          room,
+          customer
+        });
+        callback();
+      }
+    })
+  }
+}
   
-  export function UpdateHotelOrder(id,userID,total,dateIN,dateOUT,paymentMethod,people,room,customer) {
-    return {
-      type: UPDATE_HOTEL_ORDER,
-      id,
-      userID,
-      total,
-      dateIN,
-      dateOUT,
-      paymentMethod,
-      people,
-      room,
-      customer
-    };
+export function AddHotelOrder(token,userID,total,dateIN,dateOUT,paymentMethod,people,room,customer,storeID,callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'hotelOrder/AddOrUpdateHotelOrder',
+      token,
+      params: {
+        orderID: 0,
+        userID,
+        total,
+        dateIN,
+        dateOUT,
+        paymentMethod,
+        people,
+        storeID,
+        customer: JSON.stringify(customer),
+        room: JSON.stringify(room)
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: ADD_HOTEL_ORDER,
+          userID,
+          total,
+          dateIN,
+          dateOUT,
+          paymentMethod,
+          people,
+          room,
+          customer
+        });
+        callback();
+      }
+    })
   }
-  
-  export function AddHotelOrder(userID,total,dateIN,dateOUT,paymentMethod,people,room,customer) {
-    return {
-      type: ADD_HOTEL_ORDER,
-      userID,
-      total,
-      dateIN,
-      dateOUT,
-      paymentMethod,
-      people,
-      room,
-      customer
-    };
-  }
+}

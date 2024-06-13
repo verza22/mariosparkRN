@@ -29,9 +29,10 @@ class HotelRoomListScreen extends Component {
     };
 
     handleDelete = () => {
-      this.props.RemoveHotelRoom(this.state.roomID);
       this.setState({ modalVisible: false, roomID: null });
-      Alert.alert('Habitación eliminada');
+      this.props.RemoveHotelRoom(this.props.token, this.state.roomID, ()=>{
+        Alert.alert('Habitación eliminada');
+      });
     };
 
     getHotelRoomTypeName(id){

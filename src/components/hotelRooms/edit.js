@@ -14,9 +14,6 @@ class HotelRoomEditFormScreen extends Component {
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
       let item = this.props.route.params.item;
 
-      console.log(item)
-      console.log(this.props.hotelRoomTypes)
-
       this.state = {
         id: item.id,
         name: item.name,
@@ -52,8 +49,9 @@ class HotelRoomEditFormScreen extends Component {
   
     save = () => {
       const { id, name, capacity, type } = this.state;
-      this.props.UpdateHotelRoom(id, name, capacity, type);
-      this.props.navigation.navigate('HotelRooms');
+      this.props.UpdateHotelRoom(this.props.token, id, name, Number(capacity), type, this.props.defaultStoreID, ()=>{
+        this.props.navigation.navigate('HotelRooms');
+      });
     };
   
     render() {
@@ -117,7 +115,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    hotelRoomTypes: state.appConfigReducer.hotelRoomTypes,
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID,
+    hotelRoomTypes: state.appConfigReducer.hotelRoomTypes
 });
 
 const mapDispatchToProps = {

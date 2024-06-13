@@ -28,28 +28,87 @@ export function GetHotelRooms(token, storeID) {
   }
 }
 
-export function RemoveHotelRoom(id) {
-    return {
-      type: REMOVE_HOTEL_ROOM,
-      id
-    };
+export function RemoveHotelRoom(token, id, callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'hotelRoom/RemoveHotelRoom',
+      token,
+      params: {
+        roomID: id
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: REMOVE_HOTEL_ROOM,
+          id
+        });
+        callback();
+      }
+    })
   }
+}
+
+export function UpdateHotelRoom(token, id, name, capacity, typeAux, storeID, callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'hotelRoom/AddOrUpdateHotelRoom',
+      token,
+      params: {
+        id,
+        name,
+        capacity,
+        roomType: typeAux,
+        storeID
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: UPDATE_HOTEL_ROOM,
+          id,
+          name,
+          capacity,
+          typeAux
+        });
+        callback();
+      }
+    })
+  }
+}
   
-  export function UpdateHotelRoom(id, name, capacity, typeAux) {
-    return {
-      type: UPDATE_HOTEL_ROOM,
-      id,
-      name,
-      capacity,
-      typeAux
-    };
+export function AddHotelRoom(token, name, capacity, typeAux, storeID, callback) {
+  return dispatch => {
+    axiosRequest({
+      dispatch, 
+      method: 'post',
+      url: 'hotelRoom/AddOrUpdateHotelRoom',
+      token,
+      params: {
+        id: 0,
+        name,
+        capacity,
+        roomType: typeAux,
+        storeID
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res){
+        dispatch({
+          type: ADD_HOTEL_ROOM,
+          name,
+          capacity,
+          typeAux
+        });
+        callback();
+      }
+    })
   }
-  
-  export function AddHotelRoom(name, capacity, typeAux) {
-    return {
-      type: ADD_HOTEL_ROOM,
-      name,
-      capacity,
-      typeAux
-    };
-  }
+}

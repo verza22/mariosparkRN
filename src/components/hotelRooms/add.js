@@ -36,9 +36,9 @@ class HotelRoomFormScreen extends Component {
   
     save = () => {
       const { name, capacity, type } = this.state;
-      console.log(JSON.stringify(this.state))
-      this.props.AddHotelRoom(name, capacity, type);
-      this.props.navigation.navigate('HotelRooms');
+      this.props.AddHotelRoom(this.props.token, name, Number(capacity), type, this.props.defaultStoreID, ()=>{
+        this.props.navigation.navigate('HotelRooms');
+      });
     };
   
     render() {
@@ -102,6 +102,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID,
     hotelRoomTypes: state.appConfigReducer.hotelRoomTypes
 });
 
