@@ -57,8 +57,8 @@ class HotelOrderListScreen extends Component {
             <>
                 <Text style={styles.category}>Cliente: {item.customer.name}</Text>
                 <Text style={styles.category}>Total: {item.total}</Text>
-                <Text style={styles.category}>IN: {item.dateIn}</Text>
-                <Text style={styles.category}>OUT: {item.dateOut}</Text>
+                <Text style={styles.category}>IN: {item.dateIN}</Text>
+                <Text style={styles.category}>OUT: {item.dateOUT}</Text>
             </>
         }
         right={() => 

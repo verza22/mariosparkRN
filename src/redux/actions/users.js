@@ -75,7 +75,7 @@ export function UpdateUser(token, id, user, name, password, userType, storeID, c
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: UPDATE_USER,
           id,
@@ -111,9 +111,10 @@ export function AddUser(token, user, name, password, userType, storeID, callback
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: ADD_USER,
+          id: res,
           user,
           name,
           password,

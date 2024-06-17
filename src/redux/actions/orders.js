@@ -49,9 +49,10 @@ export function AddOrder({token, storeID, callback, cashierID,waiterID,chefID,to
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: ADD_ORDER,
+          id: res,
           cashierID,
           waiterID,
           chefID,

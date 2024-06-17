@@ -35,12 +35,11 @@ function reducer(state = initialState, action) {
           customers: customers
         };
       case ADD_CUSTOMER:
-        let maxCId = Math.max.apply(Math, state.customers.map(x=> x.id));
         return {
           ...state,
           customers: [...state.customers,
             { 
-              id: maxCId+1, 
+              id: action.id, 
               name: action.name,
               dni: action.dni,
               email: action.email,

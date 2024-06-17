@@ -69,7 +69,7 @@ export function UpdateHotelRoom(token, id, name, capacity, typeAux, storeID, cal
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: UPDATE_HOTEL_ROOM,
           id,
@@ -100,9 +100,10 @@ export function AddHotelRoom(token, name, capacity, typeAux, storeID, callback) 
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: ADD_HOTEL_ROOM,
+          id: res,
           name,
           capacity,
           typeAux

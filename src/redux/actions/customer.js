@@ -71,7 +71,7 @@ export function UpdateCustomer(token, id, name, dni, email, phone, address, stor
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: UPDATE_CUSTOMER,
           id,
@@ -106,9 +106,10 @@ export function AddCustomer(token, name, dni, email, phone, address, storeID, ca
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: ADD_CUSTOMER,
+          id: res,
           name,
           dni,
           email,

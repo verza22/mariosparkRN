@@ -68,9 +68,10 @@ export function AddProduct(token, storeID, name, description, price, categoryId,
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: ADD_PRODUCT,
+          id: res,
           name,
           description,
           price,
@@ -118,7 +119,7 @@ export function UpdateProduct(token, storeID, id, name, description, price, cate
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: UPDATE_PRODUCT,
           id,

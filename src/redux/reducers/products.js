@@ -19,11 +19,10 @@ function reducer(state = initialState, action) {
           products: action.products
         };
       case ADD_PRODUCT:
-        let maxPId = Math.max.apply(Math, state.products.map(x=> x.id));
         return {
           ...state,
           products: [...state.products,
-            { id: maxPId+1, name: action.name, description: action.description, price: action.price, categoryId: action.categoryId, image: action.image }
+            { id: action.id, name: action.name, description: action.description, price: action.price, categoryId: action.categoryId, image: action.image }
           ]
         };
       case UPDATE_PRODUCT:

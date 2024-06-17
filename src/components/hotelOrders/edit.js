@@ -18,8 +18,8 @@ class HotelOrderEditFormScreen extends Component {
 
       let item = this.props.route.params.item;
 
-      const dateInMask = new Date(Moment(item.dateIn));
-      const dateOutMask = new Date(Moment(item.dateOut));
+      const dateInMask = new Date(Moment(item.dateIN));
+      const dateOutMask = new Date(Moment(item.dateOUT));
 
       this.state = {
         id: item.id,
@@ -37,8 +37,8 @@ class HotelOrderEditFormScreen extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.route.params.item !== prevProps.route.params.item) {
             let item = this.props.route.params.item;
-            const dateInMask = new Date(Moment(item.dateIn));
-            const dateOutMask = new Date(Moment(item.dateOut));
+            const dateInMask = new Date(Moment(item.dateIN));
+            const dateOutMask = new Date(Moment(item.dateOUT));
             this.setState({
                 id: item.id,
                 total: item.total,
@@ -67,8 +67,8 @@ class HotelOrderEditFormScreen extends Component {
     }
   
     save = () => {
-      const { id, total, people, customer, room, dateInMask, dateOutMask } = this.state;
-      this.props.UpdateHotelOrder(this.props.token,id,this.props.userAuth.id,parseFloat(total),dateInMask,dateOutMask,'Efectivo',Number(people),room,customer,this.props.defaultStoreID,()=>{
+      const { id, total, people, customer, room, dateInMask, dateOutMask, dateIN, dateOUT } = this.state;
+      this.props.UpdateHotelOrder(this.props.token,id,this.props.userAuth.id,parseFloat(total),dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',Number(people),room,customer,this.props.defaultStoreID,()=>{
         this.props.navigation.navigate('HotelOrders');
       });
     };

@@ -12,12 +12,11 @@ function reducer(state = initialState, action) {
           orders: action.orders
         };
     case ADD_ORDER:
-        let maxId = Math.max.apply(Math, state.orders.map(x=> x.id));
         return {
           ...state,
           orders: [...state.orders,
             { 
-              id: maxId+1, 
+              id: action.id, 
               cashierID: action.cashierID,
               waiterID: action.waiterID,
               chefID: action.chefID,

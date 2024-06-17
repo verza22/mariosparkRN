@@ -42,8 +42,8 @@ class HotelOrderFormScreen extends Component {
     }
   
     save = () => {
-      const { total, people, customer, room, dateInMask, dateOutMask } = this.state;
-      this.props.AddHotelOrder(this.props.token,this.props.userAuth.id,parseFloat(total),dateInMask,dateOutMask,'Efectivo',Number(people),room,customer,this.props.defaultStoreID,()=>{
+      const { total, people, customer, room, dateInMask, dateOutMask, dateIN, dateOUT } = this.state;
+      this.props.AddHotelOrder(this.props.token,this.props.userAuth.id,parseFloat(total),dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',Number(people),room,customer,this.props.defaultStoreID,()=>{
         this.props.navigation.navigate('HotelOrders');
       });
     };

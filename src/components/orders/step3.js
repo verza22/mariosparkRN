@@ -9,6 +9,7 @@ import RowVertical from './../lib/rowVertical'
 import SearchPicker from './../lib/searchPicker'
 
 import { AddOrder } from '../../redux/actions/orders'
+import { GetCustomers } from '../../redux/actions/customer'
 
 class OrderStep3Screen extends Component {
     constructor(props) {
@@ -55,6 +56,10 @@ class OrderStep3Screen extends Component {
 
     componentDidMount(){
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPressHandler);
+
+        if(this.props.customers.length === 0){
+          this.props.GetCustomers(this.props.token, this.props.defaultStoreID);
+        }
     }
 
     componentWillUnmount(){
@@ -170,7 +175,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  AddOrder
+  AddOrder,
+  GetCustomers
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(OrderStep3Screen));

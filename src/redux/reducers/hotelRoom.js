@@ -34,12 +34,11 @@ function reducer(state = initialState, action) {
           hotelRooms: hotelRooms
         };
       case ADD_HOTEL_ROOM:
-        let maxCId = Math.max.apply(Math, state.hotelRooms.map(x=> x.id));
         return {
           ...state,
           hotelRooms: [...state.hotelRooms,
             { 
-                id: maxCId+1, 
+                id: action.id, 
                 name: action.name,
                 capacity: action.capacity,
                 type: action.typeAux

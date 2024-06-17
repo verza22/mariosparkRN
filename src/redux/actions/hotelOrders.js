@@ -52,7 +52,7 @@ export function RemoveHotelOrder(token, id, callback) {
   }
 }
 
-export function UpdateHotelOrder(token,id,userID,total,dateIN,dateOUT,paymentMethod,people,room,customer,storeID,callback) {
+export function UpdateHotelOrder(token,id,userID,total,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
   return dispatch => {
     axiosRequest({
       dispatch, 
@@ -63,8 +63,8 @@ export function UpdateHotelOrder(token,id,userID,total,dateIN,dateOUT,paymentMet
         orderID: id,
         userID,
         total,
-        dateIN,
-        dateOUT,
+        dateIN: dateInMask,
+        dateOUT: dateOutMask,
         paymentMethod,
         people,
         storeID,
@@ -74,7 +74,7 @@ export function UpdateHotelOrder(token,id,userID,total,dateIN,dateOUT,paymentMet
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: UPDATE_HOTEL_ORDER,
           id,
@@ -93,7 +93,7 @@ export function UpdateHotelOrder(token,id,userID,total,dateIN,dateOUT,paymentMet
   }
 }
   
-export function AddHotelOrder(token,userID,total,dateIN,dateOUT,paymentMethod,people,room,customer,storeID,callback) {
+export function AddHotelOrder(token,userID,total,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
   return dispatch => {
     axiosRequest({
       dispatch, 
@@ -104,8 +104,8 @@ export function AddHotelOrder(token,userID,total,dateIN,dateOUT,paymentMethod,pe
         orderID: 0,
         userID,
         total,
-        dateIN,
-        dateOUT,
+        dateIN: dateInMask,
+        dateOUT: dateOutMask,
         paymentMethod,
         people,
         storeID,
@@ -115,9 +115,10 @@ export function AddHotelOrder(token,userID,total,dateIN,dateOUT,paymentMethod,pe
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: ADD_HOTEL_ORDER,
+          id: res,
           userID,
           total,
           dateIN,

@@ -53,9 +53,10 @@ export function AddCategory(token, storeID, name, image, callback) {
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: ADD_CATEGORY,
+          id: res,
           name: name,
           image: image
         });
@@ -97,7 +98,7 @@ export function UpdateCategory(token, storeID, id, name, image, callback) {
     })
     .then(res=>{
       dispatch(DataSuccess());
-      if(res){
+      if(res > 0){
         dispatch({
           type: UPDATE_CATEGORY,
           id,

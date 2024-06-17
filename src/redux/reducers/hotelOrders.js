@@ -38,12 +38,11 @@ function reducer(state = initialState, action) {
           hotelOrders: hotelOrders
         };
       case ADD_HOTEL_ORDER:
-        let maxCId = Math.max.apply(Math, state.hotelOrders.map(x=> x.id));
         return {
           ...state,
           hotelOrders: [...state.hotelOrders,
             { 
-                id: maxCId+1, 
+                id: action.id, 
                 userID: action.userID,
                 total: action.total,
                 dateIN: action.dateIN,

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 
 import Row from './../lib/row'
+import { GetUsers } from '../../redux/actions/users'
 
 class OrderStep2Screen extends Component {
     constructor(props) {
@@ -77,6 +78,10 @@ class OrderStep2Screen extends Component {
 
     componentDidMount(){
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPressHandler);
+
+        if(this.props.users.length === 0){
+          this.props.GetUsers(this.props.token, this.props.defaultStoreID);
+        }
     }
 
     componentWillUnmount(){
@@ -223,7 +228,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    users: state.usersReducer.users
+    users: state.usersReducer.users,
+    token: state.appConfigReducer.token,
+    defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 
-export default connect(mapStateToProps, null)(withTheme(OrderStep2Screen));
+const mapDispatchToProps = {
+  GetUsers
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(OrderStep2Screen));

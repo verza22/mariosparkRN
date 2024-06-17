@@ -34,12 +34,13 @@ function reducer(state = initialState, action) {
           users: users
         };
       case ADD_USER:
-        let maxId = Math.max.apply(Math, state.users.map(x=> x.id));
+        // let maxId = Math.max.apply(Math, state.users.map(x=> x.id));
+        // id: maxId+1, 
         return {
           ...state,
           users: [...state.users,
             { 
-                id: maxId+1, 
+                id: action.id,
                 user: action.user,
                 name: action.name,
                 password: action.password,
