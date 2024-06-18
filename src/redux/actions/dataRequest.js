@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_URL } from './../../config';
+import { API_URL, API_TIME_OUT } from './../../config';
 
 export const DATA_REQUEST = 'DATA_REQUEST';
 export const DATA_SUCCESS = 'DATA_SUCCESS';
@@ -36,7 +36,8 @@ export function axiosRequest({
   method = 'post',
   params = null, 
   token = null,
-  headers = null
+  headers = null,
+  showError = true
 }){
     return new Promise((resolve, reject) => {
         dispatch(DataRequest());
@@ -48,13 +49,13 @@ export function axiosRequest({
           method: method,
           url: API_URL+url,
           data: params,
-          timeout: 15000 
+          timeout: API_TIME_OUT 
         })
         .then(res => {
             resolve(res.data);
           })
         .catch(error => {
-          console.log(JSON.stringify(error))
+          //console.log(JSON.stringify(error))
           let errorReponse = "";
           if (error.code === 'ECONNABORTED') {
             errorReponse = 'La solicitud ha excedido el tiempo máximo permitido';
@@ -66,7 +67,10 @@ export function axiosRequest({
           } else {
             errorReponse = 'Error message: '+JSON.stringify(error.message);
           }
-          dispatch(DataFailure(errorReponse));
+          if(showError){
+            dispatch(DataFailure(errorReponse));
+          }
+          reject(error);
         });
     });
 }

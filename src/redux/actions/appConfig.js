@@ -2,6 +2,7 @@ import { DataSuccess, DataFailure, axiosRequest } from './dataRequest';
 import { transformArrayToObject } from './../../components/lib/util';
 
 export const LOGIN = 'LOGIN';
+export const LOGIN_WITHOUT_ETHERNET = 'LOGIN_WITHOUT_ETHERNET';
 export const LOGOUT = 'LOGOUT';
 
 export function Login(userName, password) {
@@ -23,11 +24,19 @@ export function Login(userName, password) {
           userTypeList: res.userTypes,
           userType,
           orderStatus,
-          hotelOrderType
+          hotelOrderType,
+          password
         });
       }else{
         dispatch(DataFailure("Usuario o contraseña incorrecto"));
       }
+    })
+    .catch(err=>{
+      dispatch({
+        type: LOGIN_WITHOUT_ETHERNET,
+        userName,
+        password
+      });
     })
   }
 }

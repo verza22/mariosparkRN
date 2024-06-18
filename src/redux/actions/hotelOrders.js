@@ -4,6 +4,7 @@ export const GET_HOTEL_ORDERS = 'GET_HOTEL_ORDERS';
 export const REMOVE_HOTEL_ORDER = 'REMOVE_HOTEL_ORDER';
 export const UPDATE_HOTEL_ORDER = 'UPDATE_HOTEL_ORDER';
 export const ADD_HOTEL_ORDER = 'ADD_HOTEL_ORDER';
+export const ADD_HOTEL_ORDER_WITHOUT_ETHERNET = 'ADD_HOTEL_ORDER_WITHOUT_ETHERNET';
 
 export function GetHotelOrders(token, storeID) {
   return dispatch => {
@@ -130,6 +131,23 @@ export function AddHotelOrder(token,userID,total,dateInMask,dateOutMask, dateIN,
         });
         callback();
       }
+    })
+    .catch(err=>{
+      dispatch({
+        type: ADD_HOTEL_ORDER_WITHOUT_ETHERNET,
+        userID,
+        total,
+        dateIN,
+        dateOUT,
+        paymentMethod,
+        people,
+        room,
+        customer,
+        storeID,
+        dateInMask,
+        dateOutMask
+      });
+      callback();
     })
   }
 }

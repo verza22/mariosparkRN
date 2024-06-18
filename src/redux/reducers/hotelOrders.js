@@ -1,7 +1,8 @@
-import { GET_HOTEL_ORDERS, REMOVE_HOTEL_ORDER, UPDATE_HOTEL_ORDER, ADD_HOTEL_ORDER } from './../actions/hotelOrders';
+import { GET_HOTEL_ORDERS, REMOVE_HOTEL_ORDER, UPDATE_HOTEL_ORDER, ADD_HOTEL_ORDER, ADD_HOTEL_ORDER_WITHOUT_ETHERNET } from './../actions/hotelOrders';
 
 const initialState = {
-    hotelOrders: []
+    hotelOrders: [],
+    hotelOrdersToUpload: []
 };
 
 function reducer(state = initialState, action) {
@@ -51,6 +52,31 @@ function reducer(state = initialState, action) {
                 people: action.people,
                 room: action.room,
                 customer: action.customer
+            }
+          ]
+        };
+      case ADD_HOTEL_ORDER_WITHOUT_ETHERNET:
+        let maxId = Math.max.apply(Math, state.hotelOrders.map(x=> x.id));
+        let newOrder = { 
+          id: maxId+1, 
+          userID: action.userID,
+          total: action.total,
+          dateIN: action.dateIN,
+          dateOUT: action.dateOUT,
+          paymentMethod: action.paymentMethod,
+          people: action.people,
+          room: action.room,
+          customer: action.customer
+        };
+        return {
+          ...state,
+          hotelOrders: [...state.hotelOrders, newOrder],
+          hotelOrdersToUpload: [...state.hotelOrdersToUpload, 
+            {
+              ...newOrder,
+              storeID: action.storeID,
+              dateIN: action.dateInMask,
+              dateOUT: action.dateOutMask
             }
           ]
         };

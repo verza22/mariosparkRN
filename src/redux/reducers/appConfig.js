@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from './../actions/appConfig';
+import { LOGIN, LOGIN_WITHOUT_ETHERNET, LOGOUT } from './../actions/appConfig';
 
 const initialState = {
     isAuthenticated: false,
@@ -27,21 +27,21 @@ function reducer(state = initialState, action) {
             user: {
               id: action.user.id,
               username: action.user.username,
+              password: action.password,
               name: action.user.name,
               type: action.user.type
             }
         };
       case LOGOUT:
         return {
-            isAuthenticated: false,
-            token: null,
-            defaultStoreID: 0,
-            user: null,
-            hotelRoomTypes: [],
-            userTypeList: [],
-            userType: {},
-            orderStatus: {},
-            hotelOrderType: {}
+          ...state,
+          isAuthenticated: false
+        };
+      case LOGIN_WITHOUT_ETHERNET:
+        let isAuthenticated = state.user !== null ? (state.user.username === action.userName && state.user.password === action.password) : false;
+        return {
+          ...state,
+          isAuthenticated: isAuthenticated
         };
     default:
       return state;
