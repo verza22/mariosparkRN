@@ -7,13 +7,13 @@ export const REMOVE_USER = 'REMOVE_USER';
 export const UPDATE_USER = 'UPDATE_USER';
 export const ADD_USER = 'ADD_USER';
 
-export function GetUsers(token, storeID) {
-  return dispatch => {
+export function GetUsers(storeID) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'user/getUsers',
-      token,
       params: {
         storeID
       }
@@ -30,13 +30,13 @@ export function GetUsers(token, storeID) {
   }
 }
 
-export function RemoveUser(token, id, callback) {
-  return dispatch => {
+export function RemoveUser(id, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'user/RemoveUser',
-      token,
       params: {
         userID: id
       }
@@ -54,16 +54,16 @@ export function RemoveUser(token, id, callback) {
   }
 }
 
-export function UpdateUser(token, id, user, name, password, userType, storeID, callback) {
-  return dispatch => {
+export function UpdateUser(id, user, name, password, userType, storeID, callback) {
+  return (dispatch, getState) => {
     if(password !== ""){
       password = CryptoJS.SHA1(password).toString();
     }
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'user/AddOrUpdateUser',
-      token,
       params: {
         id,
         user,
@@ -90,16 +90,16 @@ export function UpdateUser(token, id, user, name, password, userType, storeID, c
   }
 }
 
-export function AddUser(token, user, name, password, userType, storeID, callback) {
-  return dispatch => {
+export function AddUser(user, name, password, userType, storeID, callback) {
+  return (dispatch, getState) => {
     if(password !== ""){
       password = CryptoJS.SHA1(password).toString();
     }
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'user/AddOrUpdateUser',
-      token,
       params: {
         id: 0,
         user,

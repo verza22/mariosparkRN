@@ -44,7 +44,7 @@ class CategoryFormScreen extends Component {
   
     saveCategory = () => {
       const { categoryName, categoryImage } = this.state;
-      this.props.AddCategory(this.props.token, this.props.defaultStoreID, categoryName, categoryImage, ()=> {
+      this.props.AddCategory(this.props.defaultStoreID, categoryName, categoryImage, ()=> {
         this.props.navigation.navigate('Categorias');
       });
     };
@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

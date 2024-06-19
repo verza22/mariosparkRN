@@ -37,7 +37,7 @@ class CustomerFormScreen extends Component {
   
     save = () => {
       const { name, dni, email, phone, address } = this.state;
-      this.props.AddCustomer(this.props.token, name, dni, email, phone, address, this.props.defaultStoreID, ()=>{
+      this.props.AddCustomer(name, dni, email, phone, address, this.props.defaultStoreID, ()=>{
         this.props.navigation.navigate('Customers');
       });
     };
@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

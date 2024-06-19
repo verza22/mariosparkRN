@@ -17,7 +17,7 @@ class CategoriesListScreen extends Component {
     }
 
     componentDidMount(){
-      this.props.GetCategories(this.props.token, this.props.defaultStoreID);
+      this.props.GetCategories(this.props.defaultStoreID);
     }
   
     getCategoryName(categoryId) {
@@ -35,7 +35,7 @@ class CategoriesListScreen extends Component {
 
     handleDelete = () => {
       this.setState({ modalVisible: false, categoryID: null });
-      this.props.RemoveCategory(this.props.token, this.state.categoryID, ()=> {
+      this.props.RemoveCategory(this.state.categoryID, ()=> {
         Alert.alert('Categoría eliminada');
       });
     };
@@ -143,7 +143,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   categories: state.categoryReducer.categories,
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

@@ -17,7 +17,7 @@ class HotelRoomListScreen extends Component {
     }
 
     componentDidMount(){
-      this.props.GetHotelRooms(this.props.token, this.props.defaultStoreID);
+      this.props.GetHotelRooms(this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -30,7 +30,7 @@ class HotelRoomListScreen extends Component {
 
     handleDelete = () => {
       this.setState({ modalVisible: false, roomID: null });
-      this.props.RemoveHotelRoom(this.props.token, this.state.roomID, ()=>{
+      this.props.RemoveHotelRoom(this.state.roomID, ()=>{
         Alert.alert('Habitación eliminada');
       });
     };
@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
     hotelRooms: state.hotelRoomReducer.hotelRooms,
     hotelRoomTypes: state.appConfigReducer.hotelRoomTypes,
-    token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

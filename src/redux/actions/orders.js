@@ -5,13 +5,13 @@ export const ADD_ORDER = 'ADD_ORDER';
 export const ADD_ORDER_WITHOUT_ETHERNET = 'ADD_ORDER_WITHOUT_ETHERNET';
 export const CLEAR_ORDER_WITHOUT_ETHERNET = 'CLEAR_ORDER_WITHOUT_ETHERNET';
 
-export function GetOrders(token, storeID) {
-  return dispatch => {
+export function GetOrders(storeID) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'order/getOrders',
-      token,
       params: {
         storeID
       }
@@ -28,13 +28,13 @@ export function GetOrders(token, storeID) {
   }
 }
 
-export function AddOrder({token, storeID, callback, cashierID,waiterID,chefID,total,tableNumber,date,paymentMethod,orderStatus,customer,products}) {
-  return dispatch => {
+export function AddOrder({storeID, callback, cashierID,waiterID,chefID,total,tableNumber,date,paymentMethod,orderStatus,customer,products}) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'order/InsertOrder',
-      token,
       params: {
         cashierID,
         waiterID,
@@ -89,13 +89,13 @@ export function AddOrder({token, storeID, callback, cashierID,waiterID,chefID,to
   }
 }
 
-export function SyncOrders(token, orders) {
-  return dispatch => {
+export function SyncOrders(orders) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'order/SyncOrders',
-      token,
       showError: false,
       params: {
         data: JSON.stringify(orders)

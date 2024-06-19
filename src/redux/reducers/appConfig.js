@@ -1,7 +1,8 @@
-import { LOGIN, LOGIN_WITHOUT_ETHERNET, LOGOUT } from './../actions/appConfig';
+import { LOGIN, LOGIN_WITHOUT_ETHERNET, LOGOUT, OFFLINE_MODE } from './../actions/appConfig';
 
 const initialState = {
     isAuthenticated: false,
+    offlineMode: false,
     token: null,
     defaultStoreID: 0,
     user: null,
@@ -16,21 +17,22 @@ function reducer(state = initialState, action) {
   switch (action.type) {
       case LOGIN:
         return {
-            isAuthenticated: true,
-            token: action.token,
-            defaultStoreID: action.user.defaultStoreID,
-            hotelRoomTypes: action.hotelRoomTypes,
-            userTypeList: action.userTypeList,
-            userType: action.userType,
-            orderStatus: action.orderStatus,
-            hotelOrderType: action.hotelOrderType,
-            user: {
-              id: action.user.id,
-              username: action.user.username,
-              password: action.password,
-              name: action.user.name,
-              type: action.user.type
-            }
+          ...state,
+          isAuthenticated: true,
+          token: action.token,
+          defaultStoreID: action.user.defaultStoreID,
+          hotelRoomTypes: action.hotelRoomTypes,
+          userTypeList: action.userTypeList,
+          userType: action.userType,
+          orderStatus: action.orderStatus,
+          hotelOrderType: action.hotelOrderType,
+          user: {
+            id: action.user.id,
+            username: action.user.username,
+            password: action.password,
+            name: action.user.name,
+            type: action.user.type
+          }
         };
       case LOGOUT:
         return {
@@ -41,7 +43,13 @@ function reducer(state = initialState, action) {
         let isAuthenticated = state.user !== null ? (state.user.username === action.userName && state.user.password === action.password) : false;
         return {
           ...state,
-          isAuthenticated: isAuthenticated
+          isAuthenticated: isAuthenticated,
+          offlineMode: isAuthenticated
+        };
+      case OFFLINE_MODE:
+        return {
+          ...state,
+          offlineMode: action.mode
         };
     default:
       return state;

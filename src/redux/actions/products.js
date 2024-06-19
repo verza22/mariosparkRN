@@ -6,13 +6,13 @@ export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 
-export function GetProducts(token, storeID, categoryID, needCategories) {
-  return dispatch => {
+export function GetProducts(storeID, categoryID, needCategories) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'product/getProducts',
-      token,
       params: {
         storeID,
         categoryID: categoryID === null ? 0 : categoryID,
@@ -37,8 +37,11 @@ export function GetProducts(token, storeID, categoryID, needCategories) {
   }
 }
 
-export function AddProduct(token, storeID, name, description, price, categoryId, image, callback) {
-  return dispatch => {
+export function AddProduct(storeID, name, description, price, categoryId, image, callback) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    const token = state.appConfigReducer.token;
 
     const formData = new FormData();
     formData.append('image', {
@@ -61,6 +64,7 @@ export function AddProduct(token, storeID, name, description, price, categoryId,
 
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'product/AddOrUpdateProduct',
       headers,
@@ -84,8 +88,11 @@ export function AddProduct(token, storeID, name, description, price, categoryId,
   }
 }
 
-export function UpdateProduct(token, storeID, id, name, description, price, categoryId, image, callback) {
-  return dispatch => {
+export function UpdateProduct(storeID, id, name, description, price, categoryId, image, callback) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    const token = state.appConfigReducer.token;
 
     let changeImage = typeof image !== "string";
 
@@ -112,6 +119,7 @@ export function UpdateProduct(token, storeID, id, name, description, price, cate
 
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'product/AddOrUpdateProduct',
       headers,
@@ -135,13 +143,13 @@ export function UpdateProduct(token, storeID, id, name, description, price, cate
   }
 }
 
-export function RemoveProduct(token, id, callback) {
-  return dispatch => {
+export function RemoveProduct(id, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'product/RemoveProduct',
-      token,
       params: {
         productID: id
       }

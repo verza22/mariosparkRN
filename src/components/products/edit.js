@@ -51,7 +51,7 @@ class ProductEditFormScreen extends Component {
   
     saveProduct = () => {
       const { productID, productName, productDescription, productPrice, productCategory, productImage } = this.state;
-      this.props.UpdateProduct(this.props.token, this.props.defaultStoreID, productID, productName, productDescription, productPrice, productCategory, productImage, () => {
+      this.props.UpdateProduct(this.props.defaultStoreID, productID, productName, productDescription, productPrice, productCategory, productImage, () => {
         this.props.navigation.navigate('Productos');
       });
     };
@@ -149,7 +149,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   categories: state.categoryReducer.categories,
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

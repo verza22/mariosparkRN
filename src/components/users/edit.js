@@ -51,7 +51,7 @@ class UserEditFormScreen extends Component {
   
     save = () => {
       const { id, username, name, password, type } = this.state;
-      this.props.UpdateUser(this.props.token, id, username, name, password, type, this.props.defaultStoreID, ()=>{
+      this.props.UpdateUser(id, username, name, password, type, this.props.defaultStoreID, ()=>{
         this.props.navigation.navigate('Users');
       });
     };
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID,
   userTypeList: state.appConfigReducer.userTypeList
 });

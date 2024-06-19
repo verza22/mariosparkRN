@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-import { API_URL, API_TIME_OUT } from './../../config';
+import { API_URL, API_TIME_OUT, API_TIME_OUT_OFFLINE_MODE } from './../../config';
+import { HandleOfflineMode } from './appConfig'
 
 export const DATA_REQUEST = 'DATA_REQUEST';
 export const DATA_SUCCESS = 'DATA_SUCCESS';
@@ -12,10 +13,15 @@ export function DataRequest(){
     };
 };
 
-export function DataSuccess(){
-    return {
-        type: DATA_SUCCESS
-    };
+export function DataSuccess(handleOfflineMode = true){
+  return dispatch => {
+    dispatch({
+      type: DATA_SUCCESS
+    });
+    if(handleOfflineMode){
+      dispatch(HandleOfflineMode(false));
+    }
+  }
 };
 
 export function DataFailure(error) {
@@ -25,22 +31,26 @@ export function DataFailure(error) {
             payload: error
         });
         setTimeout(()=>{
-            dispatch(DataSuccess());
+            dispatch(DataSuccess(false));
         },5000);
     }
 };
 
 export function axiosRequest({
   dispatch, 
+  getState,
   url, 
   method = 'post',
-  params = null, 
-  token = null,
+  params = null,
   headers = null,
   showError = true
 }){
     return new Promise((resolve, reject) => {
         dispatch(DataRequest());
+
+        const state = getState();
+        const token = state.appConfigReducer.token;
+        const offlineMode = state.appConfigReducer.offlineMode;
 
         headers = headers === null ? {Authorization: `Bearer ${token}`} : headers;
 
@@ -49,7 +59,7 @@ export function axiosRequest({
           method: method,
           url: API_URL+url,
           data: params,
-          timeout: API_TIME_OUT 
+          timeout: offlineMode ? API_TIME_OUT_OFFLINE_MODE : API_TIME_OUT 
         })
         .then(res => {
             resolve(res.data);
@@ -67,8 +77,11 @@ export function axiosRequest({
           } else {
             errorReponse = 'Error message: '+JSON.stringify(error.message);
           }
-          if(showError){
+          if(showError && !offlineMode){
             dispatch(DataFailure(errorReponse));
+          }
+          if(offlineMode){
+            dispatch(DataSuccess(false));
           }
           reject(error);
         });

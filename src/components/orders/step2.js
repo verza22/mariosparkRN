@@ -80,7 +80,7 @@ class OrderStep2Screen extends Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPressHandler);
 
         if(this.props.users.length === 0){
-          this.props.GetUsers(this.props.token, this.props.defaultStoreID);
+          this.props.GetUsers(this.props.defaultStoreID);
         }
     }
 
@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     users: state.usersReducer.users,
-    token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

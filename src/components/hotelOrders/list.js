@@ -19,13 +19,13 @@ class HotelOrderListScreen extends Component {
     }
 
     componentDidMount(){
-      this.props.GetHotelOrders(this.props.token, this.props.defaultStoreID);
+      this.props.GetHotelOrders(this.props.defaultStoreID);
 
       if(this.props.customers.length === 0)
-        this.props.GetCustomers(this.props.token, this.props.defaultStoreID);
+        this.props.GetCustomers(this.props.defaultStoreID);
 
       if(this.props.rooms.length === 0)
-        this.props.GetHotelRooms(this.props.token, this.props.defaultStoreID);
+        this.props.GetHotelRooms(this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -38,7 +38,7 @@ class HotelOrderListScreen extends Component {
 
     handleDelete = () => {
       this.setState({ modalVisible: false, orderID: null });
-      this.props.RemoveHotelOrder(this.props.token, this.state.orderID, ()=>{
+      this.props.RemoveHotelOrder(this.state.orderID, ()=>{
         Alert.alert('Orden eliminada');
       });
     };
@@ -164,7 +164,6 @@ const mapStateToProps = state => ({
     customers: state.customerReducer.customers,
     rooms: state.hotelRoomReducer.hotelRooms,
     hotelRoomTypes: state.appConfigReducer.hotelRoomTypes,
-    token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

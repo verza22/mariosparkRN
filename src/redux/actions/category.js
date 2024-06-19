@@ -5,13 +5,13 @@ export const ADD_CATEGORY = 'ADD_CATEGORY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const REMOVE_CATEGORY = 'REMOVE_CATEGORY';
 
-export function GetCategories(token, storeID) {
-  return dispatch => {
+export function GetCategories(storeID) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'get',
-      url: 'category/'+storeID,
-      token
+      url: 'category/'+storeID
     })
     .then(res=>{
       dispatch(DataSuccess());
@@ -25,8 +25,11 @@ export function GetCategories(token, storeID) {
   }
 }
 
-export function AddCategory(token, storeID, name, image, callback) {
-  return dispatch => {
+export function AddCategory(storeID, name, image, callback) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    const token = state.appConfigReducer.token;
 
     const formData = new FormData();
     formData.append('image', {
@@ -46,6 +49,7 @@ export function AddCategory(token, storeID, name, image, callback) {
 
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'category/AddOrUpdateCategory',
       headers,
@@ -66,8 +70,11 @@ export function AddCategory(token, storeID, name, image, callback) {
   }
 }
 
-export function UpdateCategory(token, storeID, id, name, image, callback) {
-  return dispatch => {
+export function UpdateCategory(storeID, id, name, image, callback) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    const token = state.appConfigReducer.token;
 
     let changeImage = typeof image !== "string";
 
@@ -91,6 +98,7 @@ export function UpdateCategory(token, storeID, id, name, image, callback) {
 
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'category/AddOrUpdateCategory',
       headers,
@@ -111,13 +119,13 @@ export function UpdateCategory(token, storeID, id, name, image, callback) {
   }
 }
 
-export function RemoveCategory(token, id, callback) {
-  return dispatch => {
+export function RemoveCategory(id, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'category/RemoveCategory',
-      token,
       params: {
         categoryID: id
       }

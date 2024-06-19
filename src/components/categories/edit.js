@@ -58,7 +58,7 @@ class CategoryEditFormScreen extends Component {
   
     saveCategory = () => {
       const { categoryID, categoryName, categoryImage } = this.state;
-      this.props.UpdateCategory(this.props.token, this.props.defaultStoreID, categoryID, categoryName, categoryImage, ()=>{
+      this.props.UpdateCategory(this.props.defaultStoreID, categoryID, categoryName, categoryImage, ()=>{
         this.props.navigation.navigate('Categorias');
       });
     };
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

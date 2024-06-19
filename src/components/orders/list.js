@@ -16,7 +16,7 @@ class OrdersListScreen extends Component {
     }
 
     componentDidMount(){
-      this.props.GetOrders(this.props.token, this.props.defaultStoreID);
+      this.props.GetOrders(this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
     orders: state.ordersReducer.orders,
     authUser: state.appConfigReducer.user,
-    token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID,
     userType: state.appConfigReducer.userType
 });

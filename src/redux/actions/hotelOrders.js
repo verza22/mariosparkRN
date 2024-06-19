@@ -6,13 +6,13 @@ export const UPDATE_HOTEL_ORDER = 'UPDATE_HOTEL_ORDER';
 export const ADD_HOTEL_ORDER = 'ADD_HOTEL_ORDER';
 export const ADD_HOTEL_ORDER_WITHOUT_ETHERNET = 'ADD_HOTEL_ORDER_WITHOUT_ETHERNET';
 
-export function GetHotelOrders(token, storeID) {
-  return dispatch => {
+export function GetHotelOrders(storeID) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'hotelOrder/GetHotelOrders',
-      token,
       params: {
         storeID
       }
@@ -29,13 +29,13 @@ export function GetHotelOrders(token, storeID) {
   }
 }
 
-export function RemoveHotelOrder(token, id, callback) {
-  return dispatch => {
+export function RemoveHotelOrder(id, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'hotelOrder/RemoveHotelOrder',
-      token,
       params: {
         orderID: id
       }
@@ -53,13 +53,13 @@ export function RemoveHotelOrder(token, id, callback) {
   }
 }
 
-export function UpdateHotelOrder(token,id,userID,total,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
-  return dispatch => {
+export function UpdateHotelOrder(id,userID,total,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'hotelOrder/AddOrUpdateHotelOrder',
-      token,
       params: {
         orderID: id,
         userID,
@@ -94,13 +94,13 @@ export function UpdateHotelOrder(token,id,userID,total,dateInMask,dateOutMask, d
   }
 }
   
-export function AddHotelOrder(token,userID,total,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
-  return dispatch => {
+export function AddHotelOrder(userID,total,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'hotelOrder/AddOrUpdateHotelOrder',
-      token,
       params: {
         orderID: 0,
         userID,

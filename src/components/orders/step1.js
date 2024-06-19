@@ -32,7 +32,7 @@ class OrderStep1Screen extends Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPressHandler);
 
         if(this.props.products.length === 0){
-          this.props.GetProducts(this.props.token, this.props.defaultStoreID, 0, true);
+          this.props.GetProducts(this.props.defaultStoreID, 0, true);
         }
     }
 
@@ -161,7 +161,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   categories: state.categoryReducer.categories,
   products: state.productsReducer.products,
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

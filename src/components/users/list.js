@@ -17,7 +17,7 @@ class UsersListScreen extends Component {
     }
 
     componentDidMount(){
-      this.props.GetUsers(this.props.token, this.props.defaultStoreID);
+      this.props.GetUsers(this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -30,7 +30,7 @@ class UsersListScreen extends Component {
 
     handleDelete = () => {
       this.setState({ modalVisible: false, userID: null });
-      this.props.RemoveUser(this.props.token, this.state.userID, ()=>{
+      this.props.RemoveUser(this.state.userID, ()=>{
         Alert.alert('Usuario eliminado');
       });
     };
@@ -135,7 +135,6 @@ const mapStateToProps = state => {
   const userType = state.appConfigReducer.userType;
   return {
     authUser,
-    token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID,
     users: authUser.type === userType["ADMIN"] ? state.usersReducer.users : state.usersReducer.users.filter(c=> c.type === userType["WAITER"])
   }

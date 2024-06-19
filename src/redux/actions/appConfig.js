@@ -4,10 +4,11 @@ import { transformArrayToObject } from './../../components/lib/util';
 export const LOGIN = 'LOGIN';
 export const LOGIN_WITHOUT_ETHERNET = 'LOGIN_WITHOUT_ETHERNET';
 export const LOGOUT = 'LOGOUT';
+export const OFFLINE_MODE = 'OFFLINE_MODE';
 
 export function Login(userName, password) {
-  return dispatch => {
-    axiosRequest({dispatch, url: 'auth/Login', params: { userName, password }})
+  return (dispatch, getState) => {
+    axiosRequest({dispatch, getState, url: 'auth/Login', params: { userName, password }})
     .then(res=>{
       if(res.user.id > 0){
         dispatch(DataSuccess());
@@ -44,5 +45,12 @@ export function Login(userName, password) {
 export function Logout() {
   return {
     type: LOGOUT
+  };
+}
+
+export function HandleOfflineMode(mode) {
+  return {
+    type: OFFLINE_MODE,
+    mode
   };
 }

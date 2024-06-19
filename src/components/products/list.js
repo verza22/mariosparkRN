@@ -20,7 +20,7 @@ class ProductListScreen extends Component {
 
     componentDidMount(){
       const needCategories = this.props.categories.length === 0;
-      this.props.GetProducts(this.props.token, this.props.defaultStoreID, 0, needCategories);
+      this.props.GetProducts(this.props.defaultStoreID, 0, needCategories);
     }
   
     getCategoryName(categoryId) {
@@ -38,7 +38,7 @@ class ProductListScreen extends Component {
 
     handleDelete = () => {
       this.setState({ modalVisible: false, productID: null });
-      this.props.RemoveProduct(this.props.token, this.state.productID, () => {
+      this.props.RemoveProduct(this.state.productID, () => {
         Alert.alert('Producto eliminado');
       });
     };
@@ -161,7 +161,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   categories: state.categoryReducer.categories,
   products: state.productsReducer.products,
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

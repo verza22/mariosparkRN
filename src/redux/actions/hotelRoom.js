@@ -5,13 +5,13 @@ export const REMOVE_HOTEL_ROOM = 'REMOVE_HOTEL_ROOM';
 export const UPDATE_HOTEL_ROOM = 'UPDATE_HOTEL_ROOM';
 export const ADD_HOTEL_ROOM = 'ADD_HOTEL_ROOM';
 
-export function GetHotelRooms(token, storeID) {
-  return dispatch => {
+export function GetHotelRooms(storeID) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'hotelRoom/getHotelRooms',
-      token,
       params: {
         storeID
       }
@@ -28,13 +28,13 @@ export function GetHotelRooms(token, storeID) {
   }
 }
 
-export function RemoveHotelRoom(token, id, callback) {
-  return dispatch => {
+export function RemoveHotelRoom(id, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'hotelRoom/RemoveHotelRoom',
-      token,
       params: {
         roomID: id
       }
@@ -52,13 +52,13 @@ export function RemoveHotelRoom(token, id, callback) {
   }
 }
 
-export function UpdateHotelRoom(token, id, name, capacity, typeAux, storeID, callback) {
-  return dispatch => {
+export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'hotelRoom/AddOrUpdateHotelRoom',
-      token,
       params: {
         id,
         name,
@@ -83,13 +83,13 @@ export function UpdateHotelRoom(token, id, name, capacity, typeAux, storeID, cal
   }
 }
   
-export function AddHotelRoom(token, name, capacity, typeAux, storeID, callback) {
-  return dispatch => {
+export function AddHotelRoom(name, capacity, typeAux, storeID, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'hotelRoom/AddOrUpdateHotelRoom',
-      token,
       params: {
         id: 0,
         name,

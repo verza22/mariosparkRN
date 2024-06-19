@@ -1,9 +1,9 @@
 import React, { Component  }  from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { withTheme } from 'react-native-paper';
+import { withTheme, Icon } from 'react-native-paper';
 import { connect } from 'react-redux';
 
 import GlobalLoading from './lib/globalLoading';
@@ -71,6 +71,15 @@ class App extends Component {
         headerTitleStyle: {
             fontWeight: 'bold',
         },
+        headerTitle: () => (
+          <View style={styles.headerTitleContainer}>
+            <Text style={styles.headerTitle}>{title}</Text>
+            {
+              this.props.offlineMode &&
+              <Icon source="cloud-alert" size={24} color="#fff" />
+            }
+          </View>
+        ),
       }
   }
 
@@ -167,10 +176,30 @@ class App extends Component {
   }
 };
 
+const styles = StyleSheet.create({
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingRight: 16,
+  },
+  headerTitle: {
+    marginLeft: 8,
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  headerIcon: {
+    marginLeft: 'auto',
+  },
+});
+
 const mapStateToProps = state => ({
   isAuthenticated: state.appConfigReducer.isAuthenticated,
   authUser: state.appConfigReducer.user,
-  userType: state.appConfigReducer.userType
+  userType: state.appConfigReducer.userType,
+  offlineMode: state.appConfigReducer.offlineMode
 });
 
 export default connect(mapStateToProps, null)(withTheme(App));

@@ -17,7 +17,7 @@ class CustomersListScreen extends Component {
     }
 
     componentDidMount(){
-      this.props.GetCustomers(this.props.token, this.props.defaultStoreID);
+      this.props.GetCustomers(this.props.defaultStoreID);
     }
 
     handlePress(item){
@@ -30,7 +30,7 @@ class CustomersListScreen extends Component {
 
     handleDelete = () => {
       this.setState({ modalVisible: false, customerID: null });
-      this.props.RemoveCustomer(this.props.token, this.state.customerID, ()=>{
+      this.props.RemoveCustomer(this.state.customerID, ()=>{
         Alert.alert('Cliente eliminado');
       });
     };
@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   customers: state.customerReducer.customers,
-  token: state.appConfigReducer.token,
   defaultStoreID: state.appConfigReducer.defaultStoreID
 });
 

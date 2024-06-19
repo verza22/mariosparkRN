@@ -26,12 +26,14 @@ class SyncManager extends Component {
     }
 
     executeSync(){
-        if(this.props.ordersToUpload.length > 0){
-            console.log("////SYNC ORDERS////")
-            this.props.SyncOrders(this.props.token, this.props.ordersToUpload);
-        }
-        if(this.props.hotelOrdersToUpload.length > 0){
-
+        if(this.props.isAuthenticated){
+            if(this.props.ordersToUpload.length > 0){
+                console.log("////SYNC ORDERS////")
+                this.props.SyncOrders(this.props.ordersToUpload);
+            }
+            if(this.props.hotelOrdersToUpload.length > 0){
+    
+            }
         }
     }
   
@@ -41,7 +43,7 @@ class SyncManager extends Component {
   }
 
 const mapStateToProps = state => ({
-    token: state.appConfigReducer.token,
+    isAuthenticated: state.appConfigReducer.isAuthenticated,
     ordersToUpload: state.ordersReducer.ordersToUpload,
     hotelOrdersToUpload: state.hotelOrderReducer.hotelOrdersToUpload
 });

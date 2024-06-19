@@ -49,7 +49,7 @@ class HotelRoomEditFormScreen extends Component {
   
     save = () => {
       const { id, name, capacity, type } = this.state;
-      this.props.UpdateHotelRoom(this.props.token, id, name, Number(capacity), type, this.props.defaultStoreID, ()=>{
+      this.props.UpdateHotelRoom(id, name, Number(capacity), type, this.props.defaultStoreID, ()=>{
         this.props.navigation.navigate('HotelRooms');
       });
     };
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID,
     hotelRoomTypes: state.appConfigReducer.hotelRoomTypes
 });

@@ -5,13 +5,13 @@ export const REMOVE_CUSTOMER = 'REMOVE_CUSTOMER';
 export const UPDATE_CUSTOMER = 'UPDATE_CUSTOMER';
 export const ADD_CUSTOMER = 'ADD_CUSTOMER';
 
-export function GetCustomers(token, storeID) {
-  return dispatch => {
+export function GetCustomers(storeID) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'customer/getCustomers',
-      token,
       params: {
         storeID
       }
@@ -28,13 +28,13 @@ export function GetCustomers(token, storeID) {
   }
 }
 
-export function RemoveCustomer(token, id, callback) {
-  return dispatch => {
+export function RemoveCustomer(id, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'customer/RemoveCustomer',
-      token,
       params: {
         customerID: id
       }
@@ -52,13 +52,13 @@ export function RemoveCustomer(token, id, callback) {
   }
 }
   
-export function UpdateCustomer(token, id, name, dni, email, phone, address, storeID, callback) {
-  return dispatch => {
+export function UpdateCustomer(id, name, dni, email, phone, address, storeID, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'customer/AddOrUpdateCustomer',
-      token,
       params: {
         id,
         name,
@@ -87,13 +87,13 @@ export function UpdateCustomer(token, id, name, dni, email, phone, address, stor
   }
 }
 
-export function AddCustomer(token, name, dni, email, phone, address, storeID, callback) {
-  return dispatch => {
+export function AddCustomer(name, dni, email, phone, address, storeID, callback) {
+  return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
+      getState,
       method: 'post',
       url: 'customer/AddOrUpdateCustomer',
-      token,
       params: {
         id: 0,
         name,

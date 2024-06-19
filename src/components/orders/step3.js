@@ -58,7 +58,7 @@ class OrderStep3Screen extends Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPressHandler);
 
         if(this.props.customers.length === 0){
-          this.props.GetCustomers(this.props.token, this.props.defaultStoreID);
+          this.props.GetCustomers(this.props.defaultStoreID);
         }
     }
 
@@ -100,7 +100,6 @@ class OrderStep3Screen extends Component {
 
         this.props.AddOrder({
           ...order,
-          token: this.props.token,
           storeID: this.props.defaultStoreID,
           callback: () => {
             this.props.navigation.navigate('Orders');
@@ -165,7 +164,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   const userType = state.appConfigReducer.userType;
   return {
-    token: state.appConfigReducer.token,
     defaultStoreID: state.appConfigReducer.defaultStoreID,
     customers: state.customerReducer.customers,
     userAuth: state.appConfigReducer.user,
