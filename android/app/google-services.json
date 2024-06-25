@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1051827716559",
+    "project_id": "mariospark-182a8",
+    "storage_bucket": "mariospark-182a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051827716559:android:09835d93ed3c6d758752ba",
+        "android_client_info": {
+          "package_name": "com.mariospark"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5T1wjVjvtu8-fO2GZ4-XmM0-VOAd69r4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

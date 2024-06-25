@@ -1,9 +1,10 @@
-import { LOGIN, LOGIN_WITHOUT_ETHERNET, LOGOUT, OFFLINE_MODE } from './../actions/appConfig';
+import { LOGIN, LOGIN_WITHOUT_ETHERNET, LOGOUT, OFFLINE_MODE, UPDATE_USER_FCM_TOKEN } from './../actions/appConfig';
 
 const initialState = {
     isAuthenticated: false,
     offlineMode: false,
     token: null,
+    fcmToken: null,
     defaultStoreID: 0,
     user: null,
     hotelRoomTypes: [],
@@ -50,6 +51,11 @@ function reducer(state = initialState, action) {
         return {
           ...state,
           offlineMode: action.mode
+        };
+      case UPDATE_USER_FCM_TOKEN:
+        return {
+          ...state,
+          fcmToken: action.token
         };
     default:
       return state;

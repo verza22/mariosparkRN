@@ -3,8 +3,10 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import CryptoJS from "rn-crypto-js";
+import messaging from '@react-native-firebase/messaging';
 
-import { Login } from '../../redux/actions/appConfig'
+import { Login, UpdateUserToken } from '../../redux/actions/appConfig'
+import { DataFailure } from '../../redux/actions/dataRequest'
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -18,6 +20,26 @@ class LoginScreen extends Component {
     };
   }
 
+  componentDidMount() {
+    this.requestUserPermission();
+  }
+
+  requestUserPermission() {
+    messaging().requestPermission()
+      .then(authStatus => {
+        const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+                        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+        if (enabled) {
+          console.log('Authorization status:', authStatus);
+        }
+      })
+      .catch(error => {
+        this.props.DataFailure('Failed to request user permission');
+        console.error('Failed to request user permission', error);
+      });
+  }
+
   handleLogin() {
     let password = this.state.password;
 
@@ -25,7 +47,16 @@ class LoginScreen extends Component {
         password = CryptoJS.SHA1(password).toString();
     }
 
-    this.props.Login(this.state.username, password);
+    this.props.Login(this.state.username, password, (userID)=> {
+      messaging().getToken()
+      .then(fcmToken => {
+        if (fcmToken) {
+          this.props.UpdateUserToken(userID, fcmToken);
+        } else {
+          this.props.DataFailure('Failed to get the token.');
+        }
+      });
+    });
   };
 
   render() {
@@ -69,7 +100,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    Login
+    Login,
+    DataFailure,
+    UpdateUserToken
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginScreen));
