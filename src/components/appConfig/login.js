@@ -20,26 +20,6 @@ class LoginScreen extends Component {
     };
   }
 
-  componentDidMount() {
-    this.requestUserPermission();
-  }
-
-  requestUserPermission() {
-    messaging().requestPermission()
-      .then(authStatus => {
-        const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-                        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-        if (enabled) {
-          console.log('Authorization status:', authStatus);
-        }
-      })
-      .catch(error => {
-        this.props.DataFailure('Failed to request user permission');
-        console.error('Failed to request user permission', error);
-      });
-  }
-
   handleLogin() {
     let password = this.state.password;
 

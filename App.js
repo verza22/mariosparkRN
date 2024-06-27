@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './src/redux/store';
 import Navigation from './src/components/navigation'
 import SyncManager from './src/components/syncManager'
+import NotificationManager from './src/components/notificationManager'
 
 class App extends React.Component {
 
@@ -21,6 +22,7 @@ class App extends React.Component {
         <PersistGate loading={null} persistor={persistor}>
           <Navigation/>
           <SyncManager/>
+          <NotificationManager/>
         </PersistGate>
        </Provider>
       </>
