@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_WITHOUT_ETHERNET, LOGOUT, OFFLINE_MODE, UPDATE_USER_FCM_TOKEN } from './../actions/appConfig';
+import { LOGIN, LOGIN_WITHOUT_ETHERNET, LOGOUT, OFFLINE_MODE, UPDATE_USER_FCM_TOKEN, UPDATE_USER_PASSWORD } from './../actions/appConfig';
 
 const initialState = {
     isAuthenticated: false,
@@ -56,6 +56,14 @@ function reducer(state = initialState, action) {
         return {
           ...state,
           fcmToken: action.token
+        };
+      case UPDATE_USER_PASSWORD:
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            password: action.password
+          }
         };
     default:
       return state;

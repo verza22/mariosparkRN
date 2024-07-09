@@ -1,3 +1,4 @@
+import CryptoJS from "rn-crypto-js";
 import { DataSuccess, DataFailure, axiosRequest } from './dataRequest';
 import { transformArrayToObject } from './../../components/lib/util';
 
@@ -6,6 +7,7 @@ export const LOGIN_WITHOUT_ETHERNET = 'LOGIN_WITHOUT_ETHERNET';
 export const LOGOUT = 'LOGOUT';
 export const OFFLINE_MODE = 'OFFLINE_MODE';
 export const UPDATE_USER_FCM_TOKEN = 'UPDATE_USER_FCM_TOKEN';
+export const UPDATE_USER_PASSWORD = 'UPDATE_USER_PASSWORD';
 
 export function Login(userName, password, callback) {
   return (dispatch, getState) => {
@@ -79,6 +81,34 @@ export function UpdateUserToken(id, token) {
         });
       }else{
         dispatch(DataFailure("Fallo al guardar el fcm token en el servidor"));
+      }
+    })
+  }
+}
+
+export function UpdateUserPassword(id, password, callback) {
+  return (dispatch, getState) => {
+    if(password !== ""){
+      password = CryptoJS.SHA1(password).toString();
+    }
+    axiosRequest({
+      dispatch, 
+      getState,
+      method: 'post',
+      url: 'user/UpdateUserPassword',
+      params: {
+        userID: id,
+        password
+      }
+    })
+    .then(res=>{
+      dispatch(DataSuccess());
+      if(res > 0){
+        dispatch({
+          type: UPDATE_USER_PASSWORD,
+          password
+        });
+        callback();
       }
     })
   }

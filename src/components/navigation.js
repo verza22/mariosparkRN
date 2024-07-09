@@ -3,23 +3,27 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { withTheme, Icon } from 'react-native-paper';
+import { withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 
 import GlobalLoading from './lib/globalLoading';
 
 import CategoriesListScreen from './categories/list'
-import ProductListScreen from './products/list'
-import ProductFormScreen from './products/add'
 import CategoryFormScreen from './categories/add'
 import CategoryEditFormScreen from './categories/edit'
+
+import ProductListScreen from './products/list'
+import ProductFormScreen from './products/add'
 import ProductEditFormScreen from './products/edit'
+
 import CustomerListScreen from './customers/list'
 import CustomerEditFormScreen from './customers/edit'
 import CustomerFormScreen from './customers/add'
+
 import UsersListScreen from './users/list'
 import UserEditFormScreen from './users/edit'
 import UserFormScreen from './users/add'
+import UpdatePasswordFormScreen from './users/updatePassword'
 
 import OrdersListScreen from './orders/list'
 import OrderShowScreen from './orders/show'
@@ -37,6 +41,8 @@ import HotelRoomEditFormScreen from './hotelRooms/edit'
 import HotelOrderListScreen from './hotelOrders/list'
 import HotelOrderFormScreen from './hotelOrders/add'
 import HotelOrderEditFormScreen from './hotelOrders/edit'
+
+import NavigationMenu from './appConfig/navigationMenu'
 
 const HomeScreen = ({ navigation }) => {
   return (
@@ -60,7 +66,7 @@ class App extends Component {
     };
   }
 
-  getOption(title, display = true){
+  getOption(title, display = true, navigation){
       return {
         title: title,
         drawerItemStyle: { display: display ? '' : 'none' },
@@ -72,13 +78,7 @@ class App extends Component {
             fontWeight: 'bold',
         },
         headerTitle: () => (
-          <View style={styles.headerTitleContainer}>
-            <Text style={styles.headerTitle}>{title}</Text>
-            {
-              this.props.offlineMode &&
-              <Icon source="cloud-alert" size={24} color="#fff" />
-            }
-          </View>
+          <NavigationMenu title={title} navigation={navigation}/>
         ),
       }
   }
@@ -96,110 +96,200 @@ class App extends Component {
     }
   }
 
-  render(){
+  render() {
     return (
       <NavigationContainer>
-        {
-          this.props.isAuthenticated ? 
+        {this.props.isAuthenticated ? (
           <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" component={HomeScreen} options={this.getOption("Home")} />
-
-            <Drawer.Screen name="Orders" component={OrdersListScreen} options={this.getOption("Ordenes")} />
-            <Drawer.Screen name="ShowOrder" component={OrderShowScreen} options={this.getOption("Detalle Orden", false)} />
-            <Drawer.Screen name="OrderStep1" component={OrderStep1Screen} options={this.getOption("Escoger Productos", false)} />
-            <Drawer.Screen name="OrderStep2" component={OrderStep2Screen} options={this.getOption("Checkout", false)} />
-            <Drawer.Screen name="OrderStep3" component={OrderStep3Screen} options={this.getOption("Cliente", false)} />
-
-            {
-              this.checkAccess('category') && 
+            <Drawer.Screen
+              name="Home"
+              component={HomeScreen}
+              options={({ navigation }) => this.getOption("Home", true, navigation)}
+            />
+  
+            <Drawer.Screen
+              name="Orders"
+              component={OrdersListScreen}
+              options={({ navigation }) => this.getOption("Ordenes", true, navigation)}
+            />
+            <Drawer.Screen
+              name="ShowOrder"
+              component={OrderShowScreen}
+              options={({ navigation }) => this.getOption("Detalle Orden", false, navigation)}
+            />
+            <Drawer.Screen
+              name="OrderStep1"
+              component={OrderStep1Screen}
+              options={({ navigation }) => this.getOption("Escoger Productos", false, navigation)}
+            />
+            <Drawer.Screen
+              name="OrderStep2"
+              component={OrderStep2Screen}
+              options={({ navigation }) => this.getOption("Checkout", false, navigation)}
+            />
+            <Drawer.Screen
+              name="OrderStep3"
+              component={OrderStep3Screen}
+              options={({ navigation }) => this.getOption("Cliente", false, navigation)}
+            />
+  
+            {this.checkAccess('category') && (
               <>
-                <Drawer.Screen name="Categorias" component={CategoriesListScreen} options={this.getOption("Categorías")} />
-                <Drawer.Screen name="AddCategoria" component={CategoryFormScreen} options={this.getOption("Añadir Categoría", false)} />
-                <Drawer.Screen name="EditCategoria" component={CategoryEditFormScreen} options={this.getOption("Editar Categoría", false)} />
+                <Drawer.Screen
+                  name="Categorias"
+                  component={CategoriesListScreen}
+                  options={({ navigation }) => this.getOption("Categorías", true, navigation)}
+                />
+                <Drawer.Screen
+                  name="AddCategoria"
+                  component={CategoryFormScreen}
+                  options={({ navigation }) => this.getOption("Añadir Categoría", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="EditCategoria"
+                  component={CategoryEditFormScreen}
+                  options={({ navigation }) => this.getOption("Editar Categoría", false, navigation)}
+                />
               </>
-            }
-
-            {
-              this.checkAccess('product') && 
+            )}
+  
+            {this.checkAccess('product') && (
               <>
-                <Drawer.Screen name="Productos" component={ProductListScreen} options={this.getOption("Productos")} />
-                <Drawer.Screen name="AddProducto" component={ProductFormScreen} options={this.getOption("Añadir Producto", false)} />
-                <Drawer.Screen name="EditProducto" component={ProductEditFormScreen} options={this.getOption("Editar Producto", false)} />
+                <Drawer.Screen
+                  name="Productos"
+                  component={ProductListScreen}
+                  options={({ navigation }) => this.getOption("Productos", true, navigation)}
+                />
+                <Drawer.Screen
+                  name="AddProducto"
+                  component={ProductFormScreen}
+                  options={({ navigation }) => this.getOption("Añadir Producto", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="EditProducto"
+                  component={ProductEditFormScreen}
+                  options={({ navigation }) => this.getOption("Editar Producto", false, navigation)}
+                />
               </>
-            }
-
-            {
-              this.checkAccess('customer') && 
+            )}
+  
+            {this.checkAccess('customer') && (
               <>
-                <Drawer.Screen name="Customers" component={CustomerListScreen} options={this.getOption("Clientes")} />
-                <Drawer.Screen name="AddCustomer" component={CustomerFormScreen} options={this.getOption("Añadir Cliente", false)} />
-                <Drawer.Screen name="EditCustomer" component={CustomerEditFormScreen} options={this.getOption("Editar Cliente", false)} />
+                <Drawer.Screen
+                  name="Customers"
+                  component={CustomerListScreen}
+                  options={({ navigation }) => this.getOption("Clientes", true, navigation)}
+                />
+                <Drawer.Screen
+                  name="AddCustomer"
+                  component={CustomerFormScreen}
+                  options={({ navigation }) => this.getOption("Añadir Cliente", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="EditCustomer"
+                  component={CustomerEditFormScreen}
+                  options={({ navigation }) => this.getOption("Editar Cliente", false, navigation)}
+                />
               </>
-            }
-
-            {
-              this.checkAccess('hotelRoom') && 
+            )}
+  
+            {this.checkAccess('hotelRoom') && (
               <>
-                <Drawer.Screen name="HotelRooms" component={HotelRoomListScreen} options={this.getOption("Habitaciones")} />
-                <Drawer.Screen name="AddHotelRoom" component={HotelRoomFormScreen} options={this.getOption("Añadir Habitación", false)} />
-                <Drawer.Screen name="EditHotelRoom" component={HotelRoomEditFormScreen} options={this.getOption("Editar Habitación", false)} />
+                <Drawer.Screen
+                  name="HotelRooms"
+                  component={HotelRoomListScreen}
+                  options={({ navigation }) => this.getOption("Habitaciones", true, navigation)}
+                />
+                <Drawer.Screen
+                  name="AddHotelRoom"
+                  component={HotelRoomFormScreen}
+                  options={({ navigation }) => this.getOption("Añadir Habitación", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="EditHotelRoom"
+                  component={HotelRoomEditFormScreen}
+                  options={({ navigation }) => this.getOption("Editar Habitación", false, navigation)}
+                />
               </>
-            }
-
-            {
-              this.checkAccess('hotelRoom') && 
+            )}
+  
+            {this.checkAccess('hotelRoom') && (
               <>
-                <Drawer.Screen name="HotelOrders" component={HotelOrderListScreen} options={this.getOption("Hospedaje")} />
-                <Drawer.Screen name="AddHotelOrder" component={HotelOrderFormScreen} options={this.getOption("Añadir Hospedaje", false)} />
-                <Drawer.Screen name="EditHotelOrder" component={HotelOrderEditFormScreen} options={this.getOption("Editar Hospedaje", false)} />
+                <Drawer.Screen
+                  name="HotelOrders"
+                  component={HotelOrderListScreen}
+                  options={({ navigation }) => this.getOption("Hospedaje", true, navigation)}
+                />
+                <Drawer.Screen
+                  name="AddHotelOrder"
+                  component={HotelOrderFormScreen}
+                  options={({ navigation }) => this.getOption("Añadir Hospedaje", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="EditHotelOrder"
+                  component={HotelOrderEditFormScreen}
+                  options={({ navigation }) => this.getOption("Editar Hospedaje", false, navigation)}
+                />
               </>
-            }
-            
-            {
-              this.checkAccess('user') && 
+            )}
+  
+            {this.checkAccess('user') && (
               <>
-                <Drawer.Screen name="Users" component={UsersListScreen} options={this.getOption("Usuarios")} />
-                <Drawer.Screen name="EditUser" component={UserEditFormScreen} options={this.getOption("Editar Usuario", false)} />
-                <Drawer.Screen name="AddUser" component={UserFormScreen} options={this.getOption("Añadir Usuario", false)} />
+                <Drawer.Screen
+                  name="Users"
+                  component={UsersListScreen}
+                  options={({ navigation }) => this.getOption("Usuarios", true, navigation)}
+                />
+                <Drawer.Screen
+                  name="EditUser"
+                  component={UserEditFormScreen}
+                  options={({ navigation }) => this.getOption("Editar Usuario", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="AddUser"
+                  component={UserFormScreen}
+                  options={({ navigation }) => this.getOption("Añadir Usuario", false, navigation)}
+                />
               </>
-            }
-
-            <Drawer.Screen name="Logout" component={LogoutScreen} options={this.getOption("Salir")} />
-          </Drawer.Navigator> :
+            )}
+  
+            <Drawer.Screen
+              name="Logout"
+              component={LogoutScreen}
+              options={({ navigation }) => this.getOption("Salir", false, navigation)}
+            />
+            <Drawer.Screen
+              name="UpdatePassword"
+              component={UpdatePasswordFormScreen}
+              options={({ navigation }) => this.getOption("Cambiar Contraseña", false, navigation)}
+            />
+          </Drawer.Navigator>
+        ) : (
           <Stack.Navigator>
-            <Stack.Screen name="Login" component={LoginScreen} options={this.getOption("Login")} />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={({ navigation }) => this.getOption("Login", false, navigation)}
+            />
           </Stack.Navigator>
-        }
+        )}
         <GlobalLoading/>
       </NavigationContainer>
     );
   }
+  
 };
 
 const styles = StyleSheet.create({
-  headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingRight: 16,
-  },
-  headerTitle: {
-    marginLeft: 8,
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
   headerIcon: {
     marginLeft: 'auto',
-  },
+  }
 });
 
 const mapStateToProps = state => ({
   isAuthenticated: state.appConfigReducer.isAuthenticated,
   authUser: state.appConfigReducer.user,
-  userType: state.appConfigReducer.userType,
-  offlineMode: state.appConfigReducer.offlineMode
+  userType: state.appConfigReducer.userType
 });
 
 export default connect(mapStateToProps, null)(withTheme(App));
