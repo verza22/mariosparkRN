@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Modal, TextInput, Button } from 'react-native';
 import { List, FAB, withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
@@ -13,12 +13,18 @@ class OrderStep1Screen extends Component {
 
     this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
     this.onPressFab = this.onPressFab.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleOk = this.handleOk.bind(this);
 
     this.step2 = false;
 
     this.state = {
       selectedCategory: null,
-      products: []
+      products: [],
+      isModalVisible: false,
+      newProductName: '',
+      newProductPrice: ''
     };
   }
 
@@ -89,6 +95,26 @@ class OrderStep1Screen extends Component {
     this.props.navigation.navigate('OrderStep2', { products: this.state.products });
   };
 
+  openModal() {
+    this.setState({ isModalVisible: true });
+  }
+
+  closeModal() {
+    this.setState({ isModalVisible: false, newProductName: '', newProductPrice: '' });
+  }
+
+  handleOk() {
+    this.setState({ products: [...this.state.products, {
+      id: 0,
+      name: this.state.newProductName,
+      description: "",
+      price: ""+this.state.newProductPrice,
+      categoryId: 0,
+      image: ""
+    }] });
+    this.closeModal();
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -111,6 +137,9 @@ class OrderStep1Screen extends Component {
           renderItem={this.renderFoodItem}
           keyExtractor={item => item.id.toString()}
         />
+        <TouchableOpacity style={[styles.otherButton, { backgroundColor: this.colors.primary }]}  onPress={this.openModal}>
+          <Text style={styles.otherButtonText}>OTRO</Text>
+        </TouchableOpacity>
         {
           this.state.products.length > 0 &&
           <FAB
@@ -120,6 +149,38 @@ class OrderStep1Screen extends Component {
             onPress={this.onPressFab}
           />
         }
+        <Modal
+          transparent={true}
+          visible={this.state.isModalVisible}
+          onRequestClose={this.closeModal}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Otro Producto</Text>
+              <TextInput
+                placeholder="Nombre"
+                value={this.state.newProductName}
+                onChangeText={(text) => this.setState({ newProductName: text })}
+                style={styles.input}
+              />
+              <TextInput
+                placeholder="Precio"
+                value={this.state.newProductPrice}
+                onChangeText={(text) => this.setState({ newProductPrice: text })}
+                keyboardType="numeric"
+                style={styles.input}
+              />
+              <View style={styles.buttonContainer}>
+              <TouchableOpacity style={[styles.okButton, { backgroundColor: this.colors.primary }]} onPress={this.handleOk}>
+                  <Text style={styles.okButtonText}>OK</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.cancelButton} onPress={this.closeModal}>
+                  <Text style={styles.cancelButtonText}>Cancelar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -178,6 +239,74 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     lineHeight: 25, 
+    fontWeight: 'bold',
+  },
+  otherButton: {
+    backgroundColor: '#6200ee',
+    padding: 10,
+    margin: 16,
+    borderRadius: 30,
+    alignItems: 'center'
+  },
+  otherButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 20,
+  },
+  cancelButton: {
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 10,
+  },
+  cancelButtonText: {
+    color: '#000000',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  okButton: {
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    flex: 1,
+  },
+  okButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

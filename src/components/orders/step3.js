@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, ScrollView } from 'react-native';
-import { TextInput, withTheme, FAB, Checkbox, Text } from 'react-native-paper';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { TextInput, withTheme, FAB, Checkbox } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 import moment from 'moment';
 
 import RowVertical from './../lib/rowVertical';
 import SearchPicker from './../lib/searchPicker';
+import AddModal from './../customers/addModal';
 
 import { AddOrder } from '../../redux/actions/orders';
 import { GetCustomers } from '../../redux/actions/customer';
@@ -21,6 +22,9 @@ class OrderStep3Screen extends Component {
     this.waiterSelect = this.waiterSelect.bind(this);
     this.customerSelect = this.customerSelect.bind(this);
     this.onPressFab = this.onPressFab.bind(this);
+    this.openModal = this.openModal.bind(this);
+
+    this.refAddModal = React.createRef();
 
     let products = this.props.route.params.products;
 
@@ -129,6 +133,10 @@ class OrderStep3Screen extends Component {
     });
   };
 
+  openModal(){
+    this.refAddModal.current.open();
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -169,6 +177,12 @@ class OrderStep3Screen extends Component {
           style={styles.input}
           keyboardType="numeric"
         />
+        <TouchableOpacity style={[styles.otherButton, { backgroundColor: this.colors.primary }]} onPress={this.openModal}>
+          <Text style={styles.otherButtonText}>Nuevo Cliente</Text>
+        </TouchableOpacity>
+        <AddModal
+          innerRef={this.refAddModal}
+        />
         <FAB
           style={{ ...styles.fab, backgroundColor: this.colors.primary }}
           icon="check"
@@ -207,6 +221,17 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 20
+  },
+  otherButton: {
+    backgroundColor: '#6200ee',
+    padding: 10,
+    borderRadius: 30,
+    alignItems: 'center'
+  },
+  otherButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   }
 });
 
