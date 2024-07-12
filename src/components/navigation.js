@@ -42,9 +42,11 @@ import HotelOrderListScreen from './hotelOrders/list'
 import HotelOrderFormScreen from './hotelOrders/add'
 import HotelOrderEditFormScreen from './hotelOrders/edit'
 
+import HomeScreen from './home/home'
+
 import NavigationMenu from './appConfig/navigationMenu'
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreenDefault = ({ navigation }) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home Screen</Text>
@@ -101,11 +103,23 @@ class App extends Component {
       <NavigationContainer>
         {this.props.isAuthenticated ? (
           <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen
-              name="Home"
-              component={HomeScreen}
-              options={({ navigation }) => this.getOption("Home", true, navigation)}
-            />
+
+            {
+              this.props.authUser.type === this.props.userType["ADMIN"]
+              ?
+              <Drawer.Screen
+                name="Home"
+                component={HomeScreen}
+                options={({ navigation }) => this.getOption("Home", true, navigation)}
+              />
+              :
+              <Drawer.Screen
+                name="Home"
+                component={HomeScreenDefault}
+                options={({ navigation }) => this.getOption("Home", true, navigation)}
+              />
+            }
+            
   
             <Drawer.Screen
               name="Orders"
