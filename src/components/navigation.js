@@ -43,6 +43,7 @@ import HotelOrderFormScreen from './hotelOrders/add'
 import HotelOrderEditFormScreen from './hotelOrders/edit'
 
 import HomeScreen from './home/home'
+import AddWidgetFormScreen from './home/addWidget'
 
 import NavigationMenu from './appConfig/navigationMenu'
 
@@ -276,6 +277,11 @@ class App extends Component {
               name="UpdatePassword"
               component={UpdatePasswordFormScreen}
               options={({ navigation }) => this.getOption("Cambiar Contraseña", false, navigation)}
+            />
+            <Drawer.Screen
+              name="AddWidget"
+              component={AddWidgetFormScreen}
+              options={({ navigation }) => this.getOption("Añadir widget", false, navigation)}
             />
           </Drawer.Navigator>
         ) : (
