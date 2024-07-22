@@ -142,3 +142,27 @@ export function RemoveWidget(id, callback) {
     });
   }
 }
+
+export function UpdateWidgetPositions(userID, widgetIDs, callback) {
+  return (dispatch, getState) => {
+    axiosRequest({
+      dispatch, 
+      getState,
+      method: 'post',
+      url: 'widget/UpdateWidgetPositions',
+      params: {
+        userID,
+        widgetIDs: widgetIDs.join(',')
+      }
+    })
+    .then(res => {
+      dispatch(DataSuccess());
+      if (res === "ok") {
+        callback();
+      }
+    })
+    .catch(error => {
+      dispatch(DataFailure(error));
+    });
+  }
+}

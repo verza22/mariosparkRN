@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 import CustomPicker from '../lib/customPicker'
 
-import { AddWidget } from '../../redux/actions/widgets';
+import { UpdateWidget } from '../../redux/actions/widgets';
 
-class AddWidgetFormScreen extends Component {
+class EditWidgetFormScreen extends Component {
   constructor(props) {
     super(props);
     this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
@@ -33,28 +33,52 @@ class AddWidgetFormScreen extends Component {
         {value: 10, label: "OtherProductCount"},
     ];
 
+    let widget = this.props.route.params.widget;
+
     this.state = {
-      title: '',
-      symbol: '',
-      isLeading: false,
-      infoType: 0,
-      type: 0,
-      dateFrom: '',
-      dateTo: '',
-      position: 0,
-      sizeX: 4,
-      sizeY: 2,
-      bgColor: '',
+      id: widget.id,
+      title: widget.title,
+      symbol: widget.symbol,
+      isLeading: widget.isLeading,
+      infoType: widget.infoType,
+      type: widget.type,
+      dateFrom: widget.dateFrom,
+      dateTo: widget.dateTo,
+      position: widget.position,
+      sizeX: widget.sizeX,
+      sizeY: widget.sizeY,
+      bgColor: widget.bgColor
     };
   }
 
+  componentDidUpdate(prevProps) {
+        if (this.props.route.params.widget !== prevProps.route.params.widget) {
+            let widget = this.props.route.params.widget;
+            this.setState({
+                id: widget.id,
+                title: widget.title,
+                symbol: widget.symbol,
+                isLeading: widget.isLeading,
+                infoType: widget.infoType,
+                type: widget.type,
+                dateFrom: widget.dateFrom,
+                dateTo: widget.dateTo,
+                position: widget.position,
+                sizeX: widget.sizeX,
+                sizeY: widget.sizeY,
+                bgColor: widget.bgColor
+            })
+        }
+    }
+
   saveWidget = () => {
     const {
-      title, symbol, isLeading, infoType, type, dateFrom, dateTo,
+      id, title, symbol, isLeading, infoType, type, dateFrom, dateTo,
       position, sizeX, sizeY, bgColor
     } = this.state;
 
     const newWidget = {
+        id: id,
         userID: this.props.userID,
         title,
         symbol,
@@ -71,8 +95,8 @@ class AddWidgetFormScreen extends Component {
         bgColor
     };
 
-    this.props.AddWidget(newWidget, () => {
-      this.props.navigation.navigate('Home');
+    this.props.UpdateWidget(newWidget, () => {
+      this.props.navigation.navigate('Home', { editedWidget: Date.now() });
     });
   };
 
@@ -146,7 +170,7 @@ class AddWidgetFormScreen extends Component {
             style={styles.input}
           />
           <Button mode="contained" onPress={this.saveWidget} style={styles.saveButton}>
-            Save Widget
+            Editar Widget
           </Button>
         </ScrollView>
       </View>
@@ -175,7 +199,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  AddWidget,
+    UpdateWidget
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddWidgetFormScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EditWidgetFormScreen);

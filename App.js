@@ -18,13 +18,13 @@ class App extends React.Component {
 
   render () {
       return (<>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Navigation/>
-          <SyncManager/>
-          <NotificationManager/>
-        </PersistGate>
-       </Provider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Navigation/>
+            <SyncManager/>
+            <NotificationManager/>
+          </PersistGate>
+        </Provider>
       </>
       )
   }

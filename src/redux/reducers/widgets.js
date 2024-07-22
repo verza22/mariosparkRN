@@ -59,7 +59,7 @@ function reducer(state = initialState, action) {
       });
       return {
         ...state,
-        widgets: widgets
+        widgets: [...widgets]
       };
     case REMOVE_WIDGET:
       return {

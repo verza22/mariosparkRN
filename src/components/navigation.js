@@ -44,6 +44,7 @@ import HotelOrderEditFormScreen from './hotelOrders/edit'
 
 import HomeScreen from './home/home'
 import AddWidgetFormScreen from './home/addWidget'
+import EditWidgetFormScreen from './home/editWidget'
 
 import NavigationMenu from './appConfig/navigationMenu'
 
@@ -282,6 +283,11 @@ class App extends Component {
               name="AddWidget"
               component={AddWidgetFormScreen}
               options={({ navigation }) => this.getOption("Añadir widget", false, navigation)}
+            />
+            <Drawer.Screen
+              name="EditWidget"
+              component={EditWidgetFormScreen}
+              options={({ navigation }) => this.getOption("Editar widget", false, navigation)}
             />
           </Drawer.Navigator>
         ) : (
