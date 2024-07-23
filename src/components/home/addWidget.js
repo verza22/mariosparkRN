@@ -12,27 +12,6 @@ class AddWidgetFormScreen extends Component {
     super(props);
     this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
 
-    this.typeList = [
-        {value: 0, label: "Kpi"},
-        {value: 1, label: "List"},
-        {value: 2, label: "Pie"},
-        {value: 3, label: "Column"}
-    ];
-
-    this.infoList = [
-        {value: 0, label: "OrderTotal"},
-        {value: 1, label: "OrderCount"},
-        {value: 2, label: "HotelOrderTotal"},
-        {value: 3, label: "HotelOrderCount"},
-        {value: 4, label: "WaiterOrderTotal"},
-        {value: 5, label: "WaiterOrderCount"},
-        {value: 6, label: "CustomerCount"},
-        {value: 7, label: "ProductCount"},
-        {value: 8, label: "CategoryCount"},
-        {value: 9, label: "OtherCustomerCount"},
-        {value: 10, label: "OtherProductCount"},
-    ];
-
     this.state = {
       title: '',
       symbol: '',
@@ -42,8 +21,8 @@ class AddWidgetFormScreen extends Component {
       dateFrom: '',
       dateTo: '',
       position: 0,
-      sizeX: 4,
-      sizeY: 2,
+      sizeX: 100,
+      sizeY: 100,
       bgColor: '',
     };
   }
@@ -104,49 +83,58 @@ class AddWidgetFormScreen extends Component {
             onChangeText={(text) => this.setState({ title: text })}
             style={styles.input}
           />
-          <TextInput
-            label="Symbol"
-            value={symbol}
-            onChangeText={(text) => this.setState({ symbol: text })}
-            style={styles.input}
-          />
-          <Checkbox.Item
-            label="Is Leading"
-            status={isLeading ? 'checked' : 'unchecked'}
-            onPress={() => this.setState({ isLeading: !isLeading })}
+          <View style={styles.symbolView}>
+            <TextInput
+              label="Symbol"
+              value={symbol}
+              onChangeText={(text) => this.setState({ symbol: text })}
+              style={styles.input}
+            />
+            <Checkbox.Item
+              status={isLeading ? 'checked' : 'unchecked'}
+              onPress={() => this.setState({ isLeading: !isLeading })}
+            />
+          </View>
+          <CustomPicker
+            label="Selecciona un tipo"
+            value={type}
+            onValueChange={(itemValue) => this.setState({ type: itemValue })}
+            items={this.props.widgetTypeList}
+            cLabel='label'
+            cValue='value'
           />
           <CustomPicker
             label="Selecciona un dato"
             value={infoType}
             onValueChange={(itemValue) => this.setState({ infoType: itemValue })}
-            items={this.infoList}
+            items={this.props.widgetInfoTypeList}
             cLabel='label'
             cValue='value'
           />
-          <CustomPicker
-            label="Selecciona un tipo"
-            value={type}
-            onValueChange={(itemValue) => this.setState({ type: itemValue })}
-            items={this.typeList}
-            cLabel='label'
-            cValue='value'
-          />
-          <TextInput
-            label="Size X"
-            keyboardType="numeric"
-            value={sizeX.toString()}
-            onChangeText={(text) => this.setState({ sizeX: text === "" ? 0 : parseInt(text) })}
-            style={styles.input}
-          />
-          <TextInput
-            label="Size Y"
-            keyboardType="numeric"
-            value={sizeY.toString()}
-            onChangeText={(text) => this.setState({ sizeY: text === "" ? 0 : parseInt(text) })}
-            style={styles.input}
-          />
+          <View style={styles.symbolView}>
+            <View style={styles.sizeXView}>
+              <CustomPicker
+                label="Tamaño horizontal"
+                value={sizeX}
+                onValueChange={(itemValue) => this.setState({ sizeX: itemValue })}
+                items={this.props.sizeXList}
+                cLabel='label'
+                cValue='value'
+              />
+            </View>
+            <View style={styles.sizeYView}>
+              <CustomPicker
+                label="Tamaño vertical"
+                value={sizeY}
+                onValueChange={(itemValue) => this.setState({ sizeY: itemValue })}
+                items={this.props.sizeYList}
+                cLabel='label'
+                cValue='value'
+              />
+            </View>
+          </View>
           <Button mode="contained" onPress={this.saveWidget} style={styles.saveButton}>
-            Save Widget
+            Guardar Widget
           </Button>
         </ScrollView>
       </View>
@@ -164,14 +152,31 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 20,
+    flex: 1
   },
   saveButton: {
     marginBottom: 20,
   },
+  symbolView: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  sizeXView: {
+    flex: 1,
+    marginRight: 6
+  },
+  sizeYView: {
+    flex: 1,
+    marginLeft: 6
+  }
 });
 
 const mapStateToProps = state => ({
   userID: state.appConfigReducer.user.id,
+  widgetTypeList: state.widgetReducer.widgetTypeList,
+  widgetInfoTypeList: state.widgetReducer.widgetInfoTypeList,
+  sizeXList: state.widgetReducer.sizeXList,
+  sizeYList: state.widgetReducer.sizeYList
 });
 
 const mapDispatchToProps = {

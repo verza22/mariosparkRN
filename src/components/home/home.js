@@ -4,7 +4,7 @@ import { withTheme, IconButton, Portal, Modal, Button, List } from 'react-native
 import { connect } from 'react-redux';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 
-import { GetWidgets, UpdateWidgetPositions } from '../../redux/actions/widgets'
+import { GetWidgets, UpdateWidgetPositions, GetWidgetTypeList } from '../../redux/actions/widgets'
 import Widget from './widget';
 
 class HomeScreen extends Component {
@@ -33,6 +33,8 @@ class HomeScreen extends Component {
 
     componentDidMount(){
       this.updateWidgets();
+      if(this.props.widgetTypeList.length === 0)
+        this.props.GetWidgetTypeList();
     }
 
     componentDidUpdate(prevProps) {
@@ -149,6 +151,13 @@ class HomeScreen extends Component {
                 size={24}
                 onPress={this.addWidget}
                 mode="contained-tonal"
+              />
+              <IconButton
+                icon="refresh"
+                iconColor={this.colors.primary}
+                size={24}
+                onPress={this.updateWidgets}
+                mode="contained-tonal"
                 style={[styles.iconButton]}
               />
             </View>
@@ -198,12 +207,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     userID: state.appConfigReducer.user.id,
-    widgets: state.widgetReducer.widgets
+    widgets: state.widgetReducer.widgets,
+    widgetTypeList: state.widgetReducer.widgetTypeList
 });
 
 const mapDispatchToProps = {
     GetWidgets,
-    UpdateWidgetPositions
+    UpdateWidgetPositions,
+    GetWidgetTypeList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(HomeScreen));

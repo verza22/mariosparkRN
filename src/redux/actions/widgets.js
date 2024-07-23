@@ -4,6 +4,7 @@ export const GET_WIDGETS = 'GET_WIDGETS';
 export const ADD_WIDGET = 'ADD_WIDGET';
 export const UPDATE_WIDGET = 'UPDATE_WIDGET';
 export const REMOVE_WIDGET = 'REMOVE_WIDGET';
+export const GET_WIDGET_TYPE = 'GET_WIDGET_TYPE';
 
 export function GetWidgets(userId) {
   return (dispatch, getState) => {
@@ -159,6 +160,30 @@ export function UpdateWidgetPositions(userID, widgetIDs, callback) {
       dispatch(DataSuccess());
       if (res === "ok") {
         callback();
+      }
+    })
+    .catch(error => {
+      dispatch(DataFailure(error));
+    });
+  }
+}
+
+export function GetWidgetTypeList() {
+  return (dispatch, getState) => {
+    axiosRequest({
+      dispatch, 
+      getState,
+      method: 'post',
+      url: 'widget/GetWidgetTypeList'
+    })
+    .then(res => {
+      dispatch(DataSuccess());
+      if (res.widgetTypeList.length > 0) {
+        dispatch({
+          type: GET_WIDGET_TYPE,
+          widgetTypeList: res.widgetTypeList,
+          widgetInfoTypeList: res.widgetInfoTypeList
+        });
       }
     })
     .catch(error => {

@@ -18,9 +18,6 @@ class Widget extends Component {
         this.editWidget = this.editWidget.bind(this);
         this.deleteWidget = this.deleteWidget.bind(this);
 
-        this.sizeXList = [25,50,75,100];
-        this.sizeYList = [50,100,150,200];
-
         this.state = {
             data: "",
             dataList: null,
@@ -44,7 +41,7 @@ class Widget extends Component {
             }
         })
         .then(res => {
-            if(this.props.widget.type === 0){
+            if(this.props.widget.type === 1){
                 this.setState({data: res.data});
             }else{
                 let data = eval(res.data);
@@ -84,11 +81,76 @@ class Widget extends Component {
     }
 
     getWidth(){
-        return this.sizeXList[this.props.widget.sizeX-1];
+        return this.props.widget.sizeX;
     }
 
     getHeight(){
-        return this.sizeYList[this.props.widget.sizeY-1];
+        return this.props.widget.sizeY;
+    }
+
+    getGraph(cardWidth, cardHeightPercentage){
+        switch(this.props.widget.type){
+            case 2:
+                return <LineChart
+                    data={{
+                    labels: this.state.dataListCol,
+                    datasets: [{data: this.state.dataList}]
+                    }}
+                    width={cardWidth}
+                    height={cardHeightPercentage}
+                    chartConfig={{
+                        backgroundGradientFrom: "#FFFFFF",
+                        backgroundGradientFromOpacity: 0,
+                        backgroundGradientTo: "#FFFFFF",
+                        backgroundGradientToOpacity: 0,
+                        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    }}
+                    bezier
+                    style={{
+                        marginVertical: 8,
+                    }}
+                />;
+            // case 3:
+            //     return <ProgressChart
+            //         data={{
+            //             labels: this.state.dataListCol,
+            //             data: this.state.dataList
+            //         }}
+            //         width={cardWidth}
+            //         height={cardHeightPercentage}
+            //         chartConfig={{
+            //             backgroundGradientFrom: "#FFFFFF",
+            //             backgroundGradientFromOpacity: 0,
+            //             backgroundGradientTo: "#FFFFFF",
+            //             backgroundGradientToOpacity: 0,
+            //             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            //         }}
+            //         style={{
+            //             marginVertical: 8,
+            //         }}
+            //     />;
+            case 4:
+                return <BarChart
+                    data={{
+                        labels: this.state.dataListCol,
+                        datasets: [{data: this.state.dataList}]
+                    }}
+                    width={cardWidth}
+                    height={cardHeightPercentage}
+                    chartConfig={{
+                        backgroundGradientFrom: "#FFFFFF",
+                        backgroundGradientFromOpacity: 0,
+                        backgroundGradientTo: "#FFFFFF",
+                        backgroundGradientToOpacity: 0,
+                        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    }}
+                    style={{
+                        marginVertical: 8,
+                    }}
+                />;
+            default:
+                return <Text>nada</Text>;
+        }
     }
   
     render() {
@@ -106,7 +168,7 @@ class Widget extends Component {
                     />
                  </View>
                 <Card.Content style={[styles.cardContent, { height: cardHeightPercentage }]}>
-                    <View style={[styles.textContent, { flex: this.props.widget.type===0 || this.props.editMode ? 1 : 0 }]}>
+                    <View style={[styles.textContent, { flex: this.props.widget.type===1 || this.props.editMode ? 1 : 0 }]}>
                         {
                             this.props.editMode ? 
                                 <View style={styles.btnView}>
@@ -116,38 +178,25 @@ class Widget extends Component {
                                         size={48}
                                         onPress={this.editWidget}
                                     />
-                                    <IconButton
-                                        icon="delete"
-                                        iconColor={this.colors.primary}
-                                        size={48}
-                                        onPress={this.deleteWidget}
-                                    />
+                                    {
+                                        cardWidthPercentage > 25 &&
+                                        <IconButton
+                                            icon="delete"
+                                            iconColor={this.colors.primary}
+                                            size={48}
+                                            onPress={this.deleteWidget}
+                                        />
+                                    }
                                 </View>
                             :
                             <>
                                 {
-                                    this.props.widget.type===0 ? 
+                                    this.props.widget.type===1 ? 
                                         <Text variant="bodyMedium">{this.getValue()}</Text>
                                     :
                                         <>
                                             {
-                                                this.state.dataList !== null &&
-                                                <LineChart
-                                                    data={{
-                                                    labels: this.state.dataListCol,
-                                                    datasets: [{data: this.state.dataList}]
-                                                    }}
-                                                    width={cardWidth} // from react-native
-                                                    height={cardHeightPercentage}
-                                                    chartConfig={{
-                                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                                    }}
-                                                    bezier
-                                                    style={{
-                                                        marginVertical: 8,
-                                                    }}
-                                                />
+                                                this.state.dataList !== null && this.getGraph(cardWidth, cardHeightPercentage)
                                             }
                                         </>
                                 }
