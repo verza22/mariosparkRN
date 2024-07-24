@@ -27,7 +27,8 @@ class HomeScreen extends Component {
         editMode: false,
         modalVisible: false,
         dragVisible: false,
-        orderWidgets: []
+        orderWidgets: [],
+        renderWidgets: true
       };
     }
 
@@ -39,14 +40,17 @@ class HomeScreen extends Component {
 
     componentDidUpdate(prevProps) {
       if ((this.props.route.params?.editedWidget !== prevProps.route.params?.editedWidget) && this.state.editMode) {
-          this.setState({
-            editMode: false
+          this.setState({editMode: false,renderWidgets: false}, ()=>{
+            this.setState({ renderWidgets: true });
           });
       }
     }
 
     updateWidgets(){
       this.props.GetWidgets(this.props.userID);
+      this.setState({ renderWidgets: false }, ()=>{
+        this.setState({ renderWidgets: true });
+      });
     }
 
     addWidget(){
@@ -162,19 +166,22 @@ class HomeScreen extends Component {
               />
             </View>
             
-            <View style={styles.innerContainer}>
-              {
-                this.props.widgets.map(x => 
-                  <Widget 
-                    key={x.id} 
-                    widget={x} 
-                    editMode={this.state.editMode}
-                    navigation={this.props.navigation}
-                    showDelete={this.showDelete}
-                  />
-                )
-              }
-            </View>
+            {
+              this.state.renderWidgets &&
+              <View style={styles.innerContainer}>
+                {
+                  this.props.widgets.map(x => 
+                    <Widget 
+                      key={x.id} 
+                      widget={x} 
+                      editMode={this.state.editMode}
+                      navigation={this.props.navigation}
+                      showDelete={this.showDelete}
+                    />
+                  )
+                }
+              </View>
+            }
           </ScrollView>
         </View>
       );

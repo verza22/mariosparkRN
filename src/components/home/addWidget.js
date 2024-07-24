@@ -17,7 +17,7 @@ class AddWidgetFormScreen extends Component {
       symbol: '',
       isLeading: false,
       infoType: 0,
-      type: 0,
+      type: 1,
       dateFrom: '',
       dateTo: '',
       position: 0,
@@ -83,18 +83,21 @@ class AddWidgetFormScreen extends Component {
             onChangeText={(text) => this.setState({ title: text })}
             style={styles.input}
           />
-          <View style={styles.symbolView}>
-            <TextInput
-              label="Symbol"
-              value={symbol}
-              onChangeText={(text) => this.setState({ symbol: text })}
-              style={styles.input}
-            />
-            <Checkbox.Item
-              status={isLeading ? 'checked' : 'unchecked'}
-              onPress={() => this.setState({ isLeading: !isLeading })}
-            />
-          </View>
+          {
+            type === 1 &&
+            <View style={styles.symbolView}>
+              <TextInput
+                label="Symbol"
+                value={symbol}
+                onChangeText={(text) => this.setState({ symbol: text })}
+                style={styles.input}
+              />
+              <Checkbox.Item
+                status={isLeading ? 'checked' : 'unchecked'}
+                onPress={() => this.setState({ isLeading: !isLeading })}
+              />
+            </View>
+          }
           <CustomPicker
             label="Selecciona un tipo"
             value={type}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { withTheme, Card, IconButton } from 'react-native-paper';
+import { withTheme, Card, IconButton, DataTable } from 'react-native-paper';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { LineChart, BarChart, PieChart, ProgressChart, ContributionGraph, StackedBarChart } from "react-native-chart-kit";
@@ -43,7 +43,13 @@ class Widget extends Component {
         .then(res => {
             if(this.props.widget.type === 1){
                 this.setState({data: res.data});
-            }else{
+            }
+            else if(this.props.widget.type === 2){
+                let dataList = eval(res.data);
+                let dataListCol = dataList.length>0 ? Object.keys(dataList[0]) : [];
+                this.setState({dataList, dataListCol});
+            }
+            else{
                 let data = eval(res.data);
                 let dataList = data.map(x=> x.RESULT);
                 let dataListCol = data.map(x=> x.WeekNumber);
@@ -91,6 +97,27 @@ class Widget extends Component {
     getGraph(cardWidth, cardHeightPercentage){
         switch(this.props.widget.type){
             case 2:
+                return <View>
+                    <View style={styles.listViewTitle}>
+                        {
+                            this.state.dataListCol.map((y,j) => {
+                                return <Text key={j} style={styles.headerText}>{y}</Text>
+                            })
+                        }
+                    </View>
+                    {
+                        this.state.dataList.map((x,i)=>{
+                            return <View style={styles.listView} key={i}>
+                                {
+                                    this.state.dataListCol.map((y,j) => {
+                                        return <Text key={j} style={styles.bodyText}>{x[y]}</Text>
+                                    })
+                                }
+                        </View>
+                        })
+                    }
+                </View>
+            case 3:
                 return <LineChart
                     data={{
                     labels: this.state.dataListCol,
@@ -168,7 +195,7 @@ class Widget extends Component {
                     />
                  </View>
                 <Card.Content style={[styles.cardContent, { height: cardHeightPercentage }]}>
-                    <View style={[styles.textContent, { flex: this.props.widget.type===1 || this.props.editMode ? 1 : 0 }]}>
+                    <View style={[this.props.widget.type!==2 || this.props.editMode ? styles.textContent : null, { flex: this.props.widget.type===1 || this.props.editMode ? 1 : 0 }]}>
                         {
                             this.props.editMode ? 
                                 <View style={styles.btnView}>
@@ -237,6 +264,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignSelf: 'center',
+    },
+    listView: {
+        flexDirection: 'row',
+    },
+    listViewTitle: {
+        flexDirection: 'row',
+    },
+    headerText: {
+        flex: 1
+    },
+    bodyText: {
+        flex: 1
     }
 });
 
