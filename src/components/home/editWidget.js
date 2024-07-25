@@ -134,7 +134,7 @@ class EditWidgetFormScreen extends Component {
             label="Selecciona un dato"
             value={infoType}
             onValueChange={(itemValue) => this.setState({ infoType: itemValue })}
-            items={this.props.widgetInfoTypeList}
+            items={type === 1 ? this.props.widgetInfoTypeList.filter(x=> x.value < 5) : this.props.widgetInfoTypeList}
             cLabel='label'
             cValue='value'
           />
