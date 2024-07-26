@@ -68,6 +68,19 @@ class AddWidgetFormScreen extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPressHandler);
   }
 
+  getWidgetInfoTypeList(){
+    switch(this.state.type){
+      case 1:
+      case 3:
+      case 4:
+        return this.props.widgetInfoTypeList.filter(x=> x.value < 5);
+      case 2:
+        return this.props.widgetInfoTypeList;
+      default:
+        return [];
+    }
+  }
+
   render() {
     const {
       title, symbol, isLeading, infoType, type, dateFrom, dateTo,
@@ -110,7 +123,7 @@ class AddWidgetFormScreen extends Component {
             label="Selecciona un dato"
             value={infoType}
             onValueChange={(itemValue) => this.setState({ infoType: itemValue })}
-            items={type === 1 ? this.props.widgetInfoTypeList.filter(x=> x.value < 5) : this.props.widgetInfoTypeList}
+            items={this.getWidgetInfoTypeList()}
             cLabel='label'
             cValue='value'
           />
