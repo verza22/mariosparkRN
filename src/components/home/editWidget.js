@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { TextInput, Button, Checkbox } from 'react-native-paper';
+import { View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
-import { BackHandler } from 'react-native';
-import CustomPicker from '../lib/customPicker'
+import { TabView, TabBar  } from 'react-native-tab-view';
+import ConfigWidget from './configWidget';
+import { withTheme } from 'react-native-paper';
 
 import { UpdateWidget } from '../../redux/actions/widgets';
 
@@ -11,6 +11,10 @@ class EditWidgetFormScreen extends Component {
   constructor(props) {
     super(props);
     this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
+    this.handleState = this.handleState.bind(this);
+    this.saveWidget = this.saveWidget.bind(this);
+
+    this.colors = props.theme.colors;
 
     let widget = this.props.route.params.widget;
 
@@ -26,8 +30,17 @@ class EditWidgetFormScreen extends Component {
       position: widget.position,
       sizeX: widget.sizeX,
       sizeY: widget.sizeY,
-      bgColor: widget.bgColor
+      bgColor: widget.bgColor,
+      index: 0,
+      routes: [
+        { key: 'first', title: 'Datos' },
+        { key: 'second', title: 'Second d' },
+      ]
     };
+  }
+
+  handleState(property, value){
+    this.setState({ [property]: value });
   }
 
   componentDidUpdate(prevProps) {
@@ -50,7 +63,7 @@ class EditWidgetFormScreen extends Component {
         }
     }
 
-  saveWidget = () => {
+  saveWidget() {
     const {
       id, title, symbol, isLeading, infoType, type, dateFrom, dateTo,
       position, sizeX, sizeY, bgColor
@@ -92,135 +105,51 @@ class EditWidgetFormScreen extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPressHandler);
   }
 
-  getWidgetInfoTypeList(){
-    switch(this.state.type){
-      case 1:
-      case 3:
-      case 4:
-        return this.props.widgetInfoTypeList.filter(x=> x.value < 5);
-      case 2:
-        return this.props.widgetInfoTypeList;
-      default:
-        return [];
-    }
-  }
-
   render() {
-    const {
-      title, symbol, isLeading, infoType, type, dateFrom, dateTo,
-      position, sizeX, sizeY, bgColor
-    } = this.state;
-
-    return (
-      <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-        <TextInput
-            label="Title"
-            value={title}
-            onChangeText={(text) => this.setState({ title: text })}
-            style={styles.input}
+    return <TabView
+      navigationState={{
+        index: this.state.index,
+        routes: this.state.routes,
+      }}
+      renderScene={({ route }) => {
+        switch (route.key) {
+          case 'first':
+            return <ConfigWidget
+              type={this.state.type}
+              title={this.state.title}
+              symbol={this.state.symbol}
+              isLeading={this.state.isLeading}
+              infoType={this.state.infoType}
+              sizeX={this.state.sizeX}
+              sizeY={this.state.sizeY}
+              handleState={this.handleState}
+              saveWidget={this.saveWidget}
+              titleBtn="Editar Widget"
           />
-          {
-            type === 1 &&
-            <View style={styles.symbolView}>
-              <TextInput
-                label="Symbol"
-                value={symbol}
-                onChangeText={(text) => this.setState({ symbol: text })}
-                style={styles.input}
-              />
-              <Checkbox.Item
-                status={isLeading ? 'checked' : 'unchecked'}
-                onPress={() => this.setState({ isLeading: !isLeading })}
-              />
-            </View>
-          }
-          <CustomPicker
-            label="Selecciona un tipo"
-            value={type}
-            onValueChange={(itemValue) => this.setState({ type: itemValue })}
-            items={this.props.widgetTypeList}
-            cLabel='label'
-            cValue='value'
-          />
-          <CustomPicker
-            label="Selecciona un dato"
-            value={infoType}
-            onValueChange={(itemValue) => this.setState({ infoType: itemValue })}
-            items={this.getWidgetInfoTypeList()}
-            cLabel='label'
-            cValue='value'
-          />
-          <View style={styles.symbolView}>
-            <View style={styles.sizeXView}>
-              <CustomPicker
-                label="Tamaño horizontal"
-                value={sizeX}
-                onValueChange={(itemValue) => this.setState({ sizeX: itemValue })}
-                items={this.props.sizeXList}
-                cLabel='label'
-                cValue='value'
-              />
-            </View>
-            <View style={styles.sizeYView}>
-              <CustomPicker
-                label="Tamaño vertical"
-                value={sizeY}
-                onValueChange={(itemValue) => this.setState({ sizeY: itemValue })}
-                items={this.props.sizeYList}
-                cLabel='label'
-                cValue='value'
-              />
-            </View>
-          </View>
-          <Button mode="contained" onPress={this.saveWidget} style={styles.saveButton}>
-            Editar Widget
-          </Button>
-        </ScrollView>
-      </View>
-    );
+          case 'second':
+            return <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
+          default:
+            return null;
+        }
+      }}
+      onIndexChange={(index) => this.setState({ index })}
+      initialLayout={{ width: '100%' }}
+      renderTabBar={props => <TabBar {...props}
+      indicatorStyle={{ backgroundColor: this.colors.primary }}
+      style={{ backgroundColor: 'white' }}
+      labelStyle={{ color: 'black' }} 
+      inactiveColor='gray'
+      />}
+    />
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-  contentContainer: {
-    padding: 16,
-  },
-  input: {
-    marginBottom: 20,
-    flex: 1
-  },
-  saveButton: {
-    marginBottom: 20,
-  },
-  symbolView: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  sizeXView: {
-    flex: 1,
-    marginRight: 6
-  },
-  sizeYView: {
-    flex: 1,
-    marginLeft: 6
-  }
-});
-
 const mapStateToProps = state => ({
-  userID: state.appConfigReducer.user.id,
-  widgetTypeList: state.widgetReducer.widgetTypeList,
-  widgetInfoTypeList: state.widgetReducer.widgetInfoTypeList,
-  sizeXList: state.widgetReducer.sizeXList,
-  sizeYList: state.widgetReducer.sizeYList
+  userID: state.appConfigReducer.user.id
 });
 
 const mapDispatchToProps = {
     UpdateWidget
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditWidgetFormScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(EditWidgetFormScreen));
