@@ -97,46 +97,58 @@ class Widget extends Component {
     getGraph(cardWidth, cardHeightPercentage){
         switch(this.props.widget.type){
             case 2:
-                return <View>
-                    <View style={styles.listViewTitle}>
-                        {
-                            this.state.dataListCol.map((y,j) => {
-                                return <Text key={j} style={styles.headerText}>{y}</Text>
-                            })
-                        }
-                    </View>
-                    {
-                        this.state.dataList.map((x,i)=>{
-                            return <View style={styles.listView} key={i}>
+                return <>
+                {
+                        (this.state.dataListCol.length>0 && this.state.dataList.length>0) ?
+                        <View>
+                            <View style={styles.listViewTitle}>
                                 {
                                     this.state.dataListCol.map((y,j) => {
-                                        return <Text key={j} style={styles.bodyText}>{x[y]}</Text>
+                                        return <Text key={j} style={styles.headerText}>{y}</Text>
                                     })
                                 }
-                        </View>
-                        })
-                    }
-                </View>
+                            </View>
+                            {
+                                this.state.dataList.map((x,i)=>{
+                                    return <View style={styles.listView} key={i}>
+                                        {
+                                            this.state.dataListCol.map((y,j) => {
+                                                return <Text key={j} style={styles.bodyText}>{x[y]}</Text>
+                                            })
+                                        }
+                                </View>
+                                })
+                            }
+                        </View> :
+                        <Text>No data</Text>
+                }
+                </>
             case 3:
-                return <LineChart
-                    data={{
-                    labels: this.state.dataListCol,
-                    datasets: [{data: this.state.dataList}]
-                    }}
-                    width={cardWidth}
-                    height={cardHeightPercentage}
-                    chartConfig={{
-                        backgroundGradientFrom: "#FFFFFF",
-                        backgroundGradientFromOpacity: 0,
-                        backgroundGradientTo: "#FFFFFF",
-                        backgroundGradientToOpacity: 0,
-                        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                    }}
-                    bezier
-                    style={{
-                        marginVertical: 8,
-                    }}
-                />;
+                return <>
+                    {
+                        (this.state.dataListCol.length>0 && this.state.dataList.length>0) ?
+                        <LineChart
+                            data={{
+                                labels: this.state.dataListCol,
+                                datasets: [{data: this.state.dataList}]
+                            }}
+                            width={cardWidth}
+                            height={cardHeightPercentage}
+                            chartConfig={{
+                                backgroundGradientFrom: "#FFFFFF",
+                                backgroundGradientFromOpacity: 0,
+                                backgroundGradientTo: "#FFFFFF",
+                                backgroundGradientToOpacity: 0,
+                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                            }}
+                            bezier
+                            style={{
+                                marginVertical: 8,
+                            }}
+                        /> :
+                        <Text>No data</Text>
+                    }
+                </>;
             // case 3:
             //     return <ProgressChart
             //         data={{
@@ -157,24 +169,30 @@ class Widget extends Component {
             //         }}
             //     />;
             case 4:
-                return <BarChart
-                    data={{
-                        labels: this.state.dataListCol,
-                        datasets: [{data: this.state.dataList}]
-                    }}
-                    width={cardWidth}
-                    height={cardHeightPercentage}
-                    chartConfig={{
-                        backgroundGradientFrom: "#FFFFFF",
-                        backgroundGradientFromOpacity: 0,
-                        backgroundGradientTo: "#FFFFFF",
-                        backgroundGradientToOpacity: 0,
-                        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                    }}
-                    style={{
-                        marginVertical: 8,
-                    }}
-                />;
+                return <>
+                {
+                        (this.state.dataListCol.length>0 && this.state.dataList.length>0) ?
+                        <BarChart
+                            data={{
+                                labels: this.state.dataListCol,
+                                datasets: [{data: this.state.dataList}]
+                            }}
+                            width={cardWidth}
+                            height={cardHeightPercentage}
+                            chartConfig={{
+                                backgroundGradientFrom: "#FFFFFF",
+                                backgroundGradientFromOpacity: 0,
+                                backgroundGradientTo: "#FFFFFF",
+                                backgroundGradientToOpacity: 0,
+                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                            }}
+                            style={{
+                                marginVertical: 8,
+                            }}
+                        /> :
+                        <Text>No data</Text>
+                }
+                </>;
             default:
                 return <Text>nada</Text>;
         }

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar  } from 'react-native-tab-view';
-import ConfigWidget from './configWidget';
 import { withTheme } from 'react-native-paper';
+import moment from 'moment';
 
+import ConfigWidget from './configWidget';
+import ConfigWidgetDate from './configWidgetDate';
 import { UpdateWidget } from '../../redux/actions/widgets';
 
 class EditWidgetFormScreen extends Component {
@@ -13,6 +15,7 @@ class EditWidgetFormScreen extends Component {
     this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
     this.handleState = this.handleState.bind(this);
     this.saveWidget = this.saveWidget.bind(this);
+    this.handleDate = this.handleDate.bind(this);
 
     this.colors = props.theme.colors;
 
@@ -26,7 +29,9 @@ class EditWidgetFormScreen extends Component {
       infoType: widget.infoType,
       type: widget.type,
       dateFrom: widget.dateFrom,
+      dateFromType: widget.dateFromType,
       dateTo: widget.dateTo,
+      dateToType: widget.dateToType,
       position: widget.position,
       sizeX: widget.sizeX,
       sizeY: widget.sizeY,
@@ -34,7 +39,7 @@ class EditWidgetFormScreen extends Component {
       index: 0,
       routes: [
         { key: 'first', title: 'Datos' },
-        { key: 'second', title: 'Second d' },
+        { key: 'second', title: 'Fechas' },
       ]
     };
   }
@@ -54,7 +59,9 @@ class EditWidgetFormScreen extends Component {
                 infoType: widget.infoType,
                 type: widget.type,
                 dateFrom: widget.dateFrom,
+                dateFromType: widget.dateFromType,
                 dateTo: widget.dateTo,
+                dateToType: widget.dateToType,
                 position: widget.position,
                 sizeX: widget.sizeX,
                 sizeY: widget.sizeY,
@@ -64,10 +71,7 @@ class EditWidgetFormScreen extends Component {
     }
 
   saveWidget() {
-    const {
-      id, title, symbol, isLeading, infoType, type, dateFrom, dateTo,
-      position, sizeX, sizeY, bgColor
-    } = this.state;
+    const { id, title, symbol, isLeading, infoType, type, dateFrom, dateFromType, dateTo, dateToType, position, sizeX, sizeY, bgColor} = this.state;
 
     const newWidget = {
         id: id,
@@ -77,10 +81,10 @@ class EditWidgetFormScreen extends Component {
         isLeading,
         infoType,
         type,
-        dateFrom: "2024-07-01",
-        dateTo: "2024-07-30",
-        dateFromType: 0,
-        dateToType: 0,
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        dateFromType: dateFromType,
+        dateToType: dateToType,
         position,
         sizeX,
         sizeY,
@@ -105,6 +109,23 @@ class EditWidgetFormScreen extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPressHandler);
   }
 
+  handleDate(property, value){
+    if(property === "dateFromType"){
+      let aux = value === 1 ? moment().subtract(90, 'days').format('YYYY-MM-DD') : "-90";
+      this.setState({ dateFrom: aux });
+    }
+    if(property === "dateToType"){
+      let aux = value === 1 ? moment().format('YYYY-MM-DD') : "0";
+      this.setState({ dateTo: aux });
+    }
+    if(property === "dateFrom" && this.state.dateFromType === 1)
+      value = moment(value).format('YYYY-MM-DD');
+    if(property === "dateTo" && this.state.dateToType === 1)
+      value = moment(value).format('YYYY-MM-DD');
+
+    this.setState({ [property]: value });
+  }
+
   render() {
     return <TabView
       navigationState={{
@@ -127,7 +148,13 @@ class EditWidgetFormScreen extends Component {
               titleBtn="Editar Widget"
           />
           case 'second':
-            return <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
+            return <ConfigWidgetDate 
+              dateFrom={this.state.dateFrom}
+              dateTo={this.state.dateTo}
+              dateFromType={this.state.dateFromType}
+              dateToType={this.state.dateToType}
+              handleDate={this.handleDate}
+          />;
           default:
             return null;
         }

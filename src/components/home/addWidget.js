@@ -5,6 +5,7 @@ import { BackHandler } from 'react-native';
 import { TabView, TabBar  } from 'react-native-tab-view';
 import ConfigWidget from './configWidget';
 import ConfigWidgetDate from './configWidgetDate';
+import moment from 'moment';
 
 import { withTheme } from 'react-native-paper';
 
@@ -16,6 +17,7 @@ class AddWidgetFormScreen extends Component {
     this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
     this.handleState = this.handleState.bind(this);
     this.saveWidget = this.saveWidget.bind(this);
+    this.handleDate = this.handleDate.bind(this);
 
     this.colors = props.theme.colors;
 
@@ -25,8 +27,10 @@ class AddWidgetFormScreen extends Component {
       isLeading: false,
       infoType: 1,
       type: 1,
-      dateFrom: '',
-      dateTo: '',
+      dateFrom: '-90',
+      dateFromType: 0,
+      dateTo: '0',
+      dateToType: 0,
       position: 0,
       sizeX: 100,
       sizeY: 100,
@@ -44,10 +48,7 @@ class AddWidgetFormScreen extends Component {
   }
 
   saveWidget(){
-    const {
-      title, symbol, isLeading, infoType, type, dateFrom, dateTo,
-      position, sizeX, sizeY, bgColor
-    } = this.state;
+    const { title, symbol, isLeading, infoType, type, dateFrom, dateFromType, dateToType, dateTo, position, sizeX, sizeY, bgColor } = this.state;
 
     const newWidget = {
         userID: this.props.userID,
@@ -56,10 +57,10 @@ class AddWidgetFormScreen extends Component {
         isLeading,
         infoType,
         type,
-        dateFrom: "2024-07-01",
-        dateTo: "2024-07-30",
-        dateFromType: 0,
-        dateToType: 0,
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        dateFromType: dateFromType,
+        dateToType: dateToType,
         position,
         sizeX,
         sizeY,
@@ -84,6 +85,23 @@ class AddWidgetFormScreen extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPressHandler);
   }
 
+  handleDate(property, value){
+    if(property === "dateFromType"){
+      let aux = value === 1 ? moment().subtract(90, 'days').format('YYYY-MM-DD') : "-90";
+      this.setState({ dateFrom: aux });
+    }
+    if(property === "dateToType"){
+      let aux = value === 1 ? moment().format('YYYY-MM-DD') : "0";
+      this.setState({ dateTo: aux });
+    }
+    if(property === "dateFrom" && this.state.dateFromType === 1)
+      value = moment(value).format('YYYY-MM-DD');
+    if(property === "dateTo" && this.state.dateToType === 1)
+      value = moment(value).format('YYYY-MM-DD');
+
+    this.setState({ [property]: value });
+  }
+
   render() {
     return <TabView
       navigationState={{
@@ -106,7 +124,13 @@ class AddWidgetFormScreen extends Component {
               titleBtn="Guardar Widget"
           />
           case 'second':
-            return <ConfigWidgetDate />;
+            return <ConfigWidgetDate 
+              dateFrom={this.state.dateFrom}
+              dateTo={this.state.dateTo}
+              dateFromType={this.state.dateFromType}
+              dateToType={this.state.dateToType}
+              handleDate={this.handleDate}
+            />;
           default:
             return null;
         }
