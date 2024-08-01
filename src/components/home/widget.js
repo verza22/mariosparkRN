@@ -52,7 +52,7 @@ class Widget extends Component {
             else{
                 let data = eval(res.data);
                 let dataList = data.map(x=> x.RESULT);
-                let dataListCol = data.map(x=> x.WeekNumber);
+                let dataListCol = data.map(x=> x.FECHA);
 
                 this.setState({dataList, dataListCol});
             }
