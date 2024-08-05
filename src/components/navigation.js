@@ -1,10 +1,11 @@
 import React, { Component  }  from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { withTheme } from 'react-native-paper';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import GlobalLoading from './lib/globalLoading';
 
@@ -46,6 +47,8 @@ import HomeScreen from './home/home'
 import AddWidgetFormScreen from './home/addWidget'
 import EditWidgetFormScreen from './home/editWidget'
 
+import PrinterListScreen from './configuracion/printerList'
+
 import NavigationMenu from './appConfig/navigationMenu'
 
 const HomeScreenDefault = ({ navigation }) => {
@@ -60,13 +63,44 @@ const HomeScreenDefault = ({ navigation }) => {
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        onPress={() => props.handleOpen('isSubMenuOpen', !props.isSubMenuOpen)}
+        label={() => (
+          <View style={styles.drawerItem}>
+            <Text style={styles.drawerItemText}>Configuración</Text>
+            <Icon
+              name={props.isSubMenuOpen ? 'expand-less' : 'expand-more'}
+              size={24}
+              style={styles.drawerItemIcon}
+            />
+          </View>
+        )}
+      />
+      {props.isSubMenuOpen && (
+        <DrawerItem
+          label="Impresoras"
+          onPress={() => props.navigation.navigate('ConfigImpresora')}
+          style={{ paddingLeft: 20 }}
+        />
+      )}
+    </DrawerContentScrollView>
+  );
+}
+
 
 class App extends Component {
 
   constructor(props) {
     super(props);
 
+    this.handleOpen = this.handleOpen.bind(this);
+
     this.state = {
+      isSubMenuConfigOpen: false
     };
   }
 
@@ -100,11 +134,24 @@ class App extends Component {
     }
   }
 
+  handleOpen(property, value){
+    this.setState({ [property]: value });
+  }
+
+  
+
   render() {
     return (
       <NavigationContainer>
         {this.props.isAuthenticated ? (
-          <Drawer.Navigator initialRouteName="Home">
+          <Drawer.Navigator initialRouteName="Home" 
+          drawerContent={(props) => 
+            <CustomDrawerContent 
+            {...props} 
+            isSubMenuOpen={this.state.isSubMenuOpen} 
+            handleOpen={this.handleOpen} 
+            />
+          }>
 
             {
               this.props.authUser.type === this.props.userType["ADMIN"]
@@ -266,8 +313,14 @@ class App extends Component {
                   component={UserFormScreen}
                   options={({ navigation }) => this.getOption("Añadir Usuario", false, navigation)}
                 />
+                <Drawer.Screen
+                  name="ConfigImpresora"
+                  component={PrinterListScreen}
+                  options={({ navigation }) => this.getOption("Impresora", false, navigation)}
+                />
               </>
             )}
+
   
             <Drawer.Screen
               name="Logout"
@@ -309,6 +362,16 @@ class App extends Component {
 const styles = StyleSheet.create({
   headerIcon: {
     marginLeft: 'auto',
+  },
+  drawerItem: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  drawerItemIcon: {
+  },
+  drawerItemText: {
+    flex: 1,
+    fontWeight: 'bold'
   }
 });
 

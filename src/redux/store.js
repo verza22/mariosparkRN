@@ -14,6 +14,7 @@ import hotelRoomReducer from './reducers/hotelRoom';
 import hotelOrderReducer from './reducers/hotelOrders';
 import dataRequestReducer from './reducers/dataRequest';
 import widgetReducer from './reducers/widgets';
+import printerReducer from './reducers/printers';
 
 const rootReducer = combineReducers({
   categoryReducer,
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   hotelRoomReducer,
   hotelOrderReducer,
   dataRequestReducer,
-  widgetReducer
+  widgetReducer,
+  printerReducer
 });
 
 

@@ -65,7 +65,7 @@ export function axiosRequest({
             resolve(res.data);
           })
         .catch(error => {
-          //console.log(JSON.stringify(error))
+          console.log(JSON.stringify(error))
           let errorReponse = "";
           if (error.code === 'ECONNABORTED') {
             errorReponse = 'La solicitud ha excedido el tiempo máximo permitido';
