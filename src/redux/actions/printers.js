@@ -53,7 +53,7 @@ export function RemovePrinter(id, callback) {
   }
 }
 
-export function UpdateUser(id, name, ip, isPrincipal, storeID, callback) {
+export function UpdatePrinter(id, name, ip, isPrincipal, storeID, callback) {
   return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
@@ -64,7 +64,8 @@ export function UpdateUser(id, name, ip, isPrincipal, storeID, callback) {
         id,
         name,
         ip,
-        isPrincipal
+        isPrincipal,
+        storeID
       }
     })
     .then(res=>{
@@ -84,7 +85,7 @@ export function UpdateUser(id, name, ip, isPrincipal, storeID, callback) {
   }
 }
 
-export function AddUser(name, ip, isPrincipal, storeID, callback) {
+export function AddPrinter(name, ip, isPrincipal, storeID, callback) {
   return (dispatch, getState) => {
     axiosRequest({
       dispatch, 

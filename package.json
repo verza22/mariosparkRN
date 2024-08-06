@@ -18,6 +18,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.19",
     "@reduxjs/toolkit": "^1.9.7",
+    "choiceqr-react-native-thermal-printer": "^1.5.4",
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-chart-kit": "^6.12.0",

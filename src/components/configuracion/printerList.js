@@ -1,7 +1,8 @@
 import React, { Component  } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
-import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
+import { List,  Portal, Modal, FAB, withTheme, Button, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
+import { NetPrinter } from "choiceqr-react-native-thermal-printer";
 
 import { RemovePrinter, GetPrinters } from '../../redux/actions/printers'
 
@@ -9,7 +10,10 @@ class PrinterListScreen extends Component {
     constructor(props) {
       super(props);
       this.onPressFab = this.onPressFab.bind(this);
+      this.printerTest = this.printerTest.bind(this);
+
       this.colors = props.theme.colors;
+
       this.state = {
         modalVisible: false,
         printerID: null
@@ -21,7 +25,7 @@ class PrinterListScreen extends Component {
     }
 
     handlePress(item){
-      this.props.navigation.navigate('EditPrinter', { item });
+      this.props.navigation.navigate('ConfigImpresoraEdit', { item });
     };
 
     onLongPress(item){
@@ -34,12 +38,33 @@ class PrinterListScreen extends Component {
         Alert.alert('Impresora eliminada');
       });
     };
+
+    printerTest(item){
+      let ip = item.ip;
+      NetPrinter.init().then(() => {
+        this.setState({ printers: [{ host: ip, port: 9100 }] })
+        NetPrinter.connectPrinter(ip, 9100)
+        .then((printer) => {
+          this.setState({ currentPrinter: printer });
+          NetPrinter.printText("<C>sample text LZ</C>\n<C>Prueba</C>\n<C>Prueba correcta</C>\n\n\n");
+        });
+      })
+    }
   
     renderPrinter = ({ item }) => (
       <List.Item
         onPress={() => this.handlePress(item)}
         onLongPress={() => this.onLongPress(item)}
         title={item.name}
+        description={`IP: ${item.ip}`}
+        right={() => <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>{item.isPrincipal ? 'P' : ''}</Text>
+          <IconButton
+              icon="printer"
+              size={20}
+              onPress={() => this.printerTest(item)}
+          />
+        </View>}
         style={styles.item}
       />
     );
@@ -47,7 +72,7 @@ class PrinterListScreen extends Component {
     onPressFab() {
       this.props.navigation.reset({
         index: 0,
-        routes: [{ name: 'AddPrinter' }]
+        routes: [{ name: 'ConfigImpresoraAdd' }]
       })
     }
   

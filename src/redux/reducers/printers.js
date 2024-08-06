@@ -18,7 +18,7 @@ function reducer(state = initialState, action) {
         };
       case UPDATE_PRINTER:
         let printers = state.printers.map(printer => {
-          if (printer.id === printer.id) {
+          if (printer.id === action.id) {
             return {
                 ...printer,
                 name: action.name,

@@ -48,6 +48,8 @@ import AddWidgetFormScreen from './home/addWidget'
 import EditWidgetFormScreen from './home/editWidget'
 
 import PrinterListScreen from './configuracion/printerList'
+import PrinterAddFormScreen from './configuracion/printerAdd'
+import PrinterEditFormScreen from './configuracion/printerEdit'
 
 import NavigationMenu from './appConfig/navigationMenu'
 
@@ -317,6 +319,16 @@ class App extends Component {
                   name="ConfigImpresora"
                   component={PrinterListScreen}
                   options={({ navigation }) => this.getOption("Impresora", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="ConfigImpresoraAdd"
+                  component={PrinterAddFormScreen}
+                  options={({ navigation }) => this.getOption("Añadir Impresora", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="ConfigImpresoraEdit"
+                  component={PrinterEditFormScreen}
+                  options={({ navigation }) => this.getOption("Editar Impresora", false, navigation)}
                 />
               </>
             )}
