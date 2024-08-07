@@ -18,7 +18,9 @@ class PrinterEditFormScreen extends Component {
         id: item.id,
         name: item.name,
         ip: item.ip,
-        isPrincipal: item.isPrincipal
+        isPrincipal: item.isPrincipal,
+        messageIni: item.messageIni,
+        messageFin: item.messageFin
       };
     }
 
@@ -30,7 +32,9 @@ class PrinterEditFormScreen extends Component {
                 id: item.id,
                 name: item.name,
                 ip: item.ip,
-                isPrincipal: item.isPrincipal
+                isPrincipal: item.isPrincipal,
+                messageIni: item.messageIni,
+                messageFin: item.messageFin
             });
         }
     }
@@ -49,18 +53,26 @@ class PrinterEditFormScreen extends Component {
     }
   
     save = () => {
-      const { id, name, ip, isPrincipal } = this.state;
-      this.props.UpdatePrinter(id, name, ip, isPrincipal, this.props.defaultStoreID, ()=>{
+      const { id, name, ip, isPrincipal, messageIni, messageFin } = this.state;
+      this.props.UpdatePrinter(id, name, ip, isPrincipal, messageIni, messageFin, this.props.defaultStoreID, ()=>{
         this.props.navigation.navigate('ConfigImpresora');
       });
     };
   
     render() {
-      const { name, ip, isPrincipal } = this.state;
+      const { name, ip, isPrincipal, messageIni, messageFin } = this.state;
   
       return (
         <View style={styles.container}>
           <ScrollView contentContainerStyle={styles.contentContainer}>
+            <View style={styles.containerCb}>
+              <Text style={styles.textCb}>Es principal</Text>
+              <Checkbox.Item
+                  status={isPrincipal === true ? 'checked' : 'unchecked'}
+                  onPress={() => this.setState({isPrincipal: isPrincipal === true ? false : true})}
+                  style={styles.checkbox}
+              />
+            </View>
             <TextInput
               label="Nombre"
               value={name}
@@ -73,14 +85,22 @@ class PrinterEditFormScreen extends Component {
               onChangeText={(text) => this.setState({ ip: text })}
               style={styles.input}
             />
-            <View style={styles.containerCb}>
-                <Text style={styles.textCb}>Es principal</Text>
-                <Checkbox.Item
-                    status={isPrincipal === true ? 'checked' : 'unchecked'}
-                    onPress={() => this.setState({isPrincipal: isPrincipal === true ? false : true})}
-                    style={styles.checkbox}
-                />
-            </View>
+            <TextInput
+              label="Mensaje inicio"
+              value={messageIni}
+              onChangeText={(text) => this.setState({ messageIni: text })}
+              multiline={true}
+              mode="outlined"
+              style={styles.textArea}
+            />
+            <TextInput
+              label="Mensaje Fin"
+              value={messageFin}
+              onChangeText={(text) => this.setState({ messageFin: text })}
+              multiline={true}
+              mode="outlined"
+              style={styles.textArea}
+            />
             <Button mode="contained" onPress={this.save} style={styles.saveButton}>
               Guardar Impresora
             </Button>
@@ -114,6 +134,10 @@ const styles = StyleSheet.create({
     },
     checkbox: {
         flex: 1,
+    },
+    textArea: {
+      height: 120,
+      marginBottom: 16,
     },
 });
 

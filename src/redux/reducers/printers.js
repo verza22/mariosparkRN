@@ -23,7 +23,9 @@ function reducer(state = initialState, action) {
                 ...printer,
                 name: action.name,
                 ip: action.ip,
-                isPrincipal: action.isPrincipal
+                isPrincipal: action.isPrincipal,
+                messageIni: action.messageIni,
+                messageFin: action.messageFin
             };
           }
           return printer;
@@ -41,6 +43,8 @@ function reducer(state = initialState, action) {
                 name: action.name,
                 ip: action.ip,
                 isPrincipal: action.isPrincipal,
+                messageIni: action.messageIni,
+                messageFin: action.messageFin,
                 storeID: action.storeID
             }
           ]

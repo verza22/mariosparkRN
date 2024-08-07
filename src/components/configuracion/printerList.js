@@ -41,12 +41,34 @@ class PrinterListScreen extends Component {
 
     printerTest(item){
       let ip = item.ip;
+      let messageIni = item.messageIni;
+      let messageFin = item.messageFin;
       NetPrinter.init().then(() => {
         this.setState({ printers: [{ host: ip, port: 9100 }] })
         NetPrinter.connectPrinter(ip, 9100)
         .then((printer) => {
           this.setState({ currentPrinter: printer });
-          NetPrinter.printText("<C>sample text LZ</C>\n<C>Prueba</C>\n<C>Prueba correcta</C>\n\n\n");
+          //45caracteres de ancho
+          NetPrinter.printText(`${messageIni}\n
+------------------------------------------------
+Descripcion       Cantidad    Pre.Uni    Pre.Tot
+------------------------------------------------
+CAMARON APANADO          2       5.50      10.10
+ARROZ CON CONCHA         1       8.00       8.00
+SPAGUETTI CARBONA        1       7.60       7.60
+\n
+------------------------------------------------
+                  Subtotal sin IVA  :      25.70
+                  15% IVA           :       3.86
+                  TOTAL             :      29.56
+------------------------------------------------
+\n
+------------------------------------------------
+CLIENTE: ZURITA BALDOSPINO LUIS EDUARDO
+CED/RUC: 0802849802
+------------------------------------------------
+${messageFin}
+\n\n`);
         });
       })
     }

@@ -53,7 +53,7 @@ export function RemovePrinter(id, callback) {
   }
 }
 
-export function UpdatePrinter(id, name, ip, isPrincipal, storeID, callback) {
+export function UpdatePrinter(id, name, ip, isPrincipal, messageIni, messageFin, storeID, callback) {
   return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
@@ -65,6 +65,8 @@ export function UpdatePrinter(id, name, ip, isPrincipal, storeID, callback) {
         name,
         ip,
         isPrincipal,
+        messageIni,
+        messageFin,
         storeID
       }
     })
@@ -77,6 +79,8 @@ export function UpdatePrinter(id, name, ip, isPrincipal, storeID, callback) {
           name,
           ip,
           isPrincipal,
+          messageIni,
+          messageFin,
           storeID
         });
         callback();
@@ -85,7 +89,7 @@ export function UpdatePrinter(id, name, ip, isPrincipal, storeID, callback) {
   }
 }
 
-export function AddPrinter(name, ip, isPrincipal, storeID, callback) {
+export function AddPrinter(name, ip, isPrincipal, messageIni, messageFin, storeID, callback) {
   return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
@@ -97,6 +101,8 @@ export function AddPrinter(name, ip, isPrincipal, storeID, callback) {
         name,
         ip,
         isPrincipal,
+        messageIni,
+        messageFin,
         storeID
       }
     })
@@ -109,6 +115,8 @@ export function AddPrinter(name, ip, isPrincipal, storeID, callback) {
           name,
           ip,
           isPrincipal,
+          messageIni,
+          messageFin,
           storeID
         });
         callback();
