@@ -3,6 +3,7 @@ import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
 import { List,  Portal, Modal, FAB, withTheme, Button, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { NetPrinter } from "choiceqr-react-native-thermal-printer";
+import { adjustText } from './../lib/util';
 
 import { RemovePrinter, GetPrinters } from '../../redux/actions/printers'
 
@@ -44,28 +45,26 @@ class PrinterListScreen extends Component {
       let messageIni = item.messageIni;
       let messageFin = item.messageFin;
       NetPrinter.init().then(() => {
-        this.setState({ printers: [{ host: ip, port: 9100 }] })
+        //this.setState({ printers: [{ host: ip, port: 9100 }] })
         NetPrinter.connectPrinter(ip, 9100)
         .then((printer) => {
-          this.setState({ currentPrinter: printer });
-          //45caracteres de ancho
+          //this.setState({ currentPrinter: printer });
+          //48caracteres de ancho
           NetPrinter.printText(`${messageIni}\n
 ------------------------------------------------
-Descripcion       Cantidad    Pre.Uni    Pre.Tot
+${adjustText('Descripcion', 25, false)}${adjustText('Cant', 5, true)}${adjustText('P.Uni', 9, true)}${adjustText('P.Tot', 9, true)}
 ------------------------------------------------
-CAMARON APANADO          2       5.50      10.10
-ARROZ CON CONCHA         1       8.00       8.00
-SPAGUETTI CARBONA        1       7.60       7.60
+${adjustText('CAMARON APANADO', 25, false)}${adjustText('2', 5, true)}${adjustText('5.50', 9, true)}${adjustText('10.10', 9, true)}
+${adjustText('ARROZ CON CONCHA', 25, false)}${adjustText('1', 5, true)}${adjustText('8.00', 9, true)}${adjustText('8.00', 9, true)}
+${adjustText('SPAGUETTI CARBONA', 25, false)}${adjustText('1', 5, true)}${adjustText('7.60', 9, true)}${adjustText('7.60', 9, true)}
 \n
 ------------------------------------------------
-                  Subtotal sin IVA  :      25.70
-                  15% IVA           :       3.86
-                  TOTAL             :      29.56
+${adjustText('TOTAL:', 36, true)}${adjustText('29.56', 12, true)}
 ------------------------------------------------
 \n
 ------------------------------------------------
-CLIENTE: ZURITA BALDOSPINO LUIS EDUARDO
-CED/RUC: 0802849802
+CLIENTE: ${adjustText('ZURITA BALDOSPINO LUIS EDUARDO', 39, false)}
+CED/RUC: ${adjustText('0802849802', 39, false)}
 ------------------------------------------------
 ${messageFin}
 \n\n`);

@@ -4,6 +4,8 @@ import { TextInput, withTheme, FAB, Checkbox } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { BackHandler } from 'react-native';
 import moment from 'moment';
+import { NetPrinter } from "choiceqr-react-native-thermal-printer";
+import { adjustText } from './../lib/util';
 
 import RowVertical from './../lib/rowVertical';
 import SearchPicker from './../lib/searchPicker';
@@ -11,6 +13,7 @@ import AddModal from './../customers/addModal';
 
 import { AddOrder } from '../../redux/actions/orders';
 import { GetCustomers } from '../../redux/actions/customer';
+import { GetPrinters } from '../../redux/actions/printers'
 
 class OrderStep3Screen extends Component {
   constructor(props) {
@@ -65,6 +68,9 @@ class OrderStep3Screen extends Component {
     if (this.props.customers.length === 0) {
       this.props.GetCustomers(this.props.defaultStoreID);
     }
+    if (this.props.printers.length === 0) {
+      this.props.GetPrinters(this.props.defaultStoreID);
+    }
   }
 
   componentWillUnmount() {
@@ -112,6 +118,46 @@ class OrderStep3Screen extends Component {
       storeID: this.props.defaultStoreID,
       callback: () => {
         this.props.navigation.navigate('Orders');
+
+        //print
+        this.props.printers.forEach(x=> {
+          let ip = x.ip;
+          let messageIni = x.messageIni;
+          let messageFin = x.messageFin;
+
+          NetPrinter.init().then(() => {
+           // this.setState({ printers: [{ host: ip, port: 9100 }] })
+            NetPrinter.connectPrinter(ip, 9100)
+            .then((printer) => {
+             // this.setState({ currentPrinter: printer });
+              //48caracteres de ancho
+              let message = '';
+              
+              message += `${messageIni}\n
+------------------------------------------------
+${adjustText('Descripcion', 25, false)}${adjustText('Cant', 5, true)}${adjustText('P.Uni', 9, true)}${adjustText('P.Tot', 9, true)}
+------------------------------------------------`;
+
+this.state.products.forEach(p=> {
+  message += adjustText(p.name, 25, false)+adjustText(p.quantity.toString(), 5, true)+adjustText(p.price.toFixed(2), 9, true)+adjustText((p.price*p.quantity).toFixed(2), 9, true);
+});
+
+message += `\n
+------------------------------------------------
+${adjustText('TOTAL:', 36, true)}${adjustText(total.toFixed(2), 12, true)}
+------------------------------------------------
+\n
+------------------------------------------------
+CLIENTE: ${adjustText(this.state.customer.name, 39, false)}
+CED/RUC: ${adjustText(this.state.customer.dni, 39, false)}
+------------------------------------------------
+${messageFin}
+\n\n`;
+              NetPrinter.printText(message);
+            });
+          });
+
+        });
       }
     });
   }
@@ -242,13 +288,15 @@ const mapStateToProps = (state) => {
     customers: state.customerReducer.customers,
     userAuth: state.appConfigReducer.user,
     orderStatus: state.appConfigReducer.orderStatus,
-    users: state.usersReducer.users.filter((x) => x.type === userType['WAITER'])
+    users: state.usersReducer.users.filter((x) => x.type === userType['WAITER']),
+    printers: state.printerReducer.printers
   };
 };
 
 const mapDispatchToProps = {
   AddOrder,
-  GetCustomers
+  GetCustomers,
+  GetPrinters
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(OrderStep3Screen));
