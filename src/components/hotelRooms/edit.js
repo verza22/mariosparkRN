@@ -18,7 +18,10 @@ class HotelRoomEditFormScreen extends Component {
         id: item.id,
         name: item.name,
         capacity: item.capacity.toString(),
-        type: item.type
+        type: item.type,
+        priceBabies: item.priceBabies.toString(),
+        priceChildren: item.priceChildren.toString(),
+        priceAdults: item.priceAdults.toString()
       };
     }
 
@@ -29,7 +32,10 @@ class HotelRoomEditFormScreen extends Component {
                 id: item.id,
                 name: item.name,
                 capacity: item.capacity.toString(),
-                type: item.type
+                type: item.type,
+                priceBabies: item.priceBabies.toString(),
+                priceChildren: item.priceChildren.toString(),
+                priceAdults: item.priceAdults.toString()
             })
         }
     }
@@ -48,14 +54,14 @@ class HotelRoomEditFormScreen extends Component {
     }
   
     save = () => {
-      const { id, name, capacity, type } = this.state;
-      this.props.UpdateHotelRoom(id, name, Number(capacity), type, this.props.defaultStoreID, ()=>{
+      const { id, name, capacity, type, priceBabies, priceChildren, priceAdults } = this.state;
+      this.props.UpdateHotelRoom(id, name, Number(capacity), type, this.props.defaultStoreID, parseFloat(priceBabies), parseFloat(priceChildren), parseFloat(priceAdults), ()=>{
         this.props.navigation.navigate('HotelRooms');
       });
     };
   
     render() {
-      const { name, capacity, type } = this.state;
+      const { name, capacity, type, priceBabies, priceChildren, priceAdults } = this.state;
   
       return (
         <View style={styles.container}>
@@ -80,6 +86,27 @@ class HotelRoomEditFormScreen extends Component {
                 items={this.props.hotelRoomTypes}
                 cLabel='name'
                 cValue='id'
+            />
+            <TextInput
+              label="Precio Bebes"
+              keyboardType='numeric'
+              value={priceBabies}
+              onChangeText={(text) => this.setState({ priceBabies: text })}
+              style={styles.input}
+            />
+            <TextInput
+              label="Precio Niños"
+              keyboardType='numeric'
+              value={priceChildren}
+              onChangeText={(text) => this.setState({ priceChildren: text })}
+              style={styles.input}
+            />
+            <TextInput
+              label="Precio Adultos"
+              keyboardType='numeric'
+              value={priceAdults}
+              onChangeText={(text) => this.setState({ priceAdults: text })}
+              style={styles.input}
             />
             <Button mode="contained" onPress={this.save} style={styles.saveButton}>
               Actualizar Habitación

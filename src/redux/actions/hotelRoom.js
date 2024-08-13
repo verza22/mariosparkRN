@@ -52,7 +52,7 @@ export function RemoveHotelRoom(id, callback) {
   }
 }
 
-export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, callback) {
+export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, priceBabies, priceChildren, priceAdults, callback) {
   return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
@@ -64,7 +64,10 @@ export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, callback) 
         name,
         capacity,
         roomType: typeAux,
-        storeID
+        storeID,
+        priceBabies,
+        priceChildren,
+        priceAdults
       }
     })
     .then(res=>{
@@ -75,7 +78,10 @@ export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, callback) 
           id,
           name,
           capacity,
-          typeAux
+          typeAux,
+          priceBabies,
+          priceChildren,
+          priceAdults
         });
         callback();
       }
@@ -83,7 +89,7 @@ export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, callback) 
   }
 }
   
-export function AddHotelRoom(name, capacity, typeAux, storeID, callback) {
+export function AddHotelRoom(name, capacity, typeAux, storeID, priceBabies, priceChildren, priceAdults, callback) {
   return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
@@ -95,7 +101,10 @@ export function AddHotelRoom(name, capacity, typeAux, storeID, callback) {
         name,
         capacity,
         roomType: typeAux,
-        storeID
+        storeID,
+        priceBabies,
+        priceChildren,
+        priceAdults
       }
     })
     .then(res=>{
@@ -106,7 +115,10 @@ export function AddHotelRoom(name, capacity, typeAux, storeID, callback) {
           id: res,
           name,
           capacity,
-          typeAux
+          typeAux,
+          priceBabies,
+          priceChildren,
+          priceAdults
         });
         callback();
       }

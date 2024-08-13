@@ -24,7 +24,10 @@ function reducer(state = initialState, action) {
                 ...room,
                 name: action.name,
                 capacity: action.capacity,
-                type: action.typeAux
+                type: action.typeAux,
+                priceBabies: action.priceBabies,
+                priceChildren: action.priceChildren,
+                priceAdults: action.priceAdults
             };
           }
           return room;
@@ -41,7 +44,10 @@ function reducer(state = initialState, action) {
                 id: action.id, 
                 name: action.name,
                 capacity: action.capacity,
-                type: action.typeAux
+                type: action.typeAux,
+                priceBabies: action.priceBabies,
+                priceChildren: action.priceChildren,
+                priceAdults: action.priceAdults
             }
           ]
         };

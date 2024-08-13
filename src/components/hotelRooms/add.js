@@ -17,7 +17,10 @@ class HotelRoomFormScreen extends Component {
       this.state = {
         name: '',
         capacity: null,
-        type: props.hotelRoomTypes[0].id
+        type: props.hotelRoomTypes[0].id,
+        priceBabies: '0',
+        priceChildren: '0',
+        priceAdults: '0'
       };
     }
 
@@ -35,14 +38,14 @@ class HotelRoomFormScreen extends Component {
     }
   
     save = () => {
-      const { name, capacity, type } = this.state;
-      this.props.AddHotelRoom(name, Number(capacity), type, this.props.defaultStoreID, ()=>{
+      const { name, capacity, type, priceBabies, priceChildren, priceAdults } = this.state;
+      this.props.AddHotelRoom(name, Number(capacity), type, this.props.defaultStoreID, parseFloat(priceBabies), parseFloat(priceChildren), parseFloat(priceAdults), ()=>{
         this.props.navigation.navigate('HotelRooms');
       });
     };
   
     render() {
-      const { name, capacity, type } = this.state;
+      const { name, capacity, type, priceBabies, priceChildren, priceAdults } = this.state;
   
       return (
         <View style={styles.container}>
@@ -67,6 +70,27 @@ class HotelRoomFormScreen extends Component {
                 items={this.props.hotelRoomTypes}
                 cLabel='name'
                 cValue='id'
+            />
+            <TextInput
+              label="Precio Bebes"
+              keyboardType='numeric'
+              value={priceBabies}
+              onChangeText={(text) => this.setState({ priceBabies: text })}
+              style={styles.input}
+            />
+            <TextInput
+              label="Precio Niños"
+              keyboardType='numeric'
+              value={priceChildren}
+              onChangeText={(text) => this.setState({ priceChildren: text })}
+              style={styles.input}
+            />
+            <TextInput
+              label="Precio Adultos"
+              keyboardType='numeric'
+              value={priceAdults}
+              onChangeText={(text) => this.setState({ priceAdults: text })}
+              style={styles.input}
             />
             <Button mode="contained" onPress={this.save} style={styles.saveButton}>
             Guardar Habitación
