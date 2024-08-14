@@ -44,7 +44,8 @@ class HotelRoomListScreen extends Component {
       <List.Item
         onPress={() => this.handlePress(item)}
         onLongPress={() => this.onLongPress(item)}
-        title={'Habitación '+item.name}
+        //title={'Habitación '+item.name}
+        title={item.name}
         description={`Capacidad: ${item.capacity} personas`}
         right={() => <Text style={styles.category}>{this.getHotelRoomTypeName(item.type)}</Text>}
         style={styles.item}

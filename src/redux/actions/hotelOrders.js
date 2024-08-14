@@ -53,7 +53,7 @@ export function RemoveHotelOrder(id, callback) {
   }
 }
 
-export function UpdateHotelOrder(id,userID,total,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
+export function UpdateHotelOrder(id,userID,total,cantBabies,cantChildren,cantAdult,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
   return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
@@ -64,6 +64,9 @@ export function UpdateHotelOrder(id,userID,total,dateInMask,dateOutMask, dateIN,
         orderID: id,
         userID,
         total,
+        cantBabies,
+        cantChildren,
+        cantAdult,
         dateIN: dateInMask,
         dateOUT: dateOutMask,
         paymentMethod,
@@ -81,6 +84,9 @@ export function UpdateHotelOrder(id,userID,total,dateInMask,dateOutMask, dateIN,
           id,
           userID,
           total,
+          cantBabies,
+          cantChildren,
+          cantAdult,
           dateIN,
           dateOUT,
           paymentMethod,
@@ -94,7 +100,7 @@ export function UpdateHotelOrder(id,userID,total,dateInMask,dateOutMask, dateIN,
   }
 }
   
-export function AddHotelOrder(userID,total,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
+export function AddHotelOrder(userID,total,cantBabies,cantChildren,cantAdult,dateInMask,dateOutMask, dateIN, dateOUT,paymentMethod,people,room,customer,storeID,callback) {
   return (dispatch, getState) => {
     axiosRequest({
       dispatch, 
@@ -105,6 +111,9 @@ export function AddHotelOrder(userID,total,dateInMask,dateOutMask, dateIN, dateO
         orderID: 0,
         userID,
         total,
+        cantBabies,
+        cantChildren,
+        cantAdult,
         dateIN: dateInMask,
         dateOUT: dateOutMask,
         paymentMethod,
@@ -122,6 +131,9 @@ export function AddHotelOrder(userID,total,dateInMask,dateOutMask, dateIN, dateO
           id: res,
           userID,
           total,
+          cantBabies,
+          cantChildren,
+          cantAdult,
           dateIN,
           dateOUT,
           paymentMethod,
@@ -137,6 +149,9 @@ export function AddHotelOrder(userID,total,dateInMask,dateOutMask, dateIN, dateO
         type: ADD_HOTEL_ORDER_WITHOUT_ETHERNET,
         userID,
         total,
+        cantBabies,
+        cantChildren,
+        cantAdult,
         dateIN,
         dateOUT,
         paymentMethod,

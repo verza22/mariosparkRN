@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, ScrollView, Text } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Moment from 'moment';
@@ -15,10 +15,13 @@ class HotelOrderFormScreen extends Component {
       super(props);
 
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
+      this.handleCant = this.handleCant.bind(this);
 
       this.state = {
         total: null,
-        people: null,
+        cantBabies: null,
+        cantChildren: null,
+        cantAdult: null,
         customer: null,
         room: null,
         dateIN: null,
@@ -42,8 +45,15 @@ class HotelOrderFormScreen extends Component {
     }
   
     save = () => {
-      const { total, people, customer, room, dateInMask, dateOutMask, dateIN, dateOUT } = this.state;
-      this.props.AddHotelOrder(this.props.userAuth.id,parseFloat(total),dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',Number(people),room,customer,this.props.defaultStoreID,()=>{
+      let { total, cantBabies, cantChildren, cantAdult, customer, room, dateInMask, dateOutMask, dateIN, dateOUT } = this.state;
+
+      cantBabies = cantBabies === null ? 0 : Number(cantBabies);
+      cantChildren = cantChildren === null ? 0 : Number(cantChildren);
+      cantAdult = cantAdult === null ? 0 : Number(cantAdult);
+
+      let people = cantBabies + cantChildren + cantAdult;
+
+      this.props.AddHotelOrder(this.props.userAuth.id,parseFloat(total),cantBabies,cantChildren,cantAdult,dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',people,room,customer,this.props.defaultStoreID,()=>{
         this.props.navigation.navigate('HotelOrders');
       });
     };
@@ -60,24 +70,51 @@ class HotelOrderFormScreen extends Component {
     }
 
     roomSelect(room){
-        this.setState({room: {
-            id: room.id,
-            name: room.name, 
-            type: room.type,
-            capacity: room.capacity
-          }})
+      this.setState({room})
     }
 
     setDate(date, property, property2){
         let aux = Moment(date).format('YYYY-MM-DD HH:mm:ss');
-        this.setState({[property2]: date, [property]: aux})
+        this.setState({[property2]: date, [property]: aux}, () => {
+          this.setTotal();
+        });
+    }
+
+    getNumberDays(){
+      const fecha1 = Moment(this.state.dateInMask);
+      const fecha2 = Moment(this.state.dateOutMask);
+
+      return fecha2.diff(fecha1, 'days');
+    }
+
+    handleCant(property, n){
+      n = Number(n);
+      this.setState({[property]: n}, () => {
+        this.setTotal();
+      });
+    }
+
+    setTotal(){
+      let days = this.getNumberDays();
+
+      let total = 0;
+
+      if(this.state.cantBabies !== null)
+        total += days * this.state.cantBabies * this.state.room.priceBabies;
+      if(this.state.cantChildren !== null)
+        total += days * this.state.cantChildren * this.state.room.priceChildren;
+      if(this.state.cantAdult !== null)
+        total += days * this.state.cantAdult * this.state.room.priceAdults;
+
+      this.setState({total});
     }
   
     render() {
-      const { total, people, dateInMask, dateOutMask } = this.state;
+      const { total, cantBabies, cantChildren, cantAdult, dateInMask, dateOutMask } = this.state;
   
       return (
         <View style={styles.container}>
+            <Text>Total: {total}</Text>
             <RowVertical name="Escoger Cliente">
                 <SearchPicker
                     text="Buscar"
@@ -92,21 +129,7 @@ class HotelOrderFormScreen extends Component {
                     onItemSelect={(room) => this.roomSelect(room)}
                 />
             </RowVertical>
-            <TextInput
-              label="Total"
-              value={total}
-              keyboardType='numeric'
-              onChangeText={(text) => this.setState({ total: text })}
-              style={styles.input}
-            />
-            <TextInput
-              label="Cantidad de personas"
-              value={people}
-              keyboardType='numeric'
-              onChangeText={(text) => this.setState({ people: text })}
-              style={styles.input}
-            />
-            <View style={styles.containerDate}>
+            <View style={styles.containerDate1}>
                 <DatePickerInput
                     locale="en"
                     label="Fecha de Ingreso"
@@ -122,6 +145,32 @@ class HotelOrderFormScreen extends Component {
                     onChange={(text) => this.setDate(text, 'dateOUT', 'dateOutMask')}
                 />
             </View>
+            {
+              (this.state.room !== null && dateInMask !== null && dateOutMask !== null) && 
+              <>
+                <TextInput
+                  label="Cantidad de bebes"
+                  value={cantBabies}
+                  keyboardType='numeric'
+                  onChangeText={(n) => this.handleCant('cantBabies', n)}
+                  style={styles.input}
+                />
+                <TextInput
+                  label="Cantidad de niños"
+                  value={cantChildren}
+                  keyboardType='numeric'
+                  onChangeText={(n) => this.handleCant('cantChildren', n)}
+                  style={styles.input}
+                />
+                <TextInput
+                  label="Cantidad de adultos"
+                  value={cantAdult}
+                  keyboardType='numeric'
+                  onChangeText={(n) => this.handleCant('cantAdult', n)}
+                  style={styles.input}
+                />
+              </>
+            }
             <Button mode="contained" onPress={this.save} style={styles.saveButton}>
             Guardar Orden
             </Button>
@@ -135,9 +184,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 12
   },
+  containerDate1: {
+    marginTop: 30,
+    marginBottom: 50,
+  },
   containerDate:{
     marginTop: 20,
-    marginBottom: 50,
+    marginBottom: 40,
   },
   input: {
     marginBottom: 15,

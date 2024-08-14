@@ -29,6 +29,9 @@ function reducer(state = initialState, action) {
                 paymentMethod: action.paymentMethod,
                 people: action.people,
                 room: action.room,
+                cantBabies: action.cantBabies,
+                cantChildren: action.cantChildren,
+                cantAdult: action.cantAdult,
                 customer: action.customer
             };
           }
@@ -51,6 +54,9 @@ function reducer(state = initialState, action) {
                 paymentMethod: action.paymentMethod,
                 people: action.people,
                 room: action.room,
+                cantBabies: action.cantBabies,
+                cantChildren: action.cantChildren,
+                cantAdult: action.cantAdult,
                 customer: action.customer
             }
           ]
@@ -66,6 +72,9 @@ function reducer(state = initialState, action) {
           paymentMethod: action.paymentMethod,
           people: action.people,
           room: action.room,
+          cantBabies: action.cantBabies,
+          cantChildren: action.cantChildren,
+          cantAdult: action.cantAdult,
           customer: action.customer
         };
         return {

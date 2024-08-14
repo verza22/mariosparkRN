@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, ScrollView, Text } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Moment from 'moment';
@@ -15,6 +15,7 @@ class HotelOrderEditFormScreen extends Component {
       super(props);
 
       this.handleBackPressHandler = this.handleBackPressHandler.bind(this);
+      this.handleCant = this.handleCant.bind(this);
 
       let item = this.props.route.params.item;
 
@@ -24,7 +25,9 @@ class HotelOrderEditFormScreen extends Component {
       this.state = {
         id: item.id,
         total: item.total,
-        people: item.people,
+        cantBabies: item.cantBabies,
+        cantChildren: item.cantChildren,
+        cantAdult: item.cantAdult,
         customer: item.customer,
         room: item.room,
         dateIN: item.dateIN,
@@ -42,7 +45,9 @@ class HotelOrderEditFormScreen extends Component {
             this.setState({
                 id: item.id,
                 total: item.total,
-                people: item.people,
+                cantBabies: item.cantBabies,
+                cantChildren: item.cantChildren,
+                cantAdult: item.cantAdult,
                 customer: item.customer,
                 room: item.room,
                 dateIN: item.dateIN,
@@ -67,8 +72,15 @@ class HotelOrderEditFormScreen extends Component {
     }
   
     save = () => {
-      const { id, total, people, customer, room, dateInMask, dateOutMask, dateIN, dateOUT } = this.state;
-      this.props.UpdateHotelOrder(id,this.props.userAuth.id,parseFloat(total),dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',Number(people),room,customer,this.props.defaultStoreID,()=>{
+      let { id, total, cantBabies, cantChildren, cantAdult, customer, room, dateInMask, dateOutMask, dateIN, dateOUT } = this.state;
+
+      cantBabies = cantBabies === null ? 0 : Number(cantBabies);
+      cantChildren = cantChildren === null ? 0 : Number(cantChildren);
+      cantAdult = cantAdult === null ? 0 : Number(cantAdult);
+
+      let people = cantBabies + cantChildren + cantAdult;
+
+      this.props.UpdateHotelOrder(id,this.props.userAuth.id,parseFloat(total),cantBabies,cantChildren,cantAdult,dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',Number(people),room,customer,this.props.defaultStoreID,()=>{
         this.props.navigation.navigate('HotelOrders');
       });
     };
@@ -85,24 +97,51 @@ class HotelOrderEditFormScreen extends Component {
     }
 
     roomSelect(room){
-        this.setState({room: {
-            id: room.id,
-            name: room.name, 
-            type: room.type,
-            capacity: room.capacity
-          }})
+      this.setState({room});
     }
 
     setDate(date, property, property2){
         let aux = Moment(date).format('YYYY-MM-DD HH:mm:ss');
-        this.setState({[property2]: date, [property]: aux})
+        this.setState({[property2]: date, [property]: aux}, () => {
+          this.setTotal();
+        });
+    }
+
+    getNumberDays(){
+      const fecha1 = Moment(this.state.dateInMask);
+      const fecha2 = Moment(this.state.dateOutMask);
+
+      return fecha2.diff(fecha1, 'days');
+    }
+
+    handleCant(property, n){
+      n = Number(n);
+      this.setState({[property]: n}, () => {
+        this.setTotal();
+      });
+    }
+
+    setTotal(){
+      let days = this.getNumberDays();
+
+      let total = 0;
+
+      if(this.state.cantBabies !== null)
+        total += days * this.state.cantBabies * this.state.room.priceBabies;
+      if(this.state.cantChildren !== null)
+        total += days * this.state.cantChildren * this.state.room.priceChildren;
+      if(this.state.cantAdult !== null)
+        total += days * this.state.cantAdult * this.state.room.priceAdults;
+
+      this.setState({total});
     }
   
     render() {
-      const { total, customer, room, people, dateInMask, dateOutMask } = this.state;
+      const { total, cantBabies, cantChildren, cantAdult, customer, room, people, dateInMask, dateOutMask } = this.state;
   
       return (
         <View style={styles.container}>
+          <Text>Total: {total}</Text>
             <RowVertical name="Escoger Cliente">
                 <SearchPicker
                     text="Buscar"
@@ -119,21 +158,7 @@ class HotelOrderEditFormScreen extends Component {
                     defaultIndex={this.props.rooms.findIndex(x=> x.id === room.id).toString()}
                 />
             </RowVertical>
-            <TextInput
-              label="Total"
-              value={total.toString()}
-              keyboardType='numeric'
-              onChangeText={(text) => this.setState({ total: text })}
-              style={styles.input}
-            />
-            <TextInput
-              label="Cantidad de personas"
-              value={people.toString()}
-              keyboardType='numeric'
-              onChangeText={(text) => this.setState({ people: text })}
-              style={styles.input}
-            />
-            <View style={styles.containerDate}>
+            <View style={styles.containerDate1}>
                 <DatePickerInput
                     locale="en"
                     label="Fecha de Ingreso"
@@ -149,6 +174,32 @@ class HotelOrderEditFormScreen extends Component {
                     onChange={(text) => this.setDate(text, 'dateOUT', 'dateOutMask')}
                 />
             </View>
+            {
+              (this.state.room !== null && dateInMask !== null && dateOutMask !== null) && 
+              <>
+                <TextInput
+                  label="Cantidad de bebes"
+                  value={cantBabies.toString()}
+                  keyboardType='numeric'
+                  onChangeText={(n) => this.handleCant('cantBabies', n)}
+                  style={styles.input}
+                />
+                <TextInput
+                  label="Cantidad de niños"
+                  value={cantChildren.toString()}
+                  keyboardType='numeric'
+                  onChangeText={(n) => this.handleCant('cantChildren', n)}
+                  style={styles.input}
+                />
+                <TextInput
+                  label="Cantidad de adultos"
+                  value={cantAdult.toString()}
+                  keyboardType='numeric'
+                  onChangeText={(n) => this.handleCant('cantAdult', n)}
+                  style={styles.input}
+                />
+              </>
+            }
             <Button mode="contained" onPress={this.save} style={styles.saveButton}>
             Guardar Orden
             </Button>
@@ -162,9 +213,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 12
   },
+  containerDate1: {
+    marginTop: 30,
+    marginBottom: 50,
+  },
   containerDate:{
     marginTop: 20,
-    marginBottom: 50,
+    marginBottom: 40,
   },
   input: {
     marginBottom: 15,
