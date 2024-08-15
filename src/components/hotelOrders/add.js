@@ -7,6 +7,8 @@ import { BackHandler } from 'react-native';
 import RowVertical from './../lib/rowVertical'
 import SearchPicker from './../lib/searchPicker'
 import { DatePickerInput } from 'react-native-paper-dates';
+import { NetPrinter } from "choiceqr-react-native-thermal-printer";
+import { adjustText } from './../lib/util';
 
 import { AddHotelOrder } from '../../redux/actions/hotelOrders'
 
@@ -52,9 +54,54 @@ class HotelOrderFormScreen extends Component {
       cantAdult = cantAdult === null ? 0 : Number(cantAdult);
 
       let people = cantBabies + cantChildren + cantAdult;
+      const days = this.getNumberDays();
 
       this.props.AddHotelOrder(this.props.userAuth.id,parseFloat(total),cantBabies,cantChildren,cantAdult,dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',people,room,customer,this.props.defaultStoreID,()=>{
         this.props.navigation.navigate('HotelOrders');
+
+        //print
+        this.props.printers.forEach(x=> {
+          let ip = x.ip;
+          let messageIni = x.messageIni;
+          let messageFin = x.messageFin;
+          console.log(x)
+          if(x.isPrincipal){
+            NetPrinter.init().then(() => {
+              NetPrinter.connectPrinter(ip, 9100)
+              .then((printer) => {
+                //48caracteres de ancho
+                let message = '';
+                
+                message += `${messageIni}\n
+------------------------------------------------
+${adjustText('Descripcion', 20, false)}${adjustText('Cant. Dias', 10, true)}${adjustText('P.Uni', 9, true)}${adjustText('P.Tot', 9, true)}
+------------------------------------------------`;
+  
+if(cantBabies > 0)
+  message += adjustText(cantBabies+" "+(cantBabies === 1 ? "Bebe" : "Bebes"), 20, false)+adjustText(days.toString(), 10, true)+adjustText((this.state.room.priceBabies).toFixed(2), 9, true)+adjustText((days * cantBabies * this.state.room.priceBabies).toFixed(2), 9, true);
+if(cantChildren > 0)
+  message += adjustText(cantChildren+" "+(cantChildren === 1 ? "Nino" : "Ninos"), 20, false)+adjustText(days.toString(), 10, true)+adjustText((this.state.room.priceChildren).toFixed(2), 9, true)+adjustText((days * cantChildren * this.state.room.priceChildren).toFixed(2), 9, true);
+if(cantAdult > 0)
+  message += adjustText(cantAdult+" "+(cantAdult === 1 ? "Adulto" : "Adultos"), 20, false)+adjustText(days.toString(), 10, true)+adjustText((this.state.room.priceAdults).toFixed(2), 9, true)+adjustText((days * cantAdult * this.state.room.priceAdults).toFixed(2), 9, true);
+  
+message += `\n
+------------------------------------------------
+${adjustText('TOTAL:', 36, true)}${adjustText(total.toFixed(2), 12, true)}
+------------------------------------------------
+FECHA ENTRADA: ${Moment(dateInMask).format('DD/MM/YYYY')}
+FECHA SALIDA:  ${Moment(dateOutMask).format('DD/MM/YYYY')}
+------------------------------------------------
+CLIENTE: ${adjustText(this.state.customer.name, 39, false)}
+CED/RUC: ${adjustText(this.state.customer.dni, 39, false)}
+------------------------------------------------
+${messageFin}
+\n\n`;
+                NetPrinter.printText(message);
+              });
+            });
+          }
+        });
+
       });
     };
 
@@ -111,9 +158,26 @@ class HotelOrderFormScreen extends Component {
   
     render() {
       const { total, cantBabies, cantChildren, cantAdult, dateInMask, dateOutMask } = this.state;
-  
+      const days = this.getNumberDays();
+
       return (
         <View style={styles.container}>
+            {
+              ((cantBabies!==null && cantBabies>0) || (cantChildren!==null && cantChildren>0) || (cantAdult!==null && cantAdult>0)) &&
+                <Text>Dias*Cantidad*Precio = Total</Text>
+            }
+            {
+              (cantBabies!==null && cantBabies>0) &&
+                <Text>Total bebes: {days}*{this.state.cantBabies}*{this.state.room.priceBabies} = {days * this.state.cantBabies * this.state.room.priceBabies}</Text>
+            }
+            {
+              (cantChildren!==null && cantChildren>0) &&
+                <Text>Total niños: {days}*{this.state.cantChildren}*{this.state.room.priceChildren} = {days * this.state.cantChildren * this.state.room.priceChildren}</Text>
+            }
+            {
+              (cantAdult!==null && cantAdult>0) &&
+                <Text>Total adultos: {days}*{this.state.cantAdult}*{this.state.room.priceAdults} = {days * this.state.cantAdult * this.state.room.priceAdults}</Text>
+            }
             <Text>Total: {total}</Text>
             <RowVertical name="Escoger Cliente">
                 <SearchPicker
@@ -129,6 +193,7 @@ class HotelOrderFormScreen extends Component {
                     onItemSelect={(room) => this.roomSelect(room)}
                 />
             </RowVertical>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
             <View style={styles.containerDate1}>
                 <DatePickerInput
                     locale="en"
@@ -174,6 +239,7 @@ class HotelOrderFormScreen extends Component {
             <Button mode="contained" onPress={this.save} style={styles.saveButton}>
             Guardar Orden
             </Button>
+            </ScrollView>
         </View>
       );
     }
@@ -184,13 +250,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 12
   },
+  contentContainer: {
+    
+  },
   containerDate1: {
-    marginTop: 30,
-    marginBottom: 50,
+    marginTop: 0,
+    marginBottom: 0,
   },
   containerDate:{
-    marginTop: 20,
-    marginBottom: 40,
+    marginTop: 15,
+    marginBottom: 20,
   },
   input: {
     marginBottom: 15,
@@ -213,7 +282,8 @@ const mapStateToProps = state => ({
     defaultStoreID: state.appConfigReducer.defaultStoreID,
     customers: state.customerReducer.customers,
     userAuth: state.appConfigReducer.user,
-    rooms: state.hotelRoomReducer.hotelRooms
+    rooms: state.hotelRoomReducer.hotelRooms,
+    printers: state.printerReducer.printers
 });
 
 const mapDispatchToProps = {

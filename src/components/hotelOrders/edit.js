@@ -137,10 +137,27 @@ class HotelOrderEditFormScreen extends Component {
     }
   
     render() {
-      const { total, cantBabies, cantChildren, cantAdult, customer, room, people, dateInMask, dateOutMask } = this.state;
+      const { total, cantBabies, cantChildren, cantAdult, customer, room, dateInMask, dateOutMask } = this.state;
+      const days = this.getNumberDays();
   
       return (
         <View style={styles.container}>
+          {
+            ((cantBabies!==null && cantBabies>0) || (cantChildren!==null && cantChildren>0) || (cantAdult!==null && cantAdult>0)) &&
+              <Text>Dias*Cantidad*Precio = Total</Text>
+          }
+          {
+            (cantBabies!==null && cantBabies>0) &&
+              <Text>Total bebes: {days}*{this.state.cantBabies}*{this.state.room.priceBabies} = {days * this.state.cantBabies * this.state.room.priceBabies}</Text>
+          }
+          {
+            (cantChildren!==null && cantChildren>0) &&
+              <Text>Total niños: {days}*{this.state.cantChildren}*{this.state.room.priceChildren} = {days * this.state.cantChildren * this.state.room.priceChildren}</Text>
+          }
+          {
+            (cantAdult!==null && cantAdult>0) &&
+              <Text>Total adultos: {days}*{this.state.cantAdult}*{this.state.room.priceAdults} = {days * this.state.cantAdult * this.state.room.priceAdults}</Text>
+          }
           <Text>Total: {total}</Text>
             <RowVertical name="Escoger Cliente">
                 <SearchPicker
@@ -158,6 +175,7 @@ class HotelOrderEditFormScreen extends Component {
                     defaultIndex={this.props.rooms.findIndex(x=> x.id === room.id).toString()}
                 />
             </RowVertical>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
             <View style={styles.containerDate1}>
                 <DatePickerInput
                     locale="en"
@@ -203,6 +221,7 @@ class HotelOrderEditFormScreen extends Component {
             <Button mode="contained" onPress={this.save} style={styles.saveButton}>
             Guardar Orden
             </Button>
+            </ScrollView>
         </View>
       );
     }
@@ -211,15 +230,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    padding: 12
+    padding: 12,
+  },
+  contentContainer: {
+    
   },
   containerDate1: {
-    marginTop: 30,
-    marginBottom: 50,
+    marginTop: 0,
+    marginBottom: 0,
   },
   containerDate:{
-    marginTop: 20,
-    marginBottom: 40,
+    marginTop: 15,
+    marginBottom: 20,
   },
   input: {
     marginBottom: 15,
