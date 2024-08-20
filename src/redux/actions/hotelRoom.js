@@ -52,23 +52,42 @@ export function RemoveHotelRoom(id, callback) {
   }
 }
 
-export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, priceBabies, priceChildren, priceAdults, callback) {
+export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, priceBabies, priceChildren, priceAdults, image, description, callback) {
   return (dispatch, getState) => {
+
+    const state = getState();
+    const token = state.appConfigReducer.token;
+
+    let changeImage = typeof image !== "string";
+
+    const formData = new FormData();
+    formData.append('image', {
+      uri: image.uri,
+      type: image.type,
+      name: 'image.jpg'
+    });
+    formData.append('id', id);
+    formData.append('name', name);
+    formData.append('roomType', typeAux);
+    formData.append('storeID', storeID);
+    formData.append('priceBabies', priceBabies);
+    formData.append('priceChildren', priceChildren);
+    formData.append('priceAdults', priceAdults);
+    formData.append('description', description);
+    formData.append('changeImage', changeImage);
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    };
+
     axiosRequest({
       dispatch, 
       getState,
       method: 'post',
       url: 'hotelRoom/AddOrUpdateHotelRoom',
-      params: {
-        id,
-        name,
-        capacity,
-        roomType: typeAux,
-        storeID,
-        priceBabies,
-        priceChildren,
-        priceAdults
-      }
+      headers,
+      params: formData
     })
     .then(res=>{
       dispatch(DataSuccess());
@@ -81,7 +100,9 @@ export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, priceBabie
           typeAux,
           priceBabies,
           priceChildren,
-          priceAdults
+          priceAdults,
+          image,
+          description
         });
         callback();
       }
@@ -89,23 +110,43 @@ export function UpdateHotelRoom(id, name, capacity, typeAux, storeID, priceBabie
   }
 }
   
-export function AddHotelRoom(name, capacity, typeAux, storeID, priceBabies, priceChildren, priceAdults, callback) {
+export function AddHotelRoom(name, capacity, typeAux, storeID, priceBabies, priceChildren, priceAdults, image, description, callback) {
   return (dispatch, getState) => {
+
+
+    const state = getState();
+    const token = state.appConfigReducer.token;
+
+    let changeImage = typeof image !== "string";
+
+    const formData = new FormData();
+    formData.append('image', {
+      uri: image.uri,
+      type: image.type,
+      name: 'image.jpg'
+    });
+    formData.append('id', 0);
+    formData.append('name', name);
+    formData.append('roomType', typeAux);
+    formData.append('storeID', storeID);
+    formData.append('priceBabies', priceBabies);
+    formData.append('priceChildren', priceChildren);
+    formData.append('priceAdults', priceAdults);
+    formData.append('description', description);
+    formData.append('changeImage', true);
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    };
+
     axiosRequest({
       dispatch, 
       getState,
       method: 'post',
       url: 'hotelRoom/AddOrUpdateHotelRoom',
-      params: {
-        id: 0,
-        name,
-        capacity,
-        roomType: typeAux,
-        storeID,
-        priceBabies,
-        priceChildren,
-        priceAdults
-      }
+      headers,
+      params: formData
     })
     .then(res=>{
       dispatch(DataSuccess());
@@ -118,7 +159,9 @@ export function AddHotelRoom(name, capacity, typeAux, storeID, priceBabies, pric
           typeAux,
           priceBabies,
           priceChildren,
-          priceAdults
+          priceAdults,
+          image,
+          description
         });
         callback();
       }

@@ -1,4 +1,5 @@
 import { GET_HOTEL_ROOMS, REMOVE_HOTEL_ROOM, UPDATE_HOTEL_ROOM, ADD_HOTEL_ROOM } from './../actions/hotelRoom';
+import { API_URL } from './../../config';
 
 
 const initialState = {
@@ -8,6 +9,11 @@ const initialState = {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_HOTEL_ROOMS:
+      action.hotelRooms.forEach(x => {
+        if(!x.image.includes("http")){
+          x.image = API_URL+x.image;
+        }
+      });
         return {
           ...state,
           hotelRooms: action.hotelRooms
@@ -27,7 +33,9 @@ function reducer(state = initialState, action) {
                 type: action.typeAux,
                 priceBabies: action.priceBabies,
                 priceChildren: action.priceChildren,
-                priceAdults: action.priceAdults
+                priceAdults: action.priceAdults,
+                image: action.image,
+                description: action.description
             };
           }
           return room;
@@ -47,7 +55,9 @@ function reducer(state = initialState, action) {
                 type: action.typeAux,
                 priceBabies: action.priceBabies,
                 priceChildren: action.priceChildren,
-                priceAdults: action.priceAdults
+                priceAdults: action.priceAdults,
+                image: action.image,
+                description: action.description
             }
           ]
         };

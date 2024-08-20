@@ -20,7 +20,9 @@ class HotelRoomFormScreen extends Component {
         type: props.hotelRoomTypes[0].id,
         priceBabies: '0',
         priceChildren: '0',
-        priceAdults: '0'
+        priceAdults: '0',
+        image: null,
+        description: ''
       };
     }
 
@@ -38,14 +40,26 @@ class HotelRoomFormScreen extends Component {
     }
   
     save = () => {
-      const { name, capacity, type, priceBabies, priceChildren, priceAdults } = this.state;
-      this.props.AddHotelRoom(name, Number(capacity), type, this.props.defaultStoreID, parseFloat(priceBabies), parseFloat(priceChildren), parseFloat(priceAdults), ()=>{
+      const { name, capacity, type, priceBabies, priceChildren, priceAdults, image, description  } = this.state;
+      this.props.AddHotelRoom(name, Number(capacity), type, this.props.defaultStoreID, parseFloat(priceBabies), parseFloat(priceChildren), parseFloat(priceAdults), image, description, ()=>{
         this.props.navigation.navigate('HotelRooms');
       });
     };
+
+    pickImage = () => {
+      const options = {
+        noData: true,
+      };
+      launchImageLibrary(options, (response) => {
+        if (response.assets && response.assets.length > 0) {
+          this.setState({ image: response.assets[0] });
+        }
+      });
+    };
+  
   
     render() {
-      const { name, capacity, type, priceBabies, priceChildren, priceAdults } = this.state;
+      const { name, capacity, type, priceBabies, priceChildren, priceAdults, image, description  } = this.state;
   
       return (
         <View style={styles.container}>
@@ -92,6 +106,18 @@ class HotelRoomFormScreen extends Component {
               onChangeText={(text) => this.setState({ priceAdults: text })}
               style={styles.input}
             />
+             <TextInput
+              label="Descripcion"
+              value={description}
+              onChangeText={(text) => this.setState({ description: text })}
+              multiline={true}
+              mode="outlined"
+              style={styles.textArea}
+            />
+            <Button mode="outlined" onPress={this.pickImage} style={styles.imageButton}>
+              Seleccionar Imagen del producto
+            </Button>
+            {image && <Image source={{ uri: typeof image.uri !== "undefined" ? image.uri : image }} style={styles.previewImage} />}
             <Button mode="contained" onPress={this.save} style={styles.saveButton}>
             Guardar Habitación
             </Button>
@@ -123,6 +149,19 @@ const styles = StyleSheet.create({
   saveButton: {
     marginBottom: 20,
   },
+  textArea: {
+    height: 120,
+    marginBottom: 16,
+  },
+  imageButton: {
+    marginBottom: 20,
+  },
+  previewImage: {
+    width: '100%',
+    height: 200,
+    marginBottom: 20,
+    resizeMode: 'cover',
+  }
 });
 
 const mapStateToProps = state => ({
