@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, ScrollView, Text } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, IconButton, Portal, Modal  } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import { BackHandler } from 'react-native';
@@ -29,7 +29,8 @@ class HotelOrderFormScreen extends Component {
         dateIN: null,
         dateInMask: null,
         dateOUT: null,
-        dateOutMask: null
+        dateOutMask: null,
+        modalVisible: false
       };
     }
 
@@ -178,6 +179,21 @@ ${messageFin}
               (cantAdult!==null && cantAdult>0) &&
                 <Text>Total adultos: {days}*{this.state.cantAdult}*{this.state.room.priceAdults} = {days * this.state.cantAdult * this.state.room.priceAdults}</Text>
             }
+            <Portal>
+              <Modal 
+                visible={this.state.modalVisible} 
+                onDismiss={() => this.setState({ modalVisible: false })}
+                contentContainerStyle={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}
+              >
+                <View style={{ margin: 20 }}>
+                  <Image source={{ uri: this.state.room !== null ? this.state.room.image : "" }} style={styles.previewImage} />
+                  <Text>{this.state.room?.description}</Text>
+                  <Button mode="contained" onPress={() => this.setState({ modalVisible: false })} style={{ marginTop: 10 }}>
+                    Cerrar
+                  </Button>
+                </View>
+              </Modal>
+          </Portal>
             <Text>Total: {total}</Text>
             <RowVertical name="Escoger Cliente">
                 <SearchPicker
@@ -186,13 +202,33 @@ ${messageFin}
                     onItemSelect={(customer) => this.customerSelect(customer)}
                 />
             </RowVertical>
-            <RowVertical name="Escoger Habitación">
-                <SearchPicker
-                    text="Buscar"
-                    items={this.props.rooms}
-                    onItemSelect={(room) => this.roomSelect(room)}
-                />
-            </RowVertical>
+            <View style={styles.containerSearchRoom}>
+              <View style={styles.viewSearchRoom}>
+                <RowVertical name="Escoger Habitación">
+                    <SearchPicker
+                        text="Buscar"
+                        items={this.props.rooms}
+                        onItemSelect={(room) => this.roomSelect(room)}
+                    />
+                </RowVertical>
+              </View>
+              {
+                this.state.room !== null &&
+                <Button
+                  style={styles.btnModal}
+                  mode="contained"
+                  onPress={() => this.setState({ modalVisible: true })}
+                  icon={() => (
+                      <IconButton
+                        style={styles.btnIconModal}
+                        icon="image"
+                        size={24}
+                        iconColor="white"
+                      />
+                  )}
+                  ></Button>
+              }
+            </View>
             <ScrollView contentContainerStyle={styles.contentContainer}>
             <View style={styles.containerDate1}>
                 <DatePickerInput
@@ -276,6 +312,29 @@ const styles = StyleSheet.create({
   saveButton: {
     marginBottom: 20,
   },
+  containerSearchRoom: {
+    flexDirection: 'row',
+  },
+  viewSearchRoom: {
+    flex: 1
+  },
+  btnModal: {
+    height: 48,
+    width: 48,
+    marginLeft: 20,
+    marginTop: 20,
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
+  btnIconModal: {
+    marginLeft: 20
+  },
+  previewImage: {
+    width: '100%',
+    height: 200,
+    marginBottom: 20,
+    resizeMode: 'cover',
+  }
 });
 
 const mapStateToProps = state => ({

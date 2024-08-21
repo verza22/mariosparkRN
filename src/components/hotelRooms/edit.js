@@ -177,12 +177,6 @@ const styles = StyleSheet.create({
   },
   imageButton: {
     marginBottom: 20,
-  },
-  previewImage: {
-    width: '100%',
-    height: 200,
-    marginBottom: 20,
-    resizeMode: 'cover',
   }
 });
 
