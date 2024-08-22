@@ -1,7 +1,10 @@
 import React, { Component  } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, Alert  } from 'react-native';
-import { List,  Portal, Modal, FAB, withTheme, Button } from 'react-native-paper';
+import { List,  Portal, Modal, FAB, withTheme, Button, IconButton } from 'react-native-paper';
 import { connect } from 'react-redux';
+import { NetPrinter } from "choiceqr-react-native-thermal-printer";
+import { adjustText } from './../lib/util';
+import Moment from 'moment';
 
 import { RemoveHotelOrder, GetHotelOrders } from '../../redux/actions/hotelOrders'
 import { GetCustomers } from '../../redux/actions/customer'
@@ -62,13 +65,82 @@ class HotelOrderListScreen extends Component {
             </>
         }
         right={() => 
-            <>
-                <Text style={styles.category2}>Habitacion: {item.room.name} {"\n"} {this.getHotelRoomTypeName(item.room.type)}</Text>
-            </>
+          <View style={{ flexDirection: 'col', alignItems: 'flex-end', padding: 0, margin: 0 }}>
+            <Text style={styles.category2}>Habitacion: {item.room.name} {"\n"} {this.getHotelRoomTypeName(item.room.type)}</Text> 
+            <IconButton
+              icon="printer"
+              size={20}
+              style={{ padding: 0, margin: 0 }}
+              onPress={() => this.printer(item)}
+            />
+          </View>
         }
         style={styles.item}
       />
     );
+
+    printer(item){
+      //print
+
+      let { total, cantBabies, cantChildren, cantAdult, dateInMask, dateOutMask } = item;
+
+      cantBabies = cantBabies === null ? 0 : Number(cantBabies);
+      cantChildren = cantChildren === null ? 0 : Number(cantChildren);
+      cantAdult = cantAdult === null ? 0 : Number(cantAdult);
+
+      const days = this.getNumberDays(dateInMask, dateOutMask);
+
+      this.props.printers.forEach(x=> {
+        let ip = x.ip;
+        let messageIni = x.messageIni;
+        let messageFin = x.messageFin;
+        if(x.isPrincipal){
+          NetPrinter.init().then(() => {
+          // this.setState({ printers: [{ host: ip, port: 9100 }] })
+            NetPrinter.connectPrinter(ip, 9100)
+            .then((printer) => {
+            // this.setState({ currentPrinter: printer });
+              //48caracteres de ancho
+              let message = '';
+              
+message += `${messageIni}\n
+<C>ORDEN HOSPEDAJE #${item.id}</C>
+------------------------------------------------
+${adjustText('Descripcion', 20, false)}${adjustText('Cant. Dias', 10, true)}${adjustText('P.Uni', 9, true)}${adjustText('P.Tot', 9, true)}
+------------------------------------------------`;
+                
+if(cantBabies > 0)
+  message += adjustText(cantBabies+" "+(cantBabies === 1 ? "Bebe" : "Bebes"), 20, false)+adjustText(days.toString(), 10, true)+adjustText((item.room.priceBabies).toFixed(2), 9, true)+adjustText((days * cantBabies * item.room.priceBabies).toFixed(2), 9, true);
+if(cantChildren > 0)
+  message += adjustText(cantChildren+" "+(cantChildren === 1 ? "Nino" : "Ninos"), 20, false)+adjustText(days.toString(), 10, true)+adjustText((item.room.priceChildren).toFixed(2), 9, true)+adjustText((days * cantChildren * item.room.priceChildren).toFixed(2), 9, true);
+if(cantAdult > 0)
+  message += adjustText(cantAdult+" "+(cantAdult === 1 ? "Adulto" : "Adultos"), 20, false)+adjustText(days.toString(), 10, true)+adjustText((item.room.priceAdults).toFixed(2), 9, true)+adjustText((days * cantAdult * item.room.priceAdults).toFixed(2), 9, true);
+                
+message += `\n
+------------------------------------------------
+${adjustText('TOTAL:', 36, true)}${adjustText(total.toFixed(2), 12, true)}
+------------------------------------------------
+FECHA ENTRADA: ${Moment(dateInMask).format('DD/MM/YYYY')}
+FECHA SALIDA:  ${Moment(dateOutMask).format('DD/MM/YYYY')}
+------------------------------------------------
+CLIENTE: ${adjustText(item.customer.name, 39, false)}
+CED/RUC: ${adjustText(item.customer.dni, 39, false)}
+------------------------------------------------
+${messageFin}
+\n\n`;
+              NetPrinter.printText(message);
+            });
+          });
+        }
+      });
+    }
+
+    getNumberDays(dateInMask, dateOutMask){
+      const fecha1 = Moment(dateInMask);
+      const fecha2 = Moment(dateOutMask);
+
+      return fecha2.diff(fecha1, 'days');
+    }
 
     onPressFab() {
       this.props.navigation.reset({
@@ -164,7 +236,8 @@ const mapStateToProps = state => ({
     customers: state.customerReducer.customers,
     rooms: state.hotelRoomReducer.hotelRooms,
     hotelRoomTypes: state.appConfigReducer.hotelRoomTypes,
-    defaultStoreID: state.appConfigReducer.defaultStoreID
+    defaultStoreID: state.appConfigReducer.defaultStoreID,
+    printers: state.printerReducer.printers
 });
 
 const mapDispatchToProps = {

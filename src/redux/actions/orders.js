@@ -66,7 +66,7 @@ export function AddOrder({storeID, callback, cashierID,waiterID,chefID,total,tab
           customer,
           products
         });
-        callback();
+        callback(res);
       }
     })
     .catch(err=>{
@@ -84,7 +84,7 @@ export function AddOrder({storeID, callback, cashierID,waiterID,chefID,total,tab
         products,
         storeID
       });
-      callback();
+      callback('');
     });
   }
 }

@@ -57,7 +57,7 @@ class HotelOrderFormScreen extends Component {
       let people = cantBabies + cantChildren + cantAdult;
       const days = this.getNumberDays();
 
-      this.props.AddHotelOrder(this.props.userAuth.id,parseFloat(total),cantBabies,cantChildren,cantAdult,dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',people,room,customer,this.props.defaultStoreID,()=>{
+      this.props.AddHotelOrder(this.props.userAuth.id,parseFloat(total),cantBabies,cantChildren,cantAdult,dateInMask,dateOutMask, dateIN, dateOUT,'Efectivo',people,room,customer,this.props.defaultStoreID,(orderID)=>{
         this.props.navigation.navigate('HotelOrders');
 
         //print
@@ -74,6 +74,7 @@ class HotelOrderFormScreen extends Component {
                 let message = '';
                 
                 message += `${messageIni}\n
+<C>ORDEN HOSPEDAJE #${orderID}</C>
 ------------------------------------------------
 ${adjustText('Descripcion', 20, false)}${adjustText('Cant. Dias', 10, true)}${adjustText('P.Uni', 9, true)}${adjustText('P.Tot', 9, true)}
 ------------------------------------------------`;
@@ -198,7 +199,7 @@ ${messageFin}
             <RowVertical name="Escoger Cliente">
                 <SearchPicker
                     text="Buscar"
-                    items={this.props.customers}
+                    items={this.props.customers.map(x=> ({...x, name: x.dni+' - '+x.name}))}
                     onItemSelect={(customer) => this.customerSelect(customer)}
                 />
             </RowVertical>

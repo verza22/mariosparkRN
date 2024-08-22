@@ -116,7 +116,7 @@ class OrderStep3Screen extends Component {
     this.props.AddOrder({
       ...order,
       storeID: this.props.defaultStoreID,
-      callback: () => {
+      callback: (ordenID) => {
         this.props.navigation.navigate('Orders');
 
         //print
@@ -134,6 +134,7 @@ class OrderStep3Screen extends Component {
               let message = '';
               
               message += `${messageIni}\n
+<C>ORDEN #${ordenID}</C>
 ------------------------------------------------
 ${adjustText('Descripcion', 25, false)}${adjustText('Cant', 5, true)}${adjustText('P.Uni', 9, true)}${adjustText('P.Tot', 9, true)}
 ------------------------------------------------`;
@@ -195,7 +196,7 @@ ${messageFin}
                 :
                 <SearchPicker
                   text="Buscar"
-                  items={this.props.customers}
+                  items={this.props.customers.map(x=> ({...x, name: x.dni+' - '+x.name}))}
                   onItemSelect={(customer) => this.customerSelect(customer)}
                 />
               }

@@ -141,7 +141,7 @@ export function AddHotelOrder(userID,total,cantBabies,cantChildren,cantAdult,dat
           room,
           customer
         });
-        callback();
+        callback(res);
       }
     })
     .catch(err=>{
@@ -162,7 +162,7 @@ export function AddHotelOrder(userID,total,cantBabies,cantChildren,cantAdult,dat
         dateInMask,
         dateOutMask
       });
-      callback();
+      callback('');
     })
   }
 }
