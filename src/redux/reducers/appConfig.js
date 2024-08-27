@@ -11,7 +11,8 @@ const initialState = {
     userTypeList: [],
     userType: {},
     orderStatus: {},
-    hotelOrderType: {}
+    hotelOrderType: {},
+    dateFilters: {}
 };
 
 function reducer(state = initialState, action) {
@@ -27,6 +28,7 @@ function reducer(state = initialState, action) {
           userType: action.userType,
           orderStatus: action.orderStatus,
           hotelOrderType: action.hotelOrderType,
+          dateFilters: action.dateFilters,
           user: {
             id: action.user.id,
             username: action.user.username,

@@ -167,7 +167,8 @@ const mapStateToProps = state => ({
     authUser: state.appConfigReducer.user,
     defaultStoreID: state.appConfigReducer.defaultStoreID,
     userType: state.appConfigReducer.userType,
-    printers: state.printerReducer.printers
+    printers: state.printerReducer.printers,
+    dateFilters: state.appConfigReducer.dateFilters
 });
 
 const mapDispatchToProps = {

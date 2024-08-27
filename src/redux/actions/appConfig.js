@@ -19,6 +19,15 @@ export function Login(userName, password, callback) {
         const userType = transformArrayToObject(res.userTypes);
         const orderStatus = transformArrayToObject(res.orderStatusList);
         const hotelOrderType = transformArrayToObject(res.hotelOrderTypeList);
+        let dateFilters = { DATE_FROM: "2024-01-01", DATE_TO: "2024-12-31" };
+
+        if(res.userConfigList.length>0){
+          let i = res.userConfigList.findIndex(x=> x.code === "DATE_FILTERS");
+          if(i>=0){
+            let aux = res.userConfigList[i].value.split(",");
+            dateFilters = { DATE_FROM: aux[0], DATE_TO: aux[1] };
+          }
+        }
 
         dispatch({
           type: LOGIN,
@@ -29,7 +38,8 @@ export function Login(userName, password, callback) {
           userType,
           orderStatus,
           hotelOrderType,
-          password
+          password,
+          dateFilters
         });
         callback(res.user.id);
       }else{

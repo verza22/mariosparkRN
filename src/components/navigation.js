@@ -50,6 +50,7 @@ import EditWidgetFormScreen from './home/editWidget'
 import PrinterListScreen from './configuracion/printerList'
 import PrinterAddFormScreen from './configuracion/printerAdd'
 import PrinterEditFormScreen from './configuracion/printerEdit'
+import FilterScreen from './configuracion/filters'
 
 import NavigationMenu from './appConfig/navigationMenu'
 
@@ -82,13 +83,18 @@ function CustomDrawerContent(props) {
           </View>
         )}
       />
-      {props.isSubMenuOpen && (
+      {props.isSubMenuOpen && (<>
+        <DrawerItem
+          label="Filtros"
+          onPress={() => props.navigation.navigate('ConfigFilters')}
+          style={{ paddingLeft: 20 }}
+        />
         <DrawerItem
           label="Impresoras"
           onPress={() => props.navigation.navigate('ConfigImpresora')}
           style={{ paddingLeft: 20 }}
         />
-      )}
+      </>)}
     </DrawerContentScrollView>
   );
 }
@@ -329,6 +335,11 @@ class App extends Component {
                   name="ConfigImpresoraEdit"
                   component={PrinterEditFormScreen}
                   options={({ navigation }) => this.getOption("Editar Impresora", false, navigation)}
+                />
+                <Drawer.Screen
+                  name="ConfigFilters"
+                  component={FilterScreen}
+                  options={({ navigation }) => this.getOption("Filtros", false, navigation)}
                 />
               </>
             )}
